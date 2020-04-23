@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
         final Button btn1 = (Button)findViewById(R.id.btn1); //다이어트
         final Button btn2 = (Button)findViewById(R.id.btn2); //공부
+        final Button btn3 = (Button)findViewById(R.id.btn3); //공부
 
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
