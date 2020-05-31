@@ -3,6 +3,7 @@ package com.example.dotive;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.Settings;
 
@@ -12,13 +13,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        final int num = 7;
+
     }
-
-    public Settings.Panel panel = new Settings.Panel(this);
-
-    @Override
-    public void onDraw(Canvas canvas) {
-        for (int i = 0; i < name.length; i++)
-    }
-
 }
