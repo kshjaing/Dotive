@@ -7,8 +7,10 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.Display;
 import android.view.View;
 import android.view.Window;
 
@@ -17,8 +19,8 @@ public class MainActivity extends AppCompatActivity {
     Paint[] paint;
     double lon = 30;
     double lat = 20;
-    int scrWidth;
-    int scrHeight;
+    int width;
+    int height;
     int x;
     int y;
 
@@ -38,8 +40,12 @@ public class MainActivity extends AppCompatActivity {
         panel.setBackgroundColor(Color.WHITE);
         setContentView(panel);
 
-        scrWidth = getWindowManager().getDefaultDisplay().getWidth();
-        scrHeight = getWindowManager().getDefaultDisplay().getHeight();
+        Display display = getWindowManager().getDefaultDisplay();  // in Activity
+        /* getActivity().getWindowManager().getDefaultDisplay() */ // in Fragment
+        Point size = new Point();
+        display.getSize(size); // or getSize(size)
+        int width = size.x;
+        int height = size.y;
     }
 
     class Panel extends View {
@@ -57,8 +63,8 @@ public class MainActivity extends AppCompatActivity {
                 paint[i].setStrokeWidth(1);
                 paint[i].setTextSize(20);
 
-                x = (int) ((scrWidth / 360.0) * (180 + longitude[i]));
-                y = (int) ((scrHeight / 180.0) * (90 - latitude[i]));
+                x = (int) ((width / 360.0) * (180 + longitude[i]));
+                y = (int) ((height / 180.0) * (90 - latitude[i]));
 
                 canvas.drawColor(Color.WHITE);
                 canvas.drawCircle(x, y, 3, paint[i]);
