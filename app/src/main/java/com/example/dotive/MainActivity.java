@@ -13,19 +13,30 @@ import android.provider.Settings;
 import android.view.Display;
 import android.view.View;
 import android.view.Window;
+import android.app.Activity;
+
+class MyView extends View {
+    public MyView(Context context) {
+        super(context);
+        setBackgroundColor(Color.WHITE);
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        Paint paint = new Paint();
+        paint.setColor(Color.YELLOW);
+        canvas.drawCircle(50, 200, 30, paint);
+    }
+}
+
+
 
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-    }
-
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-
-        canvas.drawCircle(x, y, radius, paint);
-
+        MyView w = new MyView(this);
+        setContentView(w);
     }
 }
