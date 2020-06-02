@@ -24,8 +24,9 @@ class MyView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         Paint paint = new Paint();
-        paint.setColor(Color.YELLOW);
-        canvas.drawCircle(50, 200, 30, paint);
+        paint.setColor(Color.BLUE);
+        paint.setAntiAlias(true);
+        canvas.drawCircle(500, 500, 500, paint);
     }
 }
 
