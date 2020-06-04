@@ -34,15 +34,15 @@ class MyView extends View {
             }
 
             else if (8 <= i && i <= 14) {
-                canvas.drawCircle(100 + i * 120, 520, 50, paint);
+                canvas.drawCircle(100 + i * 120 - 960, 520, 50, paint);
             }
 
             else if (15 <= i && i <= 21) {
-                canvas.drawCircle(100 + i * 120, 640, 50, paint);
+                canvas.drawCircle(100 + i * 120 - 1800, 640, 50, paint);
             }
 
             else if (22 <= i && i <= 28) {
-                canvas.drawCircle(100 + i * 120, 760, 50, paint);
+                canvas.drawCircle(100 + i * 120 - 2640, 760, 50, paint);
             }
         }
 
