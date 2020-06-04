@@ -24,9 +24,9 @@ class MyView extends View {
     @SuppressLint("ResourceAsColor")
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawColor(R.color.YellowBackground);
+        canvas.drawColor(Color.parseColor("#FFF7CD"));
         Paint paint = new Paint();
-        paint.setColor(Color.WHITE);
+        paint.setColor(Color.parseColor("#578DC2"));
         paint.setAntiAlias(true);
         for (int i = 0; i < 30; i++) {
             if (i < 10) {
