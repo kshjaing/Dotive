@@ -30,15 +30,15 @@ class MyView extends View {
         paint.setAntiAlias(true);
         for (int i = 0; i < 30; i++) {
             if (i < 10) {
-                canvas.drawCircle(100 + i * 130, 400, 40, paint);
+                canvas.drawCircle(120 + i * 130, 400, 40, paint);
             }
 
             else if (10 <= i && i < 20) {
-                canvas.drawCircle(100 + i * 130 - 1300, 530, 40, paint);
+                canvas.drawCircle(120 + i * 130 - 1300, 530, 40, paint);
             }
 
             else if (20 <= i && i < 30) {
-                canvas.drawCircle(100 + i * 130 - 2600, 660, 40, paint);
+                canvas.drawCircle(120 + i * 130 - 2600, 660, 40, paint);
             }
         }
 
