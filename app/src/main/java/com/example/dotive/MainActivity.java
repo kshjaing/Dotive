@@ -28,21 +28,17 @@ class MyView extends View {
         Paint paint = new Paint();
         paint.setColor(Color.WHITE);
         paint.setAntiAlias(true);
-        for (int i = 0; i < 28; i++) {
-            if (i < 7) {
-                canvas.drawCircle(100 + i * 120, 400, 50, paint);
+        for (int i = 0; i < 30; i++) {
+            if (i < 10) {
+                canvas.drawCircle(100 + i * 130, 400, 40, paint);
             }
 
-            else if (7 <= i && i < 14) {
-                canvas.drawCircle(100 + i * 120 - 840, 520, 50, paint);
+            else if (10 <= i && i < 20) {
+                canvas.drawCircle(100 + i * 130 - 1300, 530, 40, paint);
             }
 
-            else if (14 <= i && i < 21) {
-                canvas.drawCircle(100 + i * 120 - 1680, 640, 50, paint);
-            }
-
-            else if (21 <= i && i < 28) {
-                canvas.drawCircle(100 + i * 120 - 2520, 760, 50, paint);
+            else if (20 <= i && i < 30) {
+                canvas.drawCircle(100 + i * 130 - 2600, 660, 40, paint);
             }
         }
 
