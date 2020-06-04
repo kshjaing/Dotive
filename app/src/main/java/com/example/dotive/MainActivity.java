@@ -23,10 +23,14 @@ class MyView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        canvas.drawColor(Color.BLUE);
         Paint paint = new Paint();
-        paint.setColor(Color.BLUE);
+        paint.setColor(Color.WHITE);
         paint.setAntiAlias(true);
-        canvas.drawCircle(500, 500, 500, paint);
+        for (int i = 0; i < 14; i++) {
+                canvas.drawCircle(100 + i*100, 500, 50, paint);
+        }
+
     }
 }
 
