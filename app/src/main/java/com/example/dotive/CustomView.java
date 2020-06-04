@@ -1,4 +1,4 @@
-package com.example.dotive_kth;
+package com.example.dotive;
 
 import android.content.Context;
 import android.graphics.Canvas;

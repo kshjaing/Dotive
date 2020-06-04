@@ -1,4 +1,4 @@
-package com.example.dotive_kth;
+package com.example.dotive;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
