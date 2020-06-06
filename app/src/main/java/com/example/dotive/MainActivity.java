@@ -2,7 +2,6 @@ package com.example.dotive;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -29,8 +28,6 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     //여기에 쓰이는 동적 컨트롤들 객체
-    ScrollView scrollView1;
-    FrameLayout frameLayout;
     LinearLayout linearLayout;
     ScrollView scrollView;
     LinearLayout linearLayout2;
@@ -40,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     Button button4;
     Button button5;
     Button button6;
+    FrameLayout frameLayout;
     TextView textView1;
 
     @Override
@@ -53,19 +51,10 @@ public class MainActivity extends AppCompatActivity {
         CustomView view = new CustomView(this); //CustomView.java 파일을 불러와 실행
         //setContentView(view); (맨 아래에서 스크롤 뷰를 집어넣음.)
 
-        scrollView1 = new ScrollView(this);
-        frameLayout = new FrameLayout(this);
-        //FrameLayout.LayoutParams Frameparams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
-        //FrameLayout.LayoutParams.MATCH_PARENT);
-        //frameLayout.setLayoutParams(Frameparams);
-
         linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
 
         scrollView = new ScrollView(this);
-        //ScrollView.LayoutParams params = new ScrollView.LayoutParams(ScrollView.LayoutParams.MATCH_PARENT,
-        //ScrollView.LayoutParams.MATCH_PARENT);
-        //params.width = 500;
 
         linearLayout2 = new LinearLayout(this);
         linearLayout2.setOrientation(LinearLayout.VERTICAL);
@@ -77,18 +66,20 @@ public class MainActivity extends AppCompatActivity {
         button5 = new Button(this);
         button6 = new Button(this);
 
+        frameLayout = new FrameLayout(this);
+
         //버튼위에 제목 (물 1L 마시기 등)
         textView1 = new TextView(this);
 
         //집합처럼 View를 순서대로 추가중. 마지막에 버튼들.
         //frameLayout에 2개를 추가했다는 점. (이 부분이 버튼과, Paint 를 동시에 보이게 해줌.)
-        scrollView1.addView(frameLayout);
-        frameLayout.addView(linearLayout);
-        frameLayout.addView(view); //이 view는 CustomView.java에서 가져옴.
-        linearLayout.addView(scrollView);
-        scrollView.addView(linearLayout2);
 
-        linearLayout2.addView(textView1);
+        linearLayout.addView(scrollView);
+        scrollView.addView(frameLayout);
+
+        frameLayout.addView(linearLayout2);
+        frameLayout.addView(textView1);
+        frameLayout.addView(view);
 
         linearLayout2.addView(button1);
         linearLayout2.addView(button2);
@@ -96,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
         linearLayout2.addView(button4);
         linearLayout2.addView(button5);
         linearLayout2.addView(button6);
-
 
 
         //java 코드로 폰트 설정 (xml 에서 fontFamily)
@@ -131,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
         textView1.setId(R.id.textView1);
         textView1.setTypeface(typeface);
 
+
         //이렇게 안하면 픽셀로 값이 저장되기에 dp로 계산하는 것. value에서 원하는 숫자로 고치면 됨.
         //dp 값으로 가져오기
         int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,300,getResources().getDisplayMetrics());
@@ -145,9 +136,9 @@ public class MainActivity extends AppCompatActivity {
         int btn_margin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,50,getResources().getDisplayMetrics());
 
         //textView만 따로 마진값을 준다.
-        int textView_btn_margin_left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,100,getResources().getDisplayMetrics());
-        int textView_btn_margin_bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,50,getResources().getDisplayMetrics());
-        int textView_btn_margin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,50,getResources().getDisplayMetrics());
+        int textView_btn_margin_left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,125,getResources().getDisplayMetrics());
+        int textView_btn_margin_bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,-25,getResources().getDisplayMetrics());
+        int textView_btn_margin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,25,getResources().getDisplayMetrics());
 
         //dp 값으로 가져오기 또 다른 방법
 
@@ -188,32 +179,41 @@ public class MainActivity extends AppCompatActivity {
 
         textView1.setBackgroundDrawable(ContextCompat.getDrawable(this,R.drawable.textview_custom_css));
 
+        //마진은 설정값을 다르게 할때마다 부모 값을 이렇게 정해야한다.
+
         //마진 설정을 위해 (마진을 Layout에서 부모값을 정하고 그곳에 마진을 아까 dp 계산한 int값으로 지정.)
-        LinearLayout.LayoutParams LinearParams = new LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams Button_LinearParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
 
+
+        //마진 설정 2 (textview 설정 (물 1L 마시기)
+        FrameLayout.LayoutParams textView_LinearParams = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT
+        );
+
         //마진값 dp로 설정해주는중. 버튼에 적용
-        LinearParams.leftMargin = btn_margin_left; //size
-        LinearParams.bottomMargin = btn_margin_bottom;
-        LinearParams.topMargin = btn_margin_top;
+        Button_LinearParams.leftMargin = btn_margin_left; //size
+        Button_LinearParams.bottomMargin = btn_margin_bottom;
+        Button_LinearParams.topMargin = btn_margin_top;
 
         //각각의 버튼들에게 위에 계산된 마진을 추가해줌.
-        button1.setLayoutParams(LinearParams);
+        button1.setLayoutParams(Button_LinearParams);
         //button1.getResources().getDimension(size);
-        button2.setLayoutParams(LinearParams);
-        button3.setLayoutParams(LinearParams);
-        button4.setLayoutParams(LinearParams);
-        button5.setLayoutParams(LinearParams);
-        button6.setLayoutParams(LinearParams);
+        button2.setLayoutParams(Button_LinearParams);
+        button3.setLayoutParams(Button_LinearParams);
+        button4.setLayoutParams(Button_LinearParams);
+        button5.setLayoutParams(Button_LinearParams);
+        button6.setLayoutParams(Button_LinearParams);
 
         //마진값 dp로 설정해주는중. textview 적용 (물 1L 마시기)
-        LinearParams.leftMargin = textView_btn_margin_left; //size
-        LinearParams.bottomMargin = textView_btn_margin_bottom;
-        LinearParams.topMargin = textView_btn_margin_top;
+        textView_LinearParams.leftMargin = textView_btn_margin_left; //size
+        textView_LinearParams.bottomMargin = textView_btn_margin_bottom;
+        textView_LinearParams.topMargin = textView_btn_margin_top;
 
-        textView1.setLayoutParams(LinearParams);
+        textView1.setLayoutParams(textView_LinearParams);
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -233,8 +233,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //제일 위에 있는 스크롤뷰를 뿌려야 차례대로 자식view들이 보인다. (중간꺼든 다른거 넣으면 페이탈 에러)
-        setContentView(scrollView1);
+        //제일 위에 있는것을 뿌려야 차례대로 자식view들이 보인다. (중간꺼든 다른거 넣으면 페이탈 에러)
+        setContentView(linearLayout);
         //setContentView(R.layout.activity_main);
     }
 }

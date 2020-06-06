@@ -93,6 +93,17 @@
                         android:fontFamily="@font/katuri"
                         android:text="다이어트5" />
 
+                    <Button
+                        android:id="@+id/btn7"
+                        android:layout_width="300dp"
+                        android:layout_height="250dp"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginBottom="50dp"
+                        android:background="@drawable/radius"
+                        android:drawableLeft="@drawable/dot"
+                        android:fontFamily="@font/katuri"
+                        android:text="다이어트5" />
+
                     <TextView
                         android:id="@+id/textView1"
                         android:layout_width="match_parent"
@@ -104,4 +115,3 @@
         </LinearLayout>
     </FrameLayout>
 </ScrollView>
-
