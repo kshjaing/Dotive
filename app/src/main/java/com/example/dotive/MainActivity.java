@@ -36,6 +36,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context_main = this;
+        /*
+        Intent intent = getIntent();
+        totalHabit = intent.getExtras().getInt("totalHabit+");
+        */
+
         //스크롤뷰 생성
         sv = new ScrollView(this);
         sv.setBackgroundColor(Color.parseColor("#FFF7CD"));
