@@ -43,6 +43,12 @@ public class CustomView extends View {
         canvas.drawRect(100, 100, 200,200, paint);
         paint.setColor(Color.YELLOW);
         canvas.drawRect(500,500,600,600,paint);
+
+        //글씨를 쓴다.
+        /*paint.setColor(Color.BLACK);
+        paint.setStrokeWidth(0);
+        paint.setTextSize(100); //글씨 크기
+        canvas.drawText("물 1L 마시기",480,200,paint); //시작 x좌표, 시작 y좌표,paint*/
     }
 
     private void init(Context context) {
