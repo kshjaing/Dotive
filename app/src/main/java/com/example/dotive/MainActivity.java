@@ -58,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
         plusimgbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(MainActivity.this, CreateActivity.class);
                 startActivity(intent);
             }
