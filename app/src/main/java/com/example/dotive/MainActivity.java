@@ -27,8 +27,9 @@ import android.widget.ScrollView;
 public class MainActivity extends AppCompatActivity {
     public static Context context_main;
     public int totalHabit = 0;  //총 습관 개수
+    public int activityMoveCount = 0; //액티비티 이동 횟수
     ImageButton plusimgbtn;
-    Button mainboxBtn[] = new Button[totalHabit];
+
     ScrollView sv;
     LinearLayout ll;
 
@@ -36,11 +37,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context_main = this;
-        /*
-        Intent intent = getIntent();
-        totalHabit = intent.getExtras().getInt("totalHabit+");
-        */
 
+        if (activityMoveCount > 0) {
+            Intent intent = getIntent();
+            totalHabit = intent.getExtras().getInt("totalHabit+");
+        }
+        Button[] mainboxBtn = new Button[totalHabit];
         //스크롤뷰 생성
         sv = new ScrollView(this);
         sv.setBackgroundColor(Color.parseColor("#FFF7CD"));
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         plusimgbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                activityMoveCount += 1;
                 Intent intent = new Intent(MainActivity.this, CreateActivity.class);
                 startActivity(intent);
             }
