@@ -16,35 +16,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.app.Activity;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 
 public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        RelativeLayout rl = new RelativeLayout(this); //렐러티브레이아웃 객체 생성
-        rl.setBackgroundColor(Color.parseColor("#FFF7CD"));
-        RelativeLayout.LayoutParams relativeLayoutParams =
-                new RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.MATCH_PARENT,
-                        RelativeLayout.LayoutParams.MATCH_PARENT
-                );
+        //최하단에 스크롤뷰 배치
+        ScrollView sv = new ScrollView(this);
+        sv.setBackgroundColor(Color.parseColor("#FFF7CD"));
+
+        LinearLayout ll = new LinearLayout(this);
+        ll.setOrientation(LinearLayout.VERTICAL);
 
         ImageButton plusimgbtn = new ImageButton(this);
         plusimgbtn.getBackground().setAlpha(0); //이미지 뒷배경 투명하게
-        plusimgbtn.setLayoutParams(relativeLayoutParams);
         plusimgbtn.setImageDrawable(getResources().getDrawable(R.drawable.plusbutton));
-        plusimgbtn.setLayoutParams(relativeLayoutParams);
-        relativeLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
 
         MyView w = new MyView(this);
+        Button btn1 = new Button(this);
+        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(1170,700);
+        btn1.setLayoutParams(lp);
 
-        rl.addView(w);
-        rl.addView(plusimgbtn);
-        setContentView(rl);
+        sv.addView(ll);
+        ll.addView(btn1);
+        ll.addView(plusimgbtn);
+        setContentView(sv);
     }
 }
 
