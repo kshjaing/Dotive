@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -24,39 +25,53 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 public class MainActivity extends AppCompatActivity {
+    public static Context context_main;
+    int totalHabit = 0;  //총 습관 개수
+    Button mainboxBtn[] = new Button[totalHabit];
+    LinearLayout ll = new LinearLayout(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //최하단에 스크롤뷰 배치
+        //최하단에 스크롤뷰 생성
         ScrollView sv = new ScrollView(this);
         sv.setBackgroundColor(Color.parseColor("#FFF7CD"));
 
-        LinearLayout ll = new LinearLayout(this);
+
         ll.setOrientation(LinearLayout.VERTICAL);
 
-        ImageButton plusimgbtn = new ImageButton(this);
-        plusimgbtn.getBackground().setAlpha(0); //이미지 뒷배경 투명하게
-        plusimgbtn.setImageDrawable(getResources().getDrawable(R.drawable.plusbutton));
-
-        MyView w = new MyView(this);
-        Button btn1 = new Button(this);
-        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(1170,700);
-        btn1.setLayoutParams(lp);
-
+        //스크롤뷰에 선형레이아웃 배치
         sv.addView(ll);
-        ll.addView(btn1);
+
+        for (int i = 0; i < totalHabit; i++){
+            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(1170,700);
+            mainboxBtn[i].setLayoutParams(lp);
+            ll.addView(mainboxBtn[i]);
+        }
+
+
+        //습관 추가 버튼
+        ImageButton plusimgbtn = new ImageButton(this);
+        plusimgbtn.getBackground().setAlpha(0);                 //이미지 뒷배경 투명하게
+        plusimgbtn.setImageDrawable(getResources().getDrawable(R.drawable.plusbutton));
+        plusimgbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(MainActivity.this, CreateActivity.class);
+                startActivity(intent);
+            }
+        });
+
         ll.addView(plusimgbtn);
         setContentView(sv);
     }
 }
 
-class MyView extends View {
 
-    public MyView(Context context) {
-        super(context);
 
-    }
 
+    /* 원 생성
     @Override
     protected void onDraw(Canvas canvas) {
         Paint paint = new Paint();
@@ -73,10 +88,7 @@ class MyView extends View {
                 canvas.drawCircle(215 + i * 110 - 2200, 640, 32, paint);
             }
         }
-    }
-
-
-}
+    }*/
 
 
 
