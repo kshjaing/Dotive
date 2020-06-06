@@ -53,45 +53,64 @@ public class MainActivity extends AppCompatActivity {
         //선형레이아웃 생성
         ll = new LinearLayout(this);
         ll.setOrientation(LinearLayout.VERTICAL);
+        new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+
 
         sv.addView(ll);
 
 
         //습관 추가 버튼
-        plusimgbtn = new ImageButton(this);
-        plusimgbtn.getBackground().setAlpha(0);          //이미지 뒷배경 투명하게
-        plusimgbtn.setImageDrawable(getResources().getDrawable(R.drawable.plusbutton));
-        plusimgbtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                activityMoveCount += 1;
-                Intent intent = new Intent(MainActivity.this, CreateActivity.class);
-                startActivity(intent);
-            }
-        });
-        ll.addView(plusimgbtn);
-
+        if (totalHabit == 0) {
+            plusimgbtn = new ImageButton(this);
+            plusimgbtn.getBackground().setAlpha(0);          //이미지 뒷배경 투명하게
+            plusimgbtn.setImageDrawable(getResources().getDrawable(R.drawable.plusbutton));
+            plusimgbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    activityMoveCount += 1;
+                    Intent intent = new Intent(MainActivity.this, CreateActivity.class);
+                    startActivity(intent);
+                }
+            });
+            ll.addView(plusimgbtn);
+        }
     }
 
     protected void onStart() {
         super.onStart();
         if (totalHabit > 0) {
             Button[] mainboxBtn = new Button[totalHabit];
-            int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,200,
+            int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,400,
                     getResources().getDisplayMetrics());
-            int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,170,
+            int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,200,
                     getResources().getDisplayMetrics());
             for (int i = 0; i < totalHabit; i++) {
                 mainboxBtn[i] = new Button(this);
-
-                mainboxBtn[i].setHeight(width);
-                mainboxBtn[i].setWidth(height);
+                mainboxBtn[i].setWidth(width);
+                mainboxBtn[i].setHeight(height);
+                mainboxBtn[i].setText("13일");
 
                 ll.addView(mainboxBtn[i]);
 
             }
         }
-
+        if (totalHabit > 0) {
+            plusimgbtn = new ImageButton(this);
+            plusimgbtn.getBackground().setAlpha(0);          //이미지 뒷배경 투명하게
+            plusimgbtn.setImageDrawable(getResources().getDrawable(R.drawable.plusbutton));
+            plusimgbtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    activityMoveCount += 1;
+                    Intent intent = new Intent(MainActivity.this, CreateActivity.class);
+                    startActivity(intent);
+                }
+            });
+            ll.addView(plusimgbtn);
+        }
         /*
         if (activityMoveCount > 0) {
             Button btn = new Button(this);
