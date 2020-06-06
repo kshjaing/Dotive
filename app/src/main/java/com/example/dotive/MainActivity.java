@@ -26,8 +26,8 @@ import android.widget.ScrollView;
 
 public class MainActivity extends AppCompatActivity {
     public static Context context_main;
-    public int totalHabit = 0;  //총 습관 개수
-    public int activityMoveCount = 0; //액티비티 이동 횟수
+    public static int totalHabit = 0;  //총 습관 개수
+    public static int activityMoveCount = 0; //액티비티 이동 횟수
     ImageButton plusimgbtn;
 
     ScrollView sv;
@@ -38,11 +38,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         context_main = this;
 
+
         if (activityMoveCount > 0) {
             Intent intent = getIntent();
             totalHabit = intent.getExtras().getInt("totalHabit+");
         }
-        Button[] mainboxBtn = new Button[totalHabit];
+
 
         //스크롤뷰 생성
         sv = new ScrollView(this);
@@ -54,15 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
         sv.addView(ll);
 
-        //총 습관 개수만큼 메인박스 생성
-        if (totalHabit > 0) {
-            for (int i = 0; i < totalHabit; i++) {
-                ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(1170, 700);
-                mainboxBtn[i].setLayoutParams(lp);
-                mainboxBtn[i] = new Button(this);
-                ll.addView(mainboxBtn[i]);
-            }
-        }
 
         //습관 추가 버튼
         plusimgbtn = new ImageButton(this);
@@ -71,13 +63,45 @@ public class MainActivity extends AppCompatActivity {
         plusimgbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ++activityMoveCount;
+                activityMoveCount += 1;
                 Intent intent = new Intent(MainActivity.this, CreateActivity.class);
                 startActivity(intent);
             }
         });
         ll.addView(plusimgbtn);
 
+    }
+    protected void onDestory(Bundle savedInstanceState) {
+         super.onDestroy();
+        Button[] mainboxBtn = new Button[totalHabit];
+        //총 습관 개수만큼 메인박스 생성
+        if (totalHabit > 0) {
+            Button btn = new Button(this);
+            for (int i = 0; i < totalHabit; i++) {
+                ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(1170, 700);
+                mainboxBtn[i].setLayoutParams(lp);
+                mainboxBtn[i] = new Button(this);
+
+                ll.addView(mainboxBtn[i]);
+
+            }
+            ll.addView(btn);
+        }
+    }
+
+    protected void onStart() {
+        super.onStart();
+        if (totalHabit > 0) {
+            Button btn = new Button(this);
+            ll.addView(btn);
+        }
+
+        /*
+        if (activityMoveCount > 0) {
+            Button btn = new Button(this);
+            ll.addView(btn);
+        }
+        */
     }
 }
 
