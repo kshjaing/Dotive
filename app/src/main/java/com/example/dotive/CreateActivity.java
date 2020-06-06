@@ -83,7 +83,7 @@ public class CreateActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancel() {
-                        //취소할때 
+                        //취소할때
                     }
                 }).show();
     }
