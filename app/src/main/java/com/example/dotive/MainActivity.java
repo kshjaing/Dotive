@@ -28,9 +28,8 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
     //여기에 쓰이는 동적 컨트롤들 객체
-    LinearLayout linearLayout;
     ScrollView scrollView;
-    LinearLayout linearLayout2;
+    LinearLayout linearLayout;
     Button button1;
     Button button2;
     Button button3;
@@ -51,13 +50,10 @@ public class MainActivity extends AppCompatActivity {
         CustomView view = new CustomView(this); //CustomView.java 파일을 불러와 실행
         //setContentView(view); (맨 아래에서 스크롤 뷰를 집어넣음.)
 
-        linearLayout = new LinearLayout(this);
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
-
         scrollView = new ScrollView(this);
 
-        linearLayout2 = new LinearLayout(this);
-        linearLayout2.setOrientation(LinearLayout.VERTICAL);
+        linearLayout = new LinearLayout(this);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
 
         button1 = new Button(this);
         button2 = new Button(this);
@@ -74,19 +70,18 @@ public class MainActivity extends AppCompatActivity {
         //집합처럼 View를 순서대로 추가중. 마지막에 버튼들.
         //frameLayout에 2개를 추가했다는 점. (이 부분이 버튼과, Paint 를 동시에 보이게 해줌.)
 
-        linearLayout.addView(scrollView);
         scrollView.addView(frameLayout);
 
-        frameLayout.addView(linearLayout2);
+        frameLayout.addView(linearLayout);
         frameLayout.addView(textView1);
         frameLayout.addView(view);
 
-        linearLayout2.addView(button1);
-        linearLayout2.addView(button2);
-        linearLayout2.addView(button3);
-        linearLayout2.addView(button4);
-        linearLayout2.addView(button5);
-        linearLayout2.addView(button6);
+        linearLayout.addView(button1);
+        linearLayout.addView(button2);
+        linearLayout.addView(button3);
+        linearLayout.addView(button4);
+        linearLayout.addView(button5);
+        linearLayout.addView(button6);
 
 
         //java 코드로 폰트 설정 (xml 에서 fontFamily)
@@ -234,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //제일 위에 있는것을 뿌려야 차례대로 자식view들이 보인다. (중간꺼든 다른거 넣으면 페이탈 에러)
-        setContentView(linearLayout);
+        setContentView(scrollView);
         //setContentView(R.layout.activity_main);
     }
 }
