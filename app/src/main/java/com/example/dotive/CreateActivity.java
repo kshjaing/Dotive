@@ -28,9 +28,10 @@ public class CreateActivity extends AppCompatActivity {
         btn_finish = (Button) findViewById(R.id.btn_finish);
         btn_Color_Picker = (Button) findViewById(R.id.btn_Color_Picker);
         View_Color_Pick = (TextView) findViewById(R.id.View_Color_Pick);
-
         layout = (ConstraintLayout) findViewById(R.id.layout);
+
         //버튼 클릭리스너
+
         btn_Color_Picker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,17 +103,17 @@ public class CreateActivity extends AppCompatActivity {
         colorPicker.setColors(colors)
                 .setColumns(5)
                 .setRoundColorButton(true)
-        .setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
-            @Override
-            public void onChooseColor(int position, int color) {
-                //View_Color_Pick.setText(color);
-                layout.setBackgroundColor(color);
-            }
+                .setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
+                    @Override
+                    public void onChooseColor(int position, int color) {
+                        //View_Color_Pick.setText(color);
+                        layout.setBackgroundColor(color);
+                    }
 
-            @Override
-            public void onCancel() {
+                    @Override
+                    public void onCancel() {
 
-            }
-        }).show();
+                    }
+                }).show();
     }
 }
