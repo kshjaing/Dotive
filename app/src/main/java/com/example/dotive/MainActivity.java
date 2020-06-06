@@ -26,7 +26,7 @@ import android.widget.ScrollView;
 
 public class MainActivity extends AppCompatActivity {
     public static Context context_main;
-    int totalHabit = 0;  //총 습관 개수
+    public int totalHabit = 0;  //총 습관 개수
     ImageButton plusimgbtn;
     Button mainboxBtn[] = new Button[totalHabit];
     ScrollView sv;
@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context_main = this;
+        Intent intent = getIntent();
+        totalHabit = intent.getExtras().getInt("totalHabit+");
         //스크롤뷰 생성
         sv = new ScrollView(this);
         sv.setBackgroundColor(Color.parseColor("#FFF7CD"));

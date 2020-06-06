@@ -30,8 +30,11 @@ public class CreateActivity extends Activity {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)MainActivity.context_main).totalHabit += 1;
+
                 Intent intent = new Intent(CreateActivity.this, MainActivity.class);
+                int totalHabit = ((MainActivity)MainActivity.context_main).totalHabit + 1;
+                intent.putExtra("totalHabit+", totalHabit);
+                startActivity(intent);
             }
         });
 
