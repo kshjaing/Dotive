@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         context_main = this;
 
-
+        //액티비티 이동이 1번 이상일때 CreateActivity에서 총 습관수 계산값을 가져옴
         if (activityMoveCount > 0) {
             Intent intent = getIntent();
             totalHabit = intent.getExtras().getInt("totalHabit+");
@@ -57,12 +57,9 @@ public class MainActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
-
-
         sv.addView(ll);
 
-
-        //습관 추가 버튼
+        //습관이 하나도 없을 때 추가버튼을 제일 위로 생성
         if (totalHabit == 0) {
             plusimgbtn = new ImageButton(this);
             plusimgbtn.getBackground().setAlpha(0);          //이미지 뒷배경 투명하게
@@ -83,10 +80,14 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         if (totalHabit > 0) {
             Button[] mainboxBtn = new Button[totalHabit];
+
+            //px을 dp로 변환
             int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,400,
                     getResources().getDisplayMetrics());
             int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,200,
                     getResources().getDisplayMetrics());
+
+            //습관 수만큼 박스 생성
             for (int i = 0; i < totalHabit; i++) {
                 mainboxBtn[i] = new Button(this);
                 mainboxBtn[i].setWidth(width);
@@ -94,9 +95,10 @@ public class MainActivity extends AppCompatActivity {
                 mainboxBtn[i].setText("13일");
 
                 ll.addView(mainboxBtn[i]);
-
             }
         }
+
+        //습관이 1개 이상 있을 때 습관추가버튼을 박스 밑으로 생성
         if (totalHabit > 0) {
             plusimgbtn = new ImageButton(this);
             plusimgbtn.getBackground().setAlpha(0);          //이미지 뒷배경 투명하게
@@ -111,12 +113,6 @@ public class MainActivity extends AppCompatActivity {
             });
             ll.addView(plusimgbtn);
         }
-        /*
-        if (activityMoveCount > 0) {
-            Button btn = new Button(this);
-            ll.addView(btn);
-        }
-        */
     }
 }
 
