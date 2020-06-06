@@ -93,6 +93,12 @@
                         android:fontFamily="@font/katuri"
                         android:text="다이어트5" />
 
+                    <TextView
+                        android:id="@+id/textView1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="TextView" />
+
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>
