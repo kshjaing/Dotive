@@ -27,31 +27,25 @@ import android.widget.ScrollView;
 public class MainActivity extends AppCompatActivity {
     public static Context context_main;
     int totalHabit = 0;  //총 습관 개수
+    ImageButton plusimgbtn;
     Button mainboxBtn[] = new Button[totalHabit];
-    LinearLayout ll = new LinearLayout(this);
+    ScrollView sv;
+    LinearLayout ll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //최하단에 스크롤뷰 생성
-        ScrollView sv = new ScrollView(this);
+        //스크롤뷰 생성
+        sv = new ScrollView(this);
         sv.setBackgroundColor(Color.parseColor("#FFF7CD"));
-
-
+        //선형레이아웃 생성
+        ll = new LinearLayout(this);
         ll.setOrientation(LinearLayout.VERTICAL);
 
-        //스크롤뷰에 선형레이아웃 배치
         sv.addView(ll);
 
-        for (int i = 0; i < totalHabit; i++){
-            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(1170,700);
-            mainboxBtn[i].setLayoutParams(lp);
-            ll.addView(mainboxBtn[i]);
-        }
-
-
         //습관 추가 버튼
-        ImageButton plusimgbtn = new ImageButton(this);
+        plusimgbtn = new ImageButton(this);
         plusimgbtn.getBackground().setAlpha(0);                 //이미지 뒷배경 투명하게
         plusimgbtn.setImageDrawable(getResources().getDrawable(R.drawable.plusbutton));
         plusimgbtn.setOnClickListener(new View.OnClickListener() {
@@ -62,8 +56,15 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
         ll.addView(plusimgbtn);
+
+        for (int i = 0; i < totalHabit; i++){
+            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(1170,700);
+            mainboxBtn[i].setLayoutParams(lp);
+            ll.addView(mainboxBtn[i]);
+        }
+
+
         setContentView(sv);
     }
 }
