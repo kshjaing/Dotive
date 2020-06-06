@@ -48,8 +48,8 @@ public class CreateActivity extends AppCompatActivity {
 
     public void openColorPicker() {
         final ColorPicker colorPicker = new ColorPicker(this); //ColorPicker 객체 생성
-        //colorPicker.show();
-        /*ArrayList<String> colors = new ArrayList<>(); //Color 리스트
+
+        ArrayList<String> colors = new ArrayList<>(); //배열에 원하는 색 담아둔다.
 
         colors.add("#ffab91");
         colors.add("#F48FB1");
@@ -67,39 +67,8 @@ public class CreateActivity extends AppCompatActivity {
         colors.add("#ffcc80");
         colors.add("#bcaaa4");
 
-        colorPicker.setColors(colors) // 만들어둔 list 컬러픽에 적용
-                .setColors(5) //00열
-                .setRoundColorButton(true) //원형버튼
-                .setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
-                    @Override
-                    public void onChooseColor(int position, int color) {
-                        View_Color_Pick.setText(color);
-                    }
-
-                    @Override
-                    public void onCancel() {
-
-                    }
-                }).show(); //dialog 생성성*/
-
-        ArrayList<String> colors = new ArrayList<>();
-
-        colors.add("#ffab91");
-        colors.add("#F48FB1");
-        colors.add("#ce93d8");
-        colors.add("#b39ddb");
-        colors.add("#9fa8da");
-        colors.add("#90caf9");
-        colors.add("#81d4fa");
-        colors.add("#80deea");
-        colors.add("#80cbc4");
-        colors.add("#c5e1a5");
-        colors.add("#e6ee9c");
-        colors.add("#fff59d");
-        colors.add("#ffe082");
-        colors.add("#ffcc80");
-        colors.add("#bcaaa4");
-
+        //setColumns 00열 배치
+        //setRoundColorButton 둥글게 이값 없으면 네모
         colorPicker.setColors(colors)
                 .setColumns(5)
                 .setRoundColorButton(true)
