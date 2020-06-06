@@ -44,9 +44,16 @@ public class MainActivity extends AppCompatActivity {
 
         sv.addView(ll);
 
+        //총 습관 개수만큼 메인박스 생성
+        for (int i = 0; i < totalHabit; i++){
+            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(1170,700);
+            mainboxBtn[i].setLayoutParams(lp);
+            ll.addView(mainboxBtn[i]);
+        }
+
         //습관 추가 버튼
         plusimgbtn = new ImageButton(this);
-        plusimgbtn.getBackground().setAlpha(0);                 //이미지 뒷배경 투명하게
+        plusimgbtn.getBackground().setAlpha(0);          //이미지 뒷배경 투명하게
         plusimgbtn.setImageDrawable(getResources().getDrawable(R.drawable.plusbutton));
         plusimgbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,14 +64,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         ll.addView(plusimgbtn);
-
-        for (int i = 0; i < totalHabit; i++){
-            ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(1170,700);
-            mainboxBtn[i].setLayoutParams(lp);
-            ll.addView(mainboxBtn[i]);
-        }
-
-
         setContentView(sv);
     }
 }
