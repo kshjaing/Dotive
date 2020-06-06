@@ -13,7 +13,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/plusbutton1"
+        app:srcCompat="@drawable/plusbutton"
         tools:layout_editor_absoluteY="76dp"/>
         //android:background="@android:color/transparent"/> //이미지 뒷배경 투명처리
 
