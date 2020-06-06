@@ -3,6 +3,7 @@ package com.example.dotive;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -76,12 +77,13 @@ public class CreateActivity extends AppCompatActivity {
                     @Override
                     public void onChooseColor(int position, int color) {
                         //View_Color_Pick.setText(color);
-                        layout.setBackgroundColor(color);
+                        layout.setBackgroundColor(color);//목표색 배경에 뿌림 (test 용)
+                        View_Color_Pick.setText(Integer.toString(color)); //목표 색 int 값 가져옴 (test 용) 이 값을 이제 옮겨서 Main Activity 에서 활용할 예정.
                     }
 
                     @Override
                     public void onCancel() {
-
+                        //취소할때 
                     }
                 }).show();
     }
