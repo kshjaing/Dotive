@@ -30,7 +30,6 @@ class MyView extends View {
         super(context);
     }
 
-    @SuppressLint("ResourceAsColor")
     @Override
     protected void onDraw(Canvas canvas) {
         canvas.drawColor(Color.parseColor("#FFF7CD"));
