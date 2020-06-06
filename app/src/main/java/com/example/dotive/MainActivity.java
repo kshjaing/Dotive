@@ -12,6 +12,7 @@ import android.graphics.Point;
 import android.media.Image;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,29 +72,24 @@ public class MainActivity extends AppCompatActivity {
         ll.addView(plusimgbtn);
 
     }
-    protected void onDestory(Bundle savedInstanceState) {
-         super.onDestroy();
-        Button[] mainboxBtn = new Button[totalHabit];
-        //총 습관 개수만큼 메인박스 생성
-        if (totalHabit > 0) {
-            Button btn = new Button(this);
-            for (int i = 0; i < totalHabit; i++) {
-                ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(1170, 700);
-                mainboxBtn[i].setLayoutParams(lp);
-                mainboxBtn[i] = new Button(this);
-
-                ll.addView(mainboxBtn[i]);
-
-            }
-            ll.addView(btn);
-        }
-    }
 
     protected void onStart() {
         super.onStart();
         if (totalHabit > 0) {
-            Button btn = new Button(this);
-            ll.addView(btn);
+            Button[] mainboxBtn = new Button[totalHabit];
+            int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,200,
+                    getResources().getDisplayMetrics());
+            int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,170,
+                    getResources().getDisplayMetrics());
+            for (int i = 0; i < totalHabit; i++) {
+                mainboxBtn[i] = new Button(this);
+
+                mainboxBtn[i].setHeight(width);
+                mainboxBtn[i].setWidth(height);
+
+                ll.addView(mainboxBtn[i]);
+
+            }
         }
 
         /*
