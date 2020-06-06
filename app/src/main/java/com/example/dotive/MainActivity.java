@@ -3,8 +3,16 @@ package com.example.dotive;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.BackgroundColorSpan;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -31,11 +39,11 @@ public class MainActivity extends AppCompatActivity {
     ScrollView scrollView;
     LinearLayout linearLayout;
     Button button1;
-    Button button2;
+    /*Button button2;
     Button button3;
     Button button4;
     Button button5;
-    Button button6;
+    Button button6;*/
     FrameLayout frameLayout;
     TextView textView1;
 
@@ -45,6 +53,12 @@ public class MainActivity extends AppCompatActivity {
         //setContentView(R.layout.activity_main);
 
         //setContentView(new MyView(this));  (클래스 MyView를 바로 실행)
+
+        Intent intent = getIntent();
+        final String Habit_Name = intent.getStringExtra("Habit_Name");
+        final int Habit_Color = Integer.parseInt(intent.getStringExtra("Habit_Color"));
+        Log.e("습관명",Habit_Name);
+        Log.e("습관컬러",Integer.toString(Habit_Color));
 
         //객체 인스턴스 초기화.
         CustomView view = new CustomView(this); //CustomView.java 파일을 불러와 실행
@@ -56,11 +70,11 @@ public class MainActivity extends AppCompatActivity {
         linearLayout.setOrientation(LinearLayout.VERTICAL);
 
         button1 = new Button(this);
-        button2 = new Button(this);
+        /*button2 = new Button(this);
         button3 = new Button(this);
         button4 = new Button(this);
         button5 = new Button(this);
-        button6 = new Button(this);
+        button6 = new Button(this);*/
 
         frameLayout = new FrameLayout(this);
 
@@ -77,22 +91,23 @@ public class MainActivity extends AppCompatActivity {
         frameLayout.addView(view);
 
         linearLayout.addView(button1);
-        linearLayout.addView(button2);
+        /*linearLayout.addView(button2);
         linearLayout.addView(button3);
         linearLayout.addView(button4);
         linearLayout.addView(button5);
-        linearLayout.addView(button6);
+        linearLayout.addView(button6);*/
 
 
         //java 코드로 폰트 설정 (xml 에서 fontFamily)
         Typeface typeface = Typeface.createFromAsset(getAssets(),"font/katuri.ttf");
         //버튼 명, 버튼 id 설정
 
-        button1.setText("공부");
+        //button1.setText("공부");
+        button1.setText(Habit_Name);
         button1.setId(R.id.btn1);
         button1.setTypeface(typeface);
 
-        button2.setText("다이어트");
+        /*button2.setText("다이어트");
         button2.setId(R.id.btn2);
         button2.setTypeface(typeface);
 
@@ -110,9 +125,10 @@ public class MainActivity extends AppCompatActivity {
 
         button6.setText("6");
         button6.setId(R.id.btn6);
-        button6.setTypeface(typeface);
+        button6.setTypeface(typeface);*/
 
-        textView1.setText("물 1L 마시기");
+        //textView1.setText("물 1L 마시기");
+        textView1.setText(Habit_Name);
         textView1.setId(R.id.textView1);
         textView1.setTypeface(typeface);
 
@@ -135,6 +151,9 @@ public class MainActivity extends AppCompatActivity {
         int textView_btn_margin_bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,-25,getResources().getDisplayMetrics());
         int textView_btn_margin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,25,getResources().getDisplayMetrics());
 
+        //textView padding 값
+        int textView1_padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,16,getResources().getDisplayMetrics());
+
         //dp 값으로 가져오기 또 다른 방법
 
         //DisplayMetrics dm = getResources().getDisplayMetrics();
@@ -144,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
         button1.setWidth(width);
         button1.setHeight(height);
 
-        button2.setWidth(width);
+        /*button2.setWidth(width);
         button2.setHeight(height);
 
         button3.setWidth(width);
@@ -157,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
         button5.setHeight(height);
 
         button6.setWidth(width);
-        button6.setHeight(height);
+        button6.setHeight(height);*/
 
         textView1.setWidth(textView_width);
         textView1.setHeight(textView_height);
@@ -166,13 +185,20 @@ public class MainActivity extends AppCompatActivity {
 
         //버튼 백그라운드 설정 = radius 값 설정을 위해 필요 (버튼 둥글게 하기 위해 xml으로 새로 짜야함)
         button1.setBackgroundDrawable(ContextCompat.getDrawable(this,R.drawable.radius));
-        button2.setBackgroundDrawable(ContextCompat.getDrawable(this,R.drawable.radius));
+        /*button2.setBackgroundDrawable(ContextCompat.getDrawable(this,R.drawable.radius));
         button3.setBackgroundDrawable(ContextCompat.getDrawable(this,R.drawable.radius));
         button4.setBackgroundDrawable(ContextCompat.getDrawable(this,R.drawable.radius));
         button5.setBackgroundDrawable(ContextCompat.getDrawable(this,R.drawable.radius));
-        button6.setBackgroundDrawable(ContextCompat.getDrawable(this,R.drawable.radius));
+        button6.setBackgroundDrawable(ContextCompat.getDrawable(this,R.drawable.radius));*/
 
-        textView1.setBackgroundDrawable(ContextCompat.getDrawable(this,R.drawable.textview_custom_css));
+        //extView1.setBackgroundDrawable(ContextCompat.getDrawable(this,R.drawable.textview_custom_css));
+        textView1.setBackground(ContextCompat.getDrawable(this,R.drawable.textview_custom_css)); //StateListDrawable 속성이지만
+        /*StateListDrawable bgShape = (StateListDrawable)textView1.getBackground();
+        bgShape.addState(new int[]{android.R.attr.state_pressed}, new ColorDrawable(Color.RED));
+        textView1.setBackground(bgShape);*/
+
+        GradientDrawable bgShape = (GradientDrawable)textView1.getBackground().getCurrent(); //GradientDrawable 그대로 하면 오류남 마지막에 .getCurrent() 중요
+        bgShape.setColor(Habit_Color);
 
         //마진은 설정값을 다르게 할때마다 부모 값을 이렇게 정해야한다.
 
@@ -197,11 +223,11 @@ public class MainActivity extends AppCompatActivity {
         //각각의 버튼들에게 위에 계산된 마진을 추가해줌.
         button1.setLayoutParams(Button_LinearParams);
         //button1.getResources().getDimension(size);
-        button2.setLayoutParams(Button_LinearParams);
+        /*button2.setLayoutParams(Button_LinearParams);
         button3.setLayoutParams(Button_LinearParams);
         button4.setLayoutParams(Button_LinearParams);
         button5.setLayoutParams(Button_LinearParams);
-        button6.setLayoutParams(Button_LinearParams);
+        button6.setLayoutParams(Button_LinearParams);*/
 
         //마진값 dp로 설정해주는중. textview 적용 (물 1L 마시기)
         textView_LinearParams.leftMargin = textView_btn_margin_left; //size
@@ -219,14 +245,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, HabitActivity.class);
-                intent.putExtra("Final_Target",button2.getText()); //버튼의 이름을 HabitActivity에 전달.
-                startActivity(intent);
-            }
-        });
 
         //제일 위에 있는것을 뿌려야 차례대로 자식view들이 보인다. (중간꺼든 다른거 넣으면 페이탈 에러)
         setContentView(scrollView);
