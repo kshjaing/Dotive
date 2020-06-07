@@ -1,6 +1,10 @@
 package com.example.dotive;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import android.content.Intent;
 import android.graphics.Color;
@@ -15,12 +19,16 @@ import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /* 최종목표가 표시될 곳
 * 편집 버튼 (or + 버튼)을 눌러 최종목표를 만들어 이 페이지에 표시된다.
@@ -51,20 +59,23 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
-
         //setContentView(new MyView(this));  (클래스 MyView를 바로 실행)
 
         Intent intent = getIntent();
-        final String Habit_Name = intent.getStringExtra("Habit_Name");
-        final int Habit_Color = Integer.parseInt(intent.getStringExtra("Habit_Color"));
+        final String Habit_Name = intent.getStringExtra("Habit_Name"); //습관명
+        final int Habit_Color = Integer.parseInt(intent.getStringExtra("Habit_Color")); //습관 색깔
+        final int edit_Habit_Day_Num = Integer.parseInt(intent.getStringExtra("edit_Habit_Day_Num")); //습관 목표일 수
+
         Log.e("습관명",Habit_Name);
         Log.e("습관컬러",Integer.toString(Habit_Color));
+        Log.e("습관 목표일 수",Integer.toString(edit_Habit_Day_Num));
 
-        //객체 인스턴스 초기화.
+       //객체 인스턴스 초기화.
         CustomView view = new CustomView(this); //CustomView.java 파일을 불러와 실행
         //setContentView(view); (맨 아래에서 스크롤 뷰를 집어넣음.)
 
         scrollView = new ScrollView(this);
+        scrollView.setBackgroundColor(Color.parseColor("#FFF7CD")); //뒷 배경 설정
 
         linearLayout = new LinearLayout(this);
         linearLayout.setOrientation(LinearLayout.VERTICAL);
@@ -85,10 +96,25 @@ public class MainActivity extends AppCompatActivity {
         //frameLayout에 2개를 추가했다는 점. (이 부분이 버튼과, Paint 를 동시에 보이게 해줌.)
 
         scrollView.addView(frameLayout);
-
         frameLayout.addView(linearLayout);
         frameLayout.addView(textView1);
         frameLayout.addView(view);
+
+        //main 액션 바 만들기
+        //main_actionbar.xml 가져옴
+        View view1 = (View) getLayoutInflater().inflate(R.layout.main_actionbar, null);
+
+        //위 액션바 xml 의 레이아웃 객체 인스턴스 초기화
+        ConstraintLayout constraintLayout = (ConstraintLayout) view1.findViewById(R.id.Actionbar_Layout);
+
+        //toolbar 위젯 객체 인스턴스 초기화
+        androidx.appcompat.widget.Toolbar toolbar = (Toolbar) view1.findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar); //매니페스트에서 액션바 없앴으니 커스텀으로 추가하는 과정
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowCustomEnabled(true); //커스텀 액션바 보이게
+        actionBar.setDisplayShowTitleEnabled(false); //기본 제목 false = > 안보이게 함. (제목 삭제)
+        actionBar.setDisplayHomeAsUpEnabled(true); //이 값은 자동으로 뒤로가기 버튼 생성
+        linearLayout.addView(view1);
 
         linearLayout.addView(button1);
         /*linearLayout.addView(button2);
@@ -136,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
         //이렇게 안하면 픽셀로 값이 저장되기에 dp로 계산하는 것. value에서 원하는 숫자로 고치면 됨.
         //dp 값으로 가져오기
         int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,300,getResources().getDisplayMetrics());
-        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,200,getResources().getDisplayMetrics());
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,160,getResources().getDisplayMetrics());
 
         int textView_width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,150,getResources().getDisplayMetrics());
         int textView_height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,50,getResources().getDisplayMetrics());
@@ -144,12 +170,12 @@ public class MainActivity extends AppCompatActivity {
         int btn_margin_left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,50,getResources().getDisplayMetrics());
         int btn_margin_bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,50,getResources().getDisplayMetrics());
         //2020_06_06 (마진 top을 주어 버튼을 좀 아래로 내리고 그 위에 또 버튼을 만들어 제목을 부여한다. (ex: 물 1L 마시기))
-        int btn_margin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,50,getResources().getDisplayMetrics());
+        int btn_margin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,40,getResources().getDisplayMetrics());
 
         //textView만 따로 마진값을 준다.
         int textView_btn_margin_left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,125,getResources().getDisplayMetrics());
         int textView_btn_margin_bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,-25,getResources().getDisplayMetrics());
-        int textView_btn_margin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,25,getResources().getDisplayMetrics());
+        int textView_btn_margin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,70,getResources().getDisplayMetrics());
 
         //textView padding 값
         int textView1_padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,16,getResources().getDisplayMetrics());
@@ -236,18 +262,42 @@ public class MainActivity extends AppCompatActivity {
 
         textView1.setLayoutParams(textView_LinearParams);
 
+        //클릭 이벤트리스너
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, HabitActivity.class);
-                intent.putExtra("Final_Target",button1.getText()); //버튼의 이름을 HabitActivity에 전달.
+                intent.putExtra("Final_Target",textView1.getText()); //버튼의 이름을 HabitActivity에 전달.
                 startActivity(intent);
             }
         });
 
-
         //제일 위에 있는것을 뿌려야 차례대로 자식view들이 보인다. (중간꺼든 다른거 넣으면 페이탈 에러)
         setContentView(scrollView);
-        //setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.Color_Change:
+                Toast.makeText(this, "색 변경 클릭", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.Target_Days_Change:
+                Toast.makeText(this, "목표일수 변경 클릭", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.Habit_Delete:
+                Toast.makeText(this, "습관 삭제 클릭", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/Color_Change"
+        android:title="색 변경" />
+    <item
+        android:id="@+id/Target_Days_Change"
+        android:title="목표일수 변경" />
+    <item
+        android:id="@+id/Habit_Delete"
+        android:title="삭제" />
+</menu>
