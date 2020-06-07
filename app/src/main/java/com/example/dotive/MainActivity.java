@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         //선형레이아웃 생성
         ll = new LinearLayout(this);
         ll.setOrientation(LinearLayout.VERTICAL);
-        new LinearLayout.LayoutParams(
+        final LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 mainboxBtn[i].setWidth(width);
                 mainboxBtn[i].setHeight(height);
                 mainboxBtn[i].setText("13일");
+                mainboxBtn[i].setTop();
 
                 ll.addView(mainboxBtn[i]);
             }
