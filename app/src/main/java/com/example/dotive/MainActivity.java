@@ -24,12 +24,14 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     public static Context context_main;
     public static int totalHabit = 0;  //총 습관 개수
     public static int activityMoveCount = 0; //액티비티 이동 횟수
     ImageButton plusimgbtn;
+
 
     ScrollView sv;
     LinearLayout ll;
@@ -74,6 +76,8 @@ public class MainActivity extends AppCompatActivity {
             });
             ll.addView(plusimgbtn);
         }
+
+
     }
 
     protected void onStart() {
@@ -93,9 +97,16 @@ public class MainActivity extends AppCompatActivity {
                 mainboxBtn[i].setWidth(width);
                 mainboxBtn[i].setHeight(height);
                 mainboxBtn[i].setText("13일");
-                mainboxBtn[i].setTop();
-
+                //태그설정
+                mainboxBtn[i].setTag("mainbox_" + i);
                 ll.addView(mainboxBtn[i]);
+                //클릭시 버튼 태그 토스트(테스트용)
+                mainboxBtn[i].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(MainActivity.this, String.valueOf(v.getTag()), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         }
 
