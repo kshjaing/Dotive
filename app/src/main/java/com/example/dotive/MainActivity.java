@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if (totalHabit > 0) {
-            Button[] mainboxBtn = new Button[totalHabit];
+            ImageButton[] mainboxBtn = new ImageButton[totalHabit];
 
             //px을 dp로 변환
             int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,400,
@@ -93,10 +94,13 @@ public class MainActivity extends AppCompatActivity {
 
             //습관 수만큼 박스 생성
             for (int i = 0; i < totalHabit; i++) {
-                mainboxBtn[i] = new Button(this);
+                mainboxBtn[i] = new ImageButton(this);
+                mainboxBtn[i].setImageResource(R.drawable.mainbox_blue);
+                mainboxBtn[i].setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+                /*
                 mainboxBtn[i].setWidth(width);
                 mainboxBtn[i].setHeight(height);
-                mainboxBtn[i].setText("13일");
+                mainboxBtn[i].setText("13일");*/
                 //태그설정
                 mainboxBtn[i].setTag("mainbox_" + i);
                 ll.addView(mainboxBtn[i]);
