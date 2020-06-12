@@ -56,13 +56,15 @@ public class MainActivity extends AppCompatActivity {
         sv = new ScrollView(this);
         sv.setBackgroundColor(Color.parseColor("#FFF7CD"));
         setContentView(sv);
+
+
+
         //선형레이아웃 생성
         ll = new LinearLayout(this);
         ll.setOrientation(LinearLayout.VERTICAL);
         final LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
+                0, LinearLayout.LayoutParams.MATCH_PARENT);
+
         sv.addView(ll);
 
         //습관이 하나도 없을 때 추가버튼을 제일 위로 생성
@@ -92,9 +94,11 @@ public class MainActivity extends AppCompatActivity {
 
             //px을 dp로 변환
             int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,10,
-                    getResources().getDisplayMetrics());
+                    getResources().getDisplayMetrics());           //박스버튼 너비
             int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,200,
-                    getResources().getDisplayMetrics());
+                    getResources().getDisplayMetrics());           //박스버튼 높이
+            int spaceHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,50,
+                    getResources().getDisplayMetrics());           //여백 높이
 
             //습관 수만큼 박스 생성
             for (int i = 0; i < totalHabit; i++) {
@@ -103,11 +107,13 @@ public class MainActivity extends AppCompatActivity {
                 boxBtn[i].setHeight(height);
                 boxBtn[i].setText("13일");
                 //태그설정
-                boxBtn[i].setTag("mainbox_" + i);
+                boxBtn[i].setTag("box_" + i);
 
                 spaces[i] = new Space(this);
-                
+                spaces[i].setMinimumHeight(spaceHeight);
+                ll.addView(spaces[i]);
                 ll.addView(boxBtn[i]);
+
                 //클릭시 버튼 태그 토스트(테스트용)
                 boxBtn[i].setOnClickListener(new View.OnClickListener() {
                     @Override
