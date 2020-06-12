@@ -33,10 +33,12 @@ public class MainActivity extends AppCompatActivity {
     public static int totalHabit = 0;  //총 습관 개수
     public static int activityMoveCount = 0; //액티비티 이동 횟수
     ImageButton plusimgbtn;
-
-
     ScrollView sv;
-    LinearLayout ll;
+    //선형 레이아웃 조각별로 생성
+    LinearLayout llhor;
+    LinearLayout llleft;
+    LinearLayout llcenter;
+    LinearLayout llright;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +61,30 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        //선형레이아웃 생성
-        ll = new LinearLayout(this);
-        ll.setOrientation(LinearLayout.VERTICAL);
-        final LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.MATCH_PARENT);
+        //선형 레이아웃 생성
+        llhor = new LinearLayout(this);
+        llleft = new LinearLayout(this);
+        llcenter = new LinearLayout(this);
+        llright = new LinearLayout(this);
+        llhor.setBackgroundColor(Color.parseColor("#FFF7CD"));;
+        llhor.setOrientation(LinearLayout.HORIZONTAL);
+        llcenter.setOrientation(LinearLayout.VERTICAL);
+        llcenter.setBackgroundColor(Color.BLUE);
 
-        sv.addView(ll);
+        llhor.addView(llleft);
+        llhor.addView(llcenter);
+        llhor.addView(llright);
+        final LinearLayout.LayoutParams linearParamsVertical1 = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0.15f);
+        final LinearLayout.LayoutParams linearParamsVertical2 = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0.7f);
+        final LinearLayout.LayoutParams linearParamsHorizontal = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        llhor.setLayoutParams(linearParamsHorizontal);
+        llleft.setLayoutParams(linearParamsVertical1);
+        llcenter.setLayoutParams(linearParamsVertical2);
+        llright.setLayoutParams(linearParamsVertical1);
+        sv.addView(llhor);
 
         //습관이 하나도 없을 때 추가버튼을 제일 위로 생성
         if (totalHabit == 0) {
@@ -80,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-            ll.addView(plusimgbtn);
+            llcenter.addView(plusimgbtn);
         }
 
 
@@ -97,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                     getResources().getDisplayMetrics());           //박스버튼 너비
             int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,200,
                     getResources().getDisplayMetrics());           //박스버튼 높이
-            int spaceHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,50,
+            int spaceHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,60,
                     getResources().getDisplayMetrics());           //여백 높이
 
             //습관 수만큼 박스 생성
@@ -111,8 +130,9 @@ public class MainActivity extends AppCompatActivity {
 
                 spaces[i] = new Space(this);
                 spaces[i].setMinimumHeight(spaceHeight);
-                ll.addView(spaces[i]);
-                ll.addView(boxBtn[i]);
+                llcenter.addView(spaces[i]);
+                llcenter.addView(boxBtn[i]);
+
 
                 //클릭시 버튼 태그 토스트(테스트용)
                 boxBtn[i].setOnClickListener(new View.OnClickListener() {
@@ -137,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-            ll.addView(plusimgbtn);
+            llcenter.addView(plusimgbtn);
         }
     }
 }
