@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.Space;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context_main = this;
+        //DB 객체 가져옴
+        HabitDBManager DBManager = HabitDBManager.getInstance(this);
 
         //액티비티 이동이 1번 이상일때 CreateActivity에서 총 습관수 계산값을 가져옴
         if (activityMoveCount > 0) {
@@ -84,28 +87,29 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if (totalHabit > 0) {
-            ImageButton[] mainboxBtn = new ImageButton[totalHabit];
+            Button[] boxBtn = new Button[totalHabit];
+            Space[] spaces = new Space[totalHabit];
 
             //px을 dp로 변환
-            int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,400,
+            int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,10,
                     getResources().getDisplayMetrics());
             int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,200,
                     getResources().getDisplayMetrics());
 
             //습관 수만큼 박스 생성
             for (int i = 0; i < totalHabit; i++) {
-                mainboxBtn[i] = new ImageButton(this);
-                mainboxBtn[i].setImageResource(R.drawable.mainbox_blue);
-                mainboxBtn[i].setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-                /*
-                mainboxBtn[i].setWidth(width);
-                mainboxBtn[i].setHeight(height);
-                mainboxBtn[i].setText("13일");*/
+                boxBtn[i] = new Button(this);
+                boxBtn[i].setWidth(width);
+                boxBtn[i].setHeight(height);
+                boxBtn[i].setText("13일");
                 //태그설정
-                mainboxBtn[i].setTag("mainbox_" + i);
-                ll.addView(mainboxBtn[i]);
+                boxBtn[i].setTag("mainbox_" + i);
+
+                spaces[i] = new Space(this);
+                
+                ll.addView(boxBtn[i]);
                 //클릭시 버튼 태그 토스트(테스트용)
-                mainboxBtn[i].setOnClickListener(new View.OnClickListener() {
+                boxBtn[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(MainActivity.this, String.valueOf(v.getTag()), Toast.LENGTH_SHORT).show();
