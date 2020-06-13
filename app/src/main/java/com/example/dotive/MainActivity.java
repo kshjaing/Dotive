@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         else {
-            sv.setBackgroundColor(Color.parseColor("#FFF7CD"));
+            sv.setBackgroundColor(Color.parseColor("#1C1C1F"));
         }
         setContentView(sv);
 
