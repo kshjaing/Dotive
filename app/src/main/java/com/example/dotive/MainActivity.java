@@ -32,14 +32,15 @@ public class MainActivity extends AppCompatActivity {
     public static Context context_main;
     public static int totalHabit = 0;  //총 습관 개수
     public static int activityMoveCount = 0; //액티비티 이동 횟수
+
+
     ImageButton plusimgbtn;
-    FrameLayout fl;
     ScrollView sv;
-    //선형 레이아웃 조각별로 생성
     LinearLayout llhor;
     LinearLayout llleft;
     LinearLayout llcenter;
     LinearLayout llright;
+    FrameLayout fl;
 
 
     @Override
@@ -62,33 +63,35 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        //선형 레이아웃 생성
+        //선형 레이아웃 생성(가장 밑에 수평, 그 위에 수직 레이아웃3개 배치)
         llhor = new LinearLayout(this);
         llleft = new LinearLayout(this);
         llcenter = new LinearLayout(this);
         llright = new LinearLayout(this);
-        llhor.setBackgroundColor(Color.BLACK);
         llhor.setOrientation(LinearLayout.HORIZONTAL);
         llcenter.setOrientation(LinearLayout.VERTICAL);
+
+
+        /* 색 지정으로 선형 레이아웃 비율 확인(테스트용)
         llcenter.setBackgroundColor(Color.BLUE);
         llleft.setBackgroundColor(Color.RED);
-        llleft.setMinimumWidth(200);
-        llleft.setMinimumHeight(200);
-        llright.setBackgroundColor(Color.GREEN);
-        llright.setMinimumWidth(200);
-        llright.setMinimumHeight(200);
+        llright.setBackgroundColor(Color.GREEN);*/
 
 
+        //양쪽 레이아웃과 가운데 레이아웃 비율을 1:10으로 설정
         final LinearLayout.LayoutParams linearParamsVerticalSide = new LinearLayout.LayoutParams(
                 1, LinearLayout.LayoutParams.MATCH_PARENT, 1);
         final LinearLayout.LayoutParams linearParamsVerticalCenter = new LinearLayout.LayoutParams(
-                1, LinearLayout.LayoutParams.MATCH_PARENT, 5);
+                1, LinearLayout.LayoutParams.MATCH_PARENT, 10);
         final LinearLayout.LayoutParams linearParamsHorizontal = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+
+
         llhor.setLayoutParams(linearParamsHorizontal);
         llleft.setLayoutParams(linearParamsVerticalSide);
         llcenter.setLayoutParams(linearParamsVerticalCenter);
         llright.setLayoutParams(linearParamsVerticalSide);
+
         sv.addView(llhor);
         llhor.addView(llleft);
         llhor.addView(llcenter);

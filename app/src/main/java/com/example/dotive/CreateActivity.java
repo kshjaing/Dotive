@@ -29,29 +29,37 @@ public class CreateActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //선형 레이아웃 생성
+        //선형 레이아웃 생성(가장 밑에 수평, 그 위에 수직 레이아웃3개 배치)
         llhor = new LinearLayout(this);
         llleft = new LinearLayout(this);
         llcenter = new LinearLayout(this);
         llright = new LinearLayout(this);
-        llhor.setBackgroundColor(Color.parseColor("#FFF7CD"));;
         llhor.setOrientation(LinearLayout.HORIZONTAL);
         llcenter.setOrientation(LinearLayout.VERTICAL);
-        llcenter.setBackgroundColor(Color.BLUE);
+        llleft.setBackgroundColor(Color.parseColor("#FFF7CD"));
+        llcenter.setBackgroundColor(Color.parseColor("#FFF7CD"));
+        llright.setBackgroundColor(Color.parseColor("#FFF7CD"));
+
+
+
+        //양쪽 레이아웃과 가운데 레이아웃 비율을 1:10으로 설정
+        final LinearLayout.LayoutParams linearParamsVerticalSide = new LinearLayout.LayoutParams(
+                1, LinearLayout.LayoutParams.MATCH_PARENT, 1);
+        final LinearLayout.LayoutParams linearParamsVerticalCenter = new LinearLayout.LayoutParams(
+                1, LinearLayout.LayoutParams.MATCH_PARENT, 10);
+        final LinearLayout.LayoutParams linearParamsHorizontal = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+
+
+        llhor.setLayoutParams(linearParamsHorizontal);
+        llleft.setLayoutParams(linearParamsVerticalSide);
+        llcenter.setLayoutParams(linearParamsVerticalCenter);
+        llright.setLayoutParams(linearParamsVerticalSide);
+
 
         llhor.addView(llleft);
         llhor.addView(llcenter);
         llhor.addView(llright);
-        final LinearLayout.LayoutParams linearParamsVertical1 = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0.15f);
-        final LinearLayout.LayoutParams linearParamsVertical2 = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.7f);
-        final LinearLayout.LayoutParams linearParamsHorizontal = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        llhor.setLayoutParams(linearParamsHorizontal);
-        llleft.setLayoutParams(linearParamsVertical1);
-        llcenter.setLayoutParams(linearParamsVertical2);
-        llright.setLayoutParams(linearParamsVertical1);
 
         //습관 추가 버튼
         Button btnCreate = new Button(this);
