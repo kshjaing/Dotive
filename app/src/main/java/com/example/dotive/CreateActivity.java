@@ -45,7 +45,7 @@ public class CreateActivity extends Activity {
         final LinearLayout.LayoutParams linearParamsVertical1 = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0.15f);
         final LinearLayout.LayoutParams linearParamsVertical2 = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0.7f);
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT, 0.7f);
         final LinearLayout.LayoutParams linearParamsHorizontal = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
         llhor.setLayoutParams(linearParamsHorizontal);
