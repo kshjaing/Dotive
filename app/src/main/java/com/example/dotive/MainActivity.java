@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         context_main = this;
         //DB 객체 가져옴
-        //HabitDBManager DBManager = HabitDBManager.getInstance(this);
+        HabitDBManager DBManager = HabitDBManager.getInstance(this);
 
         //액티비티 이동이 1번 이상일때 CreateActivity에서 총 습관수 계산값을 가져옴
         if (activityMoveCount > 0) {
