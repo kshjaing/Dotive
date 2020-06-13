@@ -32,8 +32,9 @@ public class MainActivity extends AppCompatActivity {
     public static Context context_main;
     public static int totalHabit = 0;  //총 습관 개수
     public static int activityMoveCount = 0; //액티비티 이동 횟수
+    public static Boolean darkmode = false;   //다크모드 인수
 
-
+    Space space;
     ImageButton plusimgbtn;
     ScrollView sv;
     LinearLayout llhor;
@@ -58,7 +59,13 @@ public class MainActivity extends AppCompatActivity {
 
         //스크롤뷰 생성
         sv = new ScrollView(this);
-        sv.setBackgroundColor(Color.parseColor("#FFF7CD"));
+        if (darkmode == false) {
+            sv.setBackgroundColor(Color.parseColor("#FFF7CD"));
+        }
+
+        else {
+            sv.setBackgroundColor(Color.parseColor("#FFF7CD"));
+        }
         setContentView(sv);
 
 
@@ -100,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         //습관이 하나도 없을 때 추가버튼을 제일 위로 생성
         if (totalHabit == 0) {
             plusimgbtn = new ImageButton(this);
+
             plusimgbtn.getBackground().setAlpha(0);          //이미지 뒷배경 투명하게
             plusimgbtn.setImageDrawable(getResources().getDrawable(R.drawable.plusbutton));
             plusimgbtn.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +118,8 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
+
+            llcenter.addView(space);
             llcenter.addView(plusimgbtn);
         }
 
@@ -168,6 +178,12 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
+
+            space = new Space(this);
+            space.setMinimumWidth(1);
+            space.setMinimumHeight(100);
+
+            llcenter.addView(space);
             llcenter.addView(plusimgbtn);
         }
     }
