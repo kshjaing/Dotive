@@ -1,5 +1,6 @@
 package com.example.dotive;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -9,7 +10,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.media.Image;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.TypedValue;
@@ -26,6 +29,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Space;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     Space space;
     ImageButton plusimgbtn;
+    TextView txtview;
     ScrollView sv;
     LinearLayout llhor;
     LinearLayout llleft;
@@ -44,10 +49,29 @@ public class MainActivity extends AppCompatActivity {
     FrameLayout fl;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context_main = this;
+
+        //설정버튼 생성
+        txtview = new TextView(this);
+        txtview.setText("설정");
+        Typeface typeface = getResources().getFont(R.font.katuri);
+        txtview.setTypeface(typeface);
+        txtview.setTextSize(30);
+        txtview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activityMoveCount += 1;
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         //DB 객체 가져옴
         HabitDBManager DBManager = HabitDBManager.getInstance(this);
 
@@ -100,9 +124,12 @@ public class MainActivity extends AppCompatActivity {
         llright.setLayoutParams(linearParamsVerticalSide);
 
         sv.addView(llhor);
+
         llhor.addView(llleft);
         llhor.addView(llcenter);
         llhor.addView(llright);
+        llright.addView(txtview);
+
 
         //습관이 하나도 없을 때 추가버튼을 제일 위로 생성
         if (totalHabit == 0) {
@@ -121,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
 
             llcenter.addView(plusimgbtn);
         }
+
 
 
     }
@@ -144,7 +172,14 @@ public class MainActivity extends AppCompatActivity {
                 boxBtn[i] = new Button(this);
                 boxBtn[i].setWidth(width);
                 boxBtn[i].setHeight(height);
-                boxBtn[i].setText("13일");
+
+                //다크모드에 따른 버튼 색변경(임시)
+                if (darkmode == false) {
+                    boxBtn[i].setBackgroundColor(Color.WHITE);
+                }
+                else {
+                    boxBtn[i].setBackgroundColor(Color.parseColor("#31313C"));
+                }
                 //태그설정
                 boxBtn[i].setTag("box_" + i);
 
