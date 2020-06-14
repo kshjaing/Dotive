@@ -71,7 +71,8 @@ public class CreateActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CreateActivity.this, MainActivity.class);
-                int totalHabit = ((MainActivity)MainActivity.context_main).totalHabit + 1;
+                int totalHabit = MainActivity.totalHabit + 1;
+                MainActivity.isCreatePressed = true;
                 intent.putExtra("totalHabit+", totalHabit);
                 startActivity(intent);
             }

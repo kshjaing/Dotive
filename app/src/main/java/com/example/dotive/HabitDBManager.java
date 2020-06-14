@@ -10,7 +10,7 @@ public class HabitDBManager {
 
     Context myContext = null;
 
-    private static HabitDBManager myDBManager = null;
+    public static HabitDBManager myDBManager = null;
     private SQLiteDatabase mydatabase = null;
 
 

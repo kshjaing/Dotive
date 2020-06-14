@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import static com.example.dotive.MainActivity.activityMoveCount;
+import static com.example.dotive.MainActivity.darkmode;
 
 public class SettingsActivity extends Activity {
 
@@ -23,7 +26,13 @@ public class SettingsActivity extends Activity {
 
         //스크롤뷰 생성
         sv = new ScrollView(this);
-        sv.setBackgroundColor(Color.parseColor("#FFF7CD"));
+        if (!darkmode) {
+            sv.setBackgroundColor(Color.parseColor("#FFF7CD"));
+        }
+
+        else {
+            sv.setBackgroundColor(Color.parseColor("#1C1C1F"));
+        }
         setContentView(sv);
 
 
@@ -49,6 +58,8 @@ public class SettingsActivity extends Activity {
                 1, LinearLayout.LayoutParams.MATCH_PARENT, 10);
         final LinearLayout.LayoutParams linearParamsHorizontal = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        final LinearLayout.LayoutParams buttons = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
 
         llhor.setLayoutParams(linearParamsHorizontal);
@@ -60,5 +71,26 @@ public class SettingsActivity extends Activity {
         llhor.addView(llleft);
         llhor.addView(llcenter);
         llhor.addView(llright);
+
+
+        final Button darkmodeBtn = new Button(this);
+        darkmodeBtn.setLayoutParams(buttons);
+        darkmodeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!darkmode) {
+                    darkmode = true;
+                    darkmodeBtn.setText("다크모드");
+                    sv.setBackgroundColor(Color.parseColor("#1C1C1F"));
+                }
+                else {
+                    darkmode = false;
+                    darkmodeBtn.setText("라이트모드");
+                    sv.setBackgroundColor(Color.parseColor("#FFF7CD"));
+                }
+            }
+        });
+
+        llcenter.addView(darkmodeBtn);
     }
 }
