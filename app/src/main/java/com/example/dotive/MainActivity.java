@@ -124,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         cl.setLayoutParams(constraintParams);
+        constraintParams.bottomToTop
         llhor1.setLayoutParams(linearParamsHorizontal1);
         llhor2.setLayoutParams(linearParamsHorizontal2);
         llleft.setLayoutParams(linearParamsVerticalSide);
