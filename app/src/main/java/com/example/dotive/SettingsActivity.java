@@ -74,6 +74,7 @@ public class SettingsActivity extends Activity {
 
 
         final Button darkmodeBtn = new Button(this);
+        darkmodeBtn.setText("라이트모드");
         darkmodeBtn.setLayoutParams(buttons);
         darkmodeBtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -2,6 +2,7 @@ package com.example.dotive;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -43,7 +44,9 @@ public class MainActivity extends AppCompatActivity {
     ImageButton plusimgbtn;
     TextView txtview;
     ScrollView sv;
-    LinearLayout llhor;
+    ConstraintLayout cl;
+    LinearLayout llhor1;
+    LinearLayout llhor2;
     LinearLayout llleft;
     LinearLayout llcenter;
     LinearLayout llright;
@@ -51,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    @SuppressLint("WrongConstant")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,11 +93,13 @@ public class MainActivity extends AppCompatActivity {
 
 
         //선형 레이아웃 생성(가장 밑에 수평, 그 위에 수직 레이아웃3개 배치)
-        llhor = new LinearLayout(this);
+        cl = new ConstraintLayout(this);
+        llhor1 = new LinearLayout(this);
+        llhor2 = new LinearLayout(this);
         llleft = new LinearLayout(this);
         llcenter = new LinearLayout(this);
         llright = new LinearLayout(this);
-        llhor.setOrientation(LinearLayout.HORIZONTAL);
+        llhor2.setOrientation(LinearLayout.HORIZONTAL);
         llcenter.setOrientation(LinearLayout.VERTICAL);
 
 
@@ -103,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
         llcenter.setBackgroundColor(Color.BLUE);
         llleft.setBackgroundColor(Color.RED);
         llright.setBackgroundColor(Color.GREEN);*/
+        llhor1.setBackgroundColor(Color.BLUE);
 
 
         //양쪽 레이아웃과 가운데 레이아웃 비율을 1:10으로 설정
@@ -110,21 +115,28 @@ public class MainActivity extends AppCompatActivity {
                 1, LinearLayout.LayoutParams.MATCH_PARENT, 1);
         final LinearLayout.LayoutParams linearParamsVerticalCenter = new LinearLayout.LayoutParams(
                 1, LinearLayout.LayoutParams.MATCH_PARENT, 10);
-        final LinearLayout.LayoutParams linearParamsHorizontal = new LinearLayout.LayoutParams(
+        final LinearLayout.LayoutParams linearParamsHorizontal2 = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        final LinearLayout.LayoutParams linearParamsHorizontal1 = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final ConstraintLayout.LayoutParams constraintParams = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_CONSTRAINT, ConstraintLayout.LayoutParams.MATCH_CONSTRAINT);
 
 
-        llhor.setLayoutParams(linearParamsHorizontal);
+        cl.setLayoutParams(constraintParams);
+        llhor1.setLayoutParams(linearParamsHorizontal1);
+        llhor2.setLayoutParams(linearParamsHorizontal2);
         llleft.setLayoutParams(linearParamsVerticalSide);
         llcenter.setLayoutParams(linearParamsVerticalCenter);
         llright.setLayoutParams(linearParamsVerticalSide);
 
-        sv.addView(llhor);
 
-        llhor.addView(llleft);
-        llhor.addView(llcenter);
-        llhor.addView(llright);
-        llright.addView(txtview);
+        sv.addView(llhor2);
+
+        llhor2.addView(llleft);
+        llhor2.addView(llcenter);
+        llhor2.addView(llright);
+        llhor1.addView(txtview);
 
         //----------------------앱 시작 시 총 습관 개수 계산해서 버튼 생성-----------------------------
         if (totalHabit > 0) {
