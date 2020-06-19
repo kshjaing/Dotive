@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -42,15 +43,11 @@ public class MainActivity extends AppCompatActivity {
 
     Space space;
     ImageButton plusimgbtn;
-    TextView txtview;
+    TextView txtSettings, txtEdit;
     ScrollView sv;
-    ConstraintLayout cl;
-    LinearLayout llhor1;
-    LinearLayout llhor2;
-    LinearLayout llleft;
-    LinearLayout llcenter;
-    LinearLayout llright;
+    LinearLayout ll;
     FrameLayout fl;
+    Button[] boxBtn;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -58,14 +55,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context_main = this;
+        setContentView(R.layout.activity_main);
 
-        //설정버튼 생성
-        txtview = new TextView(this);
-        txtview.setText("설정");
-        Typeface typeface = getResources().getFont(R.font.katuri);
-        txtview.setTypeface(typeface);
-        txtview.setTextSize(30);
-        txtview.setOnClickListener(new View.OnClickListener() {
+        //설정버튼 클릭이벤트 부여
+        txtSettings = new TextView(this);
+        txtSettings = findViewById(R.id.txtSettings);
+        txtSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
@@ -81,6 +76,9 @@ public class MainActivity extends AppCompatActivity {
 
         //스크롤뷰 생성
         sv = new ScrollView(this);
+        sv = findViewById(R.id.sv);
+
+        //다크모드
         if (!darkmode) {
             sv.setBackgroundColor(Color.parseColor("#FFF7CD"));
         }
@@ -88,65 +86,27 @@ public class MainActivity extends AppCompatActivity {
         else {
             sv.setBackgroundColor(Color.parseColor("#1C1C1F"));
         }
-        setContentView(sv);
 
 
+        //선형 레이아웃 생성
+        ll = new LinearLayout(this);
+        ll = findViewById(R.id.ll);
 
-        //선형 레이아웃 생성(가장 밑에 수평, 그 위에 수직 레이아웃3개 배치)
-        cl = new ConstraintLayout(this);
-        llhor1 = new LinearLayout(this);
-        llhor2 = new LinearLayout(this);
-        llleft = new LinearLayout(this);
-        llcenter = new LinearLayout(this);
-        llright = new LinearLayout(this);
-        llhor2.setOrientation(LinearLayout.HORIZONTAL);
-        llcenter.setOrientation(LinearLayout.VERTICAL);
-
-
-        /* 색 지정으로 선형 레이아웃 비율 확인(테스트용)
-        llcenter.setBackgroundColor(Color.BLUE);
-        llleft.setBackgroundColor(Color.RED);
-        llright.setBackgroundColor(Color.GREEN);*/
-        llhor1.setBackgroundColor(Color.BLUE);
-
-
-        //양쪽 레이아웃과 가운데 레이아웃 비율을 1:10으로 설정
-        final LinearLayout.LayoutParams linearParamsVerticalSide = new LinearLayout.LayoutParams(
-                1, LinearLayout.LayoutParams.MATCH_PARENT, 1);
-        final LinearLayout.LayoutParams linearParamsVerticalCenter = new LinearLayout.LayoutParams(
-                1, LinearLayout.LayoutParams.MATCH_PARENT, 10);
-        final LinearLayout.LayoutParams linearParamsHorizontal2 = new LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        final LinearLayout.LayoutParams linearParamsHorizontal1 = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        final ConstraintLayout.LayoutParams constraintParams = new ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.MATCH_CONSTRAINT, ConstraintLayout.LayoutParams.MATCH_CONSTRAINT);
+        //px을 dp로 변환
+        int btnplusmargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,50,
+                getResources().getDisplayMetrics());
+
+        linearParams.setMargins(0, btnplusmargin, 0, 0);
 
 
-        cl.setLayoutParams(constraintParams);
-        constraintParams.bottomToTop
-        llhor1.setLayoutParams(linearParamsHorizontal1);
-        llhor2.setLayoutParams(linearParamsHorizontal2);
-        llleft.setLayoutParams(linearParamsVerticalSide);
-        llcenter.setLayoutParams(linearParamsVerticalCenter);
-        llright.setLayoutParams(linearParamsVerticalSide);
-
-
-        sv.addView(llhor2);
-
-        llhor2.addView(llleft);
-        llhor2.addView(llcenter);
-        llhor2.addView(llright);
-        llhor1.addView(txtview);
-
-        //----------------------앱 시작 시 총 습관 개수 계산해서 버튼 생성-----------------------------
+        //----------------------------앱 시작 시 총 습관 개수 계산해서 버튼 생성-----------------------------
         if (totalHabit > 0) {
-            Button[] boxBtn = new Button[totalHabit];
+            boxBtn = new Button[totalHabit];
             Space[] spaces = new Space[totalHabit];
 
             //px을 dp로 변환
-            int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,10,
-                    getResources().getDisplayMetrics());           //박스버튼 너비
             int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,200,
                     getResources().getDisplayMetrics());           //박스버튼 높이
             int spaceHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,60,
@@ -155,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
             //습관 수만큼 박스 생성
             for (int i = 0; i < totalHabit; i++) {
                 boxBtn[i] = new Button(this);
-                boxBtn[i].setWidth(width);
                 boxBtn[i].setHeight(height);
 
                 //다크모드에 따른 버튼 색변경(임시)
@@ -170,8 +129,8 @@ public class MainActivity extends AppCompatActivity {
 
                 spaces[i] = new Space(this);
                 spaces[i].setMinimumHeight(spaceHeight);
-                llcenter.addView(spaces[i]);
-                llcenter.addView(boxBtn[i]);
+                ll.addView(spaces[i]);
+                ll.addView(boxBtn[i]);
 
 
                 //클릭시 버튼 태그 토스트(테스트용)
@@ -184,8 +143,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        //습관이 1개 이상 있을 때 습관추가버튼을 박스 밑으로 생성
-        if (totalHabit > 0) {
+        //습관추가 버튼 생성
             plusimgbtn = new ImageButton(this);
             plusimgbtn.getBackground().setAlpha(0);          //이미지 뒷배경 투명하게
             plusimgbtn.setImageDrawable(getResources().getDrawable(R.drawable.plusbutton));
@@ -196,30 +154,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-            llcenter.addView(plusimgbtn);
-        }
-
-
-        //습관이 하나도 없을 때 추가버튼을 제일 위로 생성
-        if (totalHabit == 0) {
-            plusimgbtn = new ImageButton(this);
-
-            plusimgbtn.getBackground().setAlpha(0);          //이미지 뒷배경 투명하게
-            plusimgbtn.setImageDrawable(getResources().getDrawable(R.drawable.plusbutton));
-            plusimgbtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    activityMoveCount += 1;
-                    Intent intent = new Intent(MainActivity.this, CreateActivity.class);
-                    startActivity(intent);
-                }
-            });
-
-            llcenter.addView(plusimgbtn);
-        }
-
-
-
+            ll.addView(plusimgbtn);
     }
 
     protected void onStart() {
@@ -235,13 +170,15 @@ public class MainActivity extends AppCompatActivity {
         //메인액티비티로 돌아왔을 때 다크모드 체크
         if (!darkmode) {
             sv.setBackgroundColor(Color.parseColor("#FFF7CD"));
-            llcenter.removeAllViewsInLayout();
+            for (int i = 0; i < totalHabit; i++) {
+                ll.findViewWithTag("box_" + i).setBackgroundColor(Color.WHITE);
+            }
+            /*
+            ll.removeAllViewsInLayout();
             Button[] boxBtn = new Button[totalHabit];
             Space[] spaces = new Space[totalHabit];
 
             //px을 dp로 변환
-            int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,10,
-                    getResources().getDisplayMetrics());           //박스버튼 너비
             int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,200,
                     getResources().getDisplayMetrics());           //박스버튼 높이
             int spaceHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,60,
@@ -250,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
             //습관 수만큼 박스 생성
             for (int i = 0; i < totalHabit; i++) {
                 boxBtn[i] = new Button(this);
-                boxBtn[i].setWidth(width);
                 boxBtn[i].setHeight(height);
                 boxBtn[i].setBackgroundColor(Color.WHITE);
                 //태그설정
@@ -258,8 +194,8 @@ public class MainActivity extends AppCompatActivity {
 
                 spaces[i] = new Space(this);
                 spaces[i].setMinimumHeight(spaceHeight);
-                llcenter.addView(spaces[i]);
-                llcenter.addView(boxBtn[i]);
+                ll.addView(spaces[i]);
+                ll.addView(boxBtn[i]);
 
 
                 //클릭시 버튼 태그 토스트(테스트용)
@@ -284,13 +220,12 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
-                llcenter.addView(plusimgbtn);
+                ll.addView(plusimgbtn);
             }
 
             //습관이 하나도 없을 때 추가버튼을 제일 위로 생성
             if (totalHabit == 0) {
                 plusimgbtn = new ImageButton(this);
-
                 plusimgbtn.getBackground().setAlpha(0);          //이미지 뒷배경 투명하게
                 plusimgbtn.setImageDrawable(getResources().getDrawable(R.drawable.plusbutton));
                 plusimgbtn.setOnClickListener(new View.OnClickListener() {
@@ -302,15 +237,19 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                llcenter.addView(plusimgbtn);
+                ll.addView(plusimgbtn);
             }
 
-            isCreatePressed = false;
+            isCreatePressed = false;*/
         }
 
         else {
-            sv.setBackgroundColor(Color.parseColor("#1C1C1F"));
-            llcenter.removeAllViewsInLayout();
+            sv.setBackgroundColor(Color.parseColor("#31313C"));
+            for (int i = 0; i < totalHabit; i++) {
+                ll.findViewWithTag("box_" + i).setBackgroundColor(Color.WHITE);
+            }
+            /*
+            ll.removeAllViewsInLayout();
             Button[] boxBtn = new Button[totalHabit];
             Space[] spaces = new Space[totalHabit];
 
@@ -333,8 +272,8 @@ public class MainActivity extends AppCompatActivity {
 
                 spaces[i] = new Space(this);
                 spaces[i].setMinimumHeight(spaceHeight);
-                llcenter.addView(spaces[i]);
-                llcenter.addView(boxBtn[i]);
+                ll.addView(spaces[i]);
+                ll.addView(boxBtn[i]);
 
 
                 //클릭시 버튼 태그 토스트(테스트용)
@@ -359,13 +298,12 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
-                llcenter.addView(plusimgbtn);
+                ll.addView(plusimgbtn);
             }
 
             //습관이 하나도 없을 때 추가버튼을 제일 위로 생성
             if (totalHabit == 0) {
                 plusimgbtn = new ImageButton(this);
-
                 plusimgbtn.getBackground().setAlpha(0);          //이미지 뒷배경 투명하게
                 plusimgbtn.setImageDrawable(getResources().getDrawable(R.drawable.plusbutton));
                 plusimgbtn.setOnClickListener(new View.OnClickListener() {
@@ -377,19 +315,20 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                llcenter.addView(plusimgbtn);
+                ll.addView(plusimgbtn);
             }
 
             isCreatePressed = false;
+            */
         }
 
         if (isCreatePressed) {
-            llcenter.removeAllViewsInLayout();
+            ll.removeAllViewsInLayout();
             Button[] boxBtn = new Button[totalHabit];
             Space[] spaces = new Space[totalHabit];
 
             //px을 dp로 변환
-            int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,10,
+            int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,300,
                     getResources().getDisplayMetrics());           //박스버튼 너비
             int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,200,
                     getResources().getDisplayMetrics());           //박스버튼 높이
@@ -414,8 +353,8 @@ public class MainActivity extends AppCompatActivity {
 
                 spaces[i] = new Space(this);
                 spaces[i].setMinimumHeight(spaceHeight);
-                llcenter.addView(spaces[i]);
-                llcenter.addView(boxBtn[i]);
+                ll.addView(spaces[i]);
+                ll.addView(boxBtn[i]);
 
 
                 //클릭시 버튼 태그 토스트(테스트용)
@@ -440,13 +379,12 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
-                llcenter.addView(plusimgbtn);
+                ll.addView(plusimgbtn);
             }
 
             //습관이 하나도 없을 때 추가버튼을 제일 위로 생성
             if (totalHabit == 0) {
                 plusimgbtn = new ImageButton(this);
-
                 plusimgbtn.getBackground().setAlpha(0);          //이미지 뒷배경 투명하게
                 plusimgbtn.setImageDrawable(getResources().getDrawable(R.drawable.plusbutton));
                 plusimgbtn.setOnClickListener(new View.OnClickListener() {
@@ -458,7 +396,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                llcenter.addView(plusimgbtn);
+                ll.addView(plusimgbtn);
             }
 
             isCreatePressed = false;
