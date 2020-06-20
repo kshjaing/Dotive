@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Dotive</string>
+    <string name="imgbtnPlus">imagebuttonPlus</string>
 </resources>

@@ -10,7 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import static com.example.dotive.MainActivity.activityMoveCount;
-import static com.example.dotive.MainActivity.darkmode;
+import static com.example.dotive.MainActivity.isDarkmode;
 
 public class SettingsActivity extends Activity {
 
@@ -19,6 +19,7 @@ public class SettingsActivity extends Activity {
     LinearLayout llleft;
     LinearLayout llcenter;
     LinearLayout llright;
+    Button darkmodeBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +27,7 @@ public class SettingsActivity extends Activity {
 
         //스크롤뷰 생성
         sv = new ScrollView(this);
-        if (!darkmode) {
+        if (!isDarkmode) {
             sv.setBackgroundColor(Color.parseColor("#FFF7CD"));
         }
 
@@ -73,19 +74,19 @@ public class SettingsActivity extends Activity {
         llhor.addView(llright);
 
 
-        final Button darkmodeBtn = new Button(this);
+        darkmodeBtn = new Button(this);
         darkmodeBtn.setText("라이트모드");
         darkmodeBtn.setLayoutParams(buttons);
         darkmodeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!darkmode) {
-                    darkmode = true;
+                if (!isDarkmode) {
+                    isDarkmode = true;
                     darkmodeBtn.setText("다크모드");
                     sv.setBackgroundColor(Color.parseColor("#1C1C1F"));
                 }
                 else {
-                    darkmode = false;
+                    isDarkmode = false;
                     darkmodeBtn.setText("라이트모드");
                     sv.setBackgroundColor(Color.parseColor("#FFF7CD"));
                 }
@@ -93,5 +94,18 @@ public class SettingsActivity extends Activity {
         });
 
         llcenter.addView(darkmodeBtn);
+    }
+
+    protected void onStart() {
+        super.onStart();
+
+        if (!isDarkmode) {
+            darkmodeBtn.setText("라이트모드");
+        }
+
+        else if (isDarkmode){
+            darkmodeBtn.setText("다크모드");
+        }
+
     }
 }

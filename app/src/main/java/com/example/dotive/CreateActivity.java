@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -71,10 +72,11 @@ public class CreateActivity extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CreateActivity.this, MainActivity.class);
-                int totalHabit = MainActivity.totalHabit + 1;
+                MainActivity.totalHabit++;
                 MainActivity.isCreatePressed = true;
-                intent.putExtra("totalHabit+", totalHabit);
+                //intent.putExtra("totalHabit+", totalHabit);
                 startActivity(intent);
+                Log.d("total", String.valueOf(MainActivity.totalHabit));
             }
         });
 

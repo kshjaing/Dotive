@@ -5,45 +5,73 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/sv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <RelativeLayout
-            android:id="@+id/rl"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimaryDark">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="730dp">
-            <TextView
-                android:id="@+id/txtSettings"
-                android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/rlTopMenu"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="설정"
-                android:fontFamily="@font/katuri"
-                android:textSize="30sp"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp">
-            </TextView>
+                android:layout_marginBottom="30dp">
+                <TextView
+                    android:id="@+id/txtSettings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="설정"
+                    android:fontFamily="@font/katuri"
+                    android:textSize="20sp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="20dp">
+                </TextView>
 
-            <TextView
-                android:id="@+id/txtEdit"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/txtEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="편집"
+                    android:fontFamily="@font/katuri"
+                    android:textSize="20sp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp">
+                </TextView>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rlBox"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="편집"
-                android:fontFamily="@font/katuri"
-                android:textSize="30sp"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp">
-            </TextView>
-            <LinearLayout
-                android:id="@+id/ll"
-                android:layout_width="350dp"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="50dp"
-                android:orientation="vertical">
+                android:background="@color/colorPrimary"
+                android:layout_gravity="center">
+                <LinearLayout
+                    android:id="@+id/ll"
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:orientation="vertical">
+                </LinearLayout>
 
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rlBtnPlus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+                <ImageButton
+                    android:id="@+id/ibtnPlus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/plusbutton"
+                    android:contentDescription="@string/imgbtnPlus"
+                    android:onClick="ibtnPlus_onClick"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="30dp"/>
+            </RelativeLayout>
+        </LinearLayout>
 
-            </LinearLayout>
-
-        </RelativeLayout>
     </ScrollView>
