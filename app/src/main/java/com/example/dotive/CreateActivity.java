@@ -16,6 +16,7 @@ import android.widget.Space;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import org.w3c.dom.Text;
 
@@ -23,22 +24,22 @@ import static com.example.dotive.MainActivity.isDarkmode;
 
 public class CreateActivity extends Activity {
 
-    LinearLayout ll;
+    ConstraintLayout cl;
     Button btnCreate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ll = new LinearLayout(this);
-        ll = findViewById(R.id.ll);
+        cl = new ConstraintLayout(this);
+        cl = findViewById(R.id.cl);
         //다크모드
         if (!isDarkmode) {
-            ll.setBackgroundColor(Color.parseColor("#FFEBD3"));
+            cl.setBackgroundColor(Color.parseColor("#FFEBD3"));
         }
 
         else {
-            ll.setBackgroundColor(Color.parseColor("#272B36"));
+            cl.setBackgroundColor(Color.parseColor("#272B36"));
         }
 
         //습관 추가 버튼 클릭 이벤트 부여
@@ -64,11 +65,11 @@ public class CreateActivity extends Activity {
 
         //다크모드
         if (!isDarkmode) {
-            ll.setBackgroundColor(Color.parseColor("#FFEBD3"));
+            cl.setBackgroundColor(Color.parseColor("#FFEBD3"));
         }
 
         else {
-            ll.setBackgroundColor(Color.parseColor("#272B36"));
+            cl.setBackgroundColor(Color.parseColor("#272B36"));
         }
     }
 }

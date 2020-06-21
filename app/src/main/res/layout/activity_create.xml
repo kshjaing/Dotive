@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#4E2A2A">
+    android:background="#4E2A2A"
+    android:id="@+id/cl">
 
     <EditText
         android:id="@+id/edtHabit"
