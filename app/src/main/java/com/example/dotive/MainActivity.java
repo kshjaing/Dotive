@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
         //다크모드
         if (!isDarkmode) {
-            sv.setBackgroundColor(Color.parseColor("#FFF7CD"));
+            sv.setBackgroundColor(Color.parseColor("#FFEBD3"));
         }
 
         else {
@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //----------------------------앱 시작 시 총 습관 개수 계산해서 버튼 생성-----------------------------
+
         if (totalHabit > 0) {
             boxBtnArr = new Button[totalHabit];
             Space[] spaces = new Space[totalHabit];
@@ -101,13 +102,18 @@ public class MainActivity extends AppCompatActivity {
             //px을 dp로 변환
             int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,200,
                     getResources().getDisplayMetrics());           //박스버튼 높이
-            int spaceHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,60,
+            int spaceHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,40,
                     getResources().getDisplayMetrics());           //여백 높이
 
             //습관 수만큼 박스 생성
             for (int i = 0; i < totalHabit; i++) {
                 boxBtnArr[i] = new Button(this);
                 boxBtnArr[i].setHeight(height);
+
+                LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                linearParams.setMargins(0, 0, 0, spaceHeight);
+                boxBtnArr[i].setLayoutParams(linearParams);
 
                 //다크모드에 따른 버튼 색변경(임시)
                 if (!isDarkmode) {
@@ -136,59 +142,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    protected void onStart() {
-        super.onStart();
-
-        if (isCreatePressed) {
-            boxBtn = new Button(this);
-            space = new Space(this);
-
-            //클릭시 버튼 태그 토스트(테스트용)
-            boxBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(MainActivity.this, String.valueOf(v.getTag()), Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            //px을 dp로 변환
-            int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,300,
-                    getResources().getDisplayMetrics());           //박스버튼 너비
-            int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,200,
-                    getResources().getDisplayMetrics());           //박스버튼 높이
-            int spaceHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,60,
-                    getResources().getDisplayMetrics());           //여백 높이
-
-
-            //박스 생성
-            boxBtn.setWidth(width);
-            boxBtn.setHeight(height);
-            LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
-                    0, 0);
-            linearParams.setMargins(0, height, 0, 0);
-            boxBtn.setLayoutParams(linearParams);
-
-
-            //태그설정
-            boxBtn.setTag("box_" + (totalHabit + 1));
-            space.setMinimumHeight(spaceHeight);
-            //ll.addView(space);
-            ll.addView(boxBtn);
-
-            isCreatePressed = false;
-        }
-
-        //CreateActivity에서 총 습관수 계산값을 가져옴
-        /*
-        if (activityMoveCount > 0) {
-            Intent intent = getIntent();
-            totalHabit = intent.getExtras().getInt("totalHabit+");
-        }*/
-
+    protected void onResume() {
+        super.onResume();
 
         //메인액티비티로 돌아왔을 때 다크모드 체크
         if (!isDarkmode) {
-            sv.setBackgroundColor(Color.parseColor("#FFF7CD"));
+            sv.setBackgroundColor(Color.parseColor("#FFEBD3"));
             for (int i = 0; i < totalHabit; i++) {
                 ll.findViewWithTag("box_" + i).setBackgroundColor(Color.WHITE);
             }
@@ -200,10 +159,6 @@ public class MainActivity extends AppCompatActivity {
                 ll.findViewWithTag("box_" + i).setBackgroundColor(Color.parseColor("#2C323E"));
             }
         }
-
-
-
-
     }
 
     public void ibtnPlus_onClick(View view) {
