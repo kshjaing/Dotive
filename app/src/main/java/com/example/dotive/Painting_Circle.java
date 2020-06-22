@@ -11,16 +11,16 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-public class CustomView extends View {
+public class Painting_Circle extends View {
     private Paint paint;
 
-    public CustomView(Context context) {
+    public Painting_Circle(Context context) {
         super(context);
 
         init(context);
     }
 
-    public CustomView(Context context, @Nullable AttributeSet attrs) {
+    public Painting_Circle(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         init(context);
@@ -37,19 +37,7 @@ public class CustomView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        float X, Y;
 
-        //사각형을 그린다.
-        paint.setColor(Color.RED);
-        canvas.drawRect(100, 100, 200,200, paint);
-        paint.setColor(Color.YELLOW);
-        canvas.drawRect(500,500,600,600,paint);
-
-        //글씨를 쓴다.
-        /*paint.setColor(Color.BLACK);
-        paint.setStrokeWidth(0);
-        paint.setTextSize(100); //글씨 크기
-        canvas.drawText("물 1L 마시기",480,200,paint); //시작 x좌표, 시작 y좌표,paint*/
     }
 
     private void init(Context context) {

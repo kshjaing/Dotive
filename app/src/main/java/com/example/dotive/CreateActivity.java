@@ -77,6 +77,7 @@ public class CreateActivity extends AppCompatActivity {
                     intent.putExtra("Habit_Name",edit_Habit_Name.getText().toString()); //습관명
                     intent.putExtra("Habit_Color",Integer.toString(int_Color)); //습관 색깔
                     intent.putExtra("edit_Habit_Day_Num",edit_Habit_Day_Num.getText().toString()); //습관 목표일 수
+                    MainActivity.TotalHabit +=1; //습관 버튼 개수
                     startActivity(intent);
                 }
                 else

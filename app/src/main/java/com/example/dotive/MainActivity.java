@@ -32,14 +32,15 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 /*
-* 20200622 수정
-* MainActivity : 추가한 습관들 나열. */
+ * 20200622 수정
+ * MainActivity : 추가한 습관들 나열. */
 
 /* 최종목표가 표시될 곳
  * 편집 버튼 (or + 버튼)을 눌러 최종목표를 만들어 이 페이지에 표시된다.
@@ -56,12 +57,22 @@ public class MainActivity extends AppCompatActivity {
     FrameLayout frameLayout;
 
     LinearLayout linearLayout;
+    Button Btn_Habit_Add;
+    Button [] Arr_Btn_Habit;
     Button button1;
     Button button2;
 
     LinearLayout linearLayout2;
+    TextView [] Arr_TextView_Habit_Name;
     TextView textView1;
     TextView textView2;
+
+    //습관 개수에따라 버튼 증가
+    static int TotalHabit = 1;
+
+    //버튼 위치
+    static String Button_X = "";
+    static String Button_Y = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,10 +109,10 @@ public class MainActivity extends AppCompatActivity {
         textView1 = new TextView(this);
         textView2 = new TextView(this);*/
 
-        Painting_Circle painting_circle = new Painting_Circle(this); //CustomView.java 파일을 불러와 실행
+        //Painting_Circle1 painting_circle = new Painting_Circle1(this); //CustomView.java 파일을 불러와 실행
 
         //동적 view 생성
-        frameLayout.addView(painting_circle); //버튼 위의 원 배열을 위해
+        //frameLayout.addView(painting_circle); //버튼 위의 원 배열을 위해
 
         //main 액션 바 만들기
 
@@ -116,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayShowTitleEnabled(false); //기본 제목 false = > 안보이게 함. (제목 삭제)
         actionBar.setDisplayHomeAsUpEnabled(true); //이 값은 자동으로 뒤로가기 버튼 생성
         linearLayout.addView(actionview);
+
 
         /*linearLayout.addView(button1);
         linearLayout.addView(button2);
@@ -158,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         int textView_btn_margin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 70, getResources().getDisplayMetrics());
 
         //버튼들의 너비 높이 정함.
-        button1.setWidth(width);
+        /*button1.setWidth(width);
         button1.setHeight(height);
 
         button2.setWidth(width);
@@ -170,21 +182,21 @@ public class MainActivity extends AppCompatActivity {
 
         textView2.setWidth(textView_width);
         textView2.setHeight(textView_height);
-        textView2.setGravity(Gravity.CENTER);
+        textView2.setGravity(Gravity.CENTER);*/
 
         //버튼 백그라운드 설정 = radius 값 설정을 위해 필요 (버튼 둥글게 하기 위해 xml으로 새로 짜야함)
-        button1.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.radius));
+        /*button1.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.radius));
         button2.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.radius));
 
         textView1.setBackground(ContextCompat.getDrawable(this, R.drawable.textview_custom_css)); //StateListDrawable 속성이지만
-        textView2.setBackground(ContextCompat.getDrawable(this, R.drawable.textview_custom_css));
+        textView2.setBackground(ContextCompat.getDrawable(this, R.drawable.textview_custom_css));*/
 
         //textview 제목 컬러 지정
-        GradientDrawable bgShape = (GradientDrawable) textView1.getBackground().getCurrent(); //GradientDrawable 그대로 하면 오류남 마지막에 .getCurrent() 중요
+        /*GradientDrawable bgShape = (GradientDrawable) textView1.getBackground().getCurrent(); //GradientDrawable 그대로 하면 오류남 마지막에 .getCurrent() 중요
         bgShape.setColor(Habit_Color);
 
         bgShape = (GradientDrawable) textView2.getBackground().getCurrent();
-        bgShape.setColor(Habit_Color);
+        bgShape.setColor(Habit_Color);*/
 
 
         //margin 설정을 위해 (margin을 Layout에서 부모값을 정하고 그곳에 마진을 아까 dp 계산한 int 값으로 지정.)
@@ -205,26 +217,90 @@ public class MainActivity extends AppCompatActivity {
         Button_LinearParams.topMargin = btn_margin_top;
 
         //각각의 버튼들에게 위에 계산된 마진을 추가해줌.
-        button1.setLayoutParams(Button_LinearParams);
-        button2.setLayoutParams(Button_LinearParams);
+        /*button1.setLayoutParams(Button_LinearParams);
+        button2.setLayoutParams(Button_LinearParams);*/
 
         //margin 값 dp로 설정해주는중. textview 적용 (물 1L 마시기)
         textView_LinearParams.leftMargin = textView_btn_margin_left; //size
         textView_LinearParams.bottomMargin = textView_btn_margin_bottom;
         textView_LinearParams.topMargin = textView_btn_margin_top;
 
-        textView1.setLayoutParams(textView_LinearParams);
-        textView2.setLayoutParams(textView_LinearParams);
-        
+        /*textView1.setLayoutParams(textView_LinearParams);
+        textView2.setLayoutParams(textView_LinearParams);*/
+
+        Arr_Btn_Habit = new Button[TotalHabit - 1];
+        Arr_TextView_Habit_Name = new TextView[TotalHabit - 1];
+
+        for(int i = 0; i< TotalHabit - 1; i++) {
+            //습관 버튼 인스턴스 초기화
+            Arr_Btn_Habit[i] = new Button(this);
+            linearLayout.addView(Arr_Btn_Habit[i]);
+
+            //습관 제목 텍스트뷰 인스턴스 초기화
+            Arr_TextView_Habit_Name[i] = new TextView(this);
+            linearLayout2.addView(Arr_TextView_Habit_Name[i]);
+
+            //습관 버튼 글꼴 및 Text
+            Arr_Btn_Habit[i].setText(Habit_Name);
+            Arr_Btn_Habit[i].setTypeface(typeface);
+
+            //습관 제목 텍스트뷰 글꼴 및 Text
+            Arr_TextView_Habit_Name[i].setText(Habit_Name);
+            Arr_TextView_Habit_Name[i].setTypeface(typeface);
+
+            //습관 버튼 Width, Height
+            Arr_Btn_Habit[i].setWidth(width);
+            Arr_Btn_Habit[i].setHeight(height);
+
+            //습관 제목 텍스트뷰 Width, Height
+            Arr_TextView_Habit_Name[i].setWidth(textView_width);
+            Arr_TextView_Habit_Name[i].setHeight(textView_height);
+            Arr_TextView_Habit_Name[i].setGravity(Gravity.CENTER);
+
+            //습관 버튼 radius Drawable
+            Arr_Btn_Habit[i].setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.radius));
+
+            //습관 제목 텍스트뷰 CSS
+            Arr_TextView_Habit_Name[i].setBackground(ContextCompat.getDrawable(this,R.drawable.textview_custom_css));
+
+            //습관 제목 텍스트뷰의 백그라운드 컬러 값 (CreateActivity에서 받아온 값)
+            GradientDrawable bgShape = (GradientDrawable) Arr_TextView_Habit_Name[i].getBackground().getCurrent(); //GradientDrawable 그대로 하면 오류남 마지막에 .getCurrent() 중요
+            bgShape.setColor(Habit_Color);
+
+            //습관 버튼 절대 좌표
+            Arr_Btn_Habit[i].setLayoutParams(Button_LinearParams);
+            Arr_Btn_Habit[i].setLayoutParams(Button_LinearParams);
+
+            //습관 제목 텍스트뷰 절대 좌표
+            Arr_TextView_Habit_Name[i].setLayoutParams(textView_LinearParams);
+            Arr_TextView_Habit_Name[i].setLayoutParams(textView_LinearParams);
+        }
+
+
+        //습관 추가 버튼
+        Btn_Habit_Add = new Button(this);
+        linearLayout.addView(Btn_Habit_Add);
+        Btn_Habit_Add.setBackgroundResource(R.drawable.habit_add_image);
+
         //클릭 이벤트리스너
-        button1.setOnClickListener(new View.OnClickListener() {
+
+        //습관 추가 버튼 클릭 이벤트
+        Btn_Habit_Add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1 = new Intent(MainActivity.this, CreateActivity.class);
+                startActivity(intent1);
+            }
+        });
+
+        /*button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, HabitActivity.class);
                 intent.putExtra("Final_Target", textView1.getText()); //버튼의 이름을 HabitActivity에 전달.
                 startActivity(intent);
             }
-        });
+        });*/
 
         //제일 위에 있는것을 뿌려야 차례대로 child view 들이 보인다. (중간꺼든 다른거 넣으면 페이탈 에러)
         setContentView(scrollView);
@@ -255,19 +331,19 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    //버튼 위에 습관일수 배열로 그리기
+    /*//버튼 위에 습관일수 배열로 그리기
     //CustomView 에 버튼 좌표를 구할 수 없어 여기서 그린다.
 
-    public class Painting_Circle extends View {
+    public class Painting_Circle1 extends View {
         private Paint paint;
 
-        public Painting_Circle(Context context) {
+        public Painting_Circle1(Context context) {
             super(context);
 
             init(context);
         }
 
-        public Painting_Circle(Context context, @Nullable AttributeSet attrs) {
+        public Painting_Circle1(Context context, @Nullable AttributeSet attrs) {
             super(context, attrs);
 
             init(context);
@@ -301,11 +377,11 @@ public class MainActivity extends AppCompatActivity {
             X = button2.getX();
             paint.setColor(Color.RED);
             canvas.drawCircle(X,Y,50,paint);
-            */
-        }
 
-        private void init(Context context) {
-            paint = new Paint();
-        }
+}
+
+    private void init(Context context) {
+        paint = new Paint();
     }
+}*/
 }
