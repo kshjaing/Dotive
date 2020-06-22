@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Space;
@@ -30,6 +31,7 @@ public class CreateActivity extends Activity {
 
     ConstraintLayout cl;
     Button btnCreate;
+    ImageButton red, orange, green, blue, purple, gray;
     DBInterface DBin;
 
     @Override
@@ -42,6 +44,73 @@ public class CreateActivity extends Activity {
         super.onStart();
         cl = new ConstraintLayout(this);
         cl = findViewById(R.id.cl);
+
+
+        //-----------------------------색상 버튼들 생성 및 이벤트 설정------------------------------------
+        red = new ImageButton(this);
+        orange = new ImageButton(this);
+        green = new ImageButton(this);
+        blue = new ImageButton(this);
+        purple = new ImageButton(this);
+        gray = new ImageButton(this);
+
+
+        red = findViewById(R.id.btncolorRed);
+        orange= findViewById(R.id.btncolorOrange);
+        green = findViewById(R.id.btncolorGreen);
+        blue = findViewById(R.id.btncolorBlue);
+        purple = findViewById(R.id.btncolorPurple);
+        gray = findViewById(R.id.btncolorBluegray);
+
+        red.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                red.setBackgroundResource(R.drawable.colorbutton_red_pressed);
+            }
+        });
+        orange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                orange.setBackgroundResource(R.drawable.colorbutton_red_pressed);
+            }
+        });
+        green.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                green.setBackgroundResource(R.drawable.colorbutton_red_pressed);
+            }
+        });
+        blue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                blue.setBackgroundResource(R.drawable.colorbutton_red_pressed);
+            }
+        });
+        purple.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                purple.setBackgroundResource(R.drawable.colorbutton_red_pressed);
+            }
+        });
+        gray.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                gray.setBackgroundResource(R.drawable.colorbutton_red_pressed);
+            }
+        });
+
+        //---------------------------------------------------------------------------------------------
+
+
+        
+
+
         //다크모드
         if (!isDarkmode) {
             cl.setBackgroundColor(Color.parseColor("#FFEBD3"));
@@ -80,5 +149,7 @@ public class CreateActivity extends Activity {
             cl.setBackgroundColor(Color.parseColor("#272B36"));
         }
     }
+
+
 }
 
