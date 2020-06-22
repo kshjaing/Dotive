@@ -105,12 +105,18 @@
                         android:text="다이어트5" />
 
                     <TextView
-                        android:id="@+id/textView1"
+                        android:id="@+id/Habit_Title1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/textview_custom_css"
                         android:text="TextView" />
 
+                    <TextView
+                        android:id="@+id/Habit_Title2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/textview_custom_css"
+                        android:text="TextView" />
                 </LinearLayout>
             </ScrollView>
         </LinearLayout>

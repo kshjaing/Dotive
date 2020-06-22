@@ -37,6 +37,7 @@ public class CustomView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        float X, Y;
 
         //사각형을 그린다.
         paint.setColor(Color.RED);
