@@ -7,6 +7,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -40,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     public static int activityMoveCount = 0; //액티비티 이동 횟수
     public static Boolean isCreatePressed = false;  //습관생성 버튼클릭여부
     public static Boolean isDarkmode = false;   //다크모드 여부
+    public static SQLiteDatabase db = null;
+    Cursor cursor;
 
     Space space;
     TextView txtSettings, txtEdit;
@@ -48,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     FrameLayout fl;
     Button[] boxBtnArr;
     Button boxBtn;
+    DBHelper dbHelper;
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -56,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         context_main = this;
         setContentView(R.layout.activity_main);
+        dbHelper = new DBHelper(this, 4);
+        db = dbHelper.getWritableDatabase();
 
         //설정버튼 클릭이벤트 부여
         txtSettings = new TextView(this);
@@ -145,9 +153,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        txtSettings = new TextView(this);
+        txtSettings = findViewById(R.id.txtSettings);
+        txtEdit = new TextView(this);
+        txtEdit = findViewById(R.id.txtEdit);
+
         //메인액티비티로 돌아왔을 때 다크모드 체크
         if (!isDarkmode) {
             sv.setBackgroundColor(Color.parseColor("#FFEBD3"));
+            txtSettings.setTextColor(Color.parseColor("#232323"));
+            txtEdit.setTextColor(Color.parseColor("#232323"));
             for (int i = 0; i < totalHabit; i++) {
                 ll.findViewWithTag("box_" + i).setBackgroundColor(Color.WHITE);
             }
@@ -155,6 +170,8 @@ public class MainActivity extends AppCompatActivity {
 
         else {
             sv.setBackgroundColor(Color.parseColor("#272B36"));
+            txtSettings.setTextColor(Color.WHITE);
+            txtEdit.setTextColor(Color.WHITE);
             for (int i = 0; i < totalHabit; i++) {
                 ll.findViewWithTag("box_" + i).setBackgroundColor(Color.parseColor("#2C323E"));
             }
@@ -164,6 +181,15 @@ public class MainActivity extends AppCompatActivity {
     public void ibtnPlus_onClick(View view) {
         Intent intent = new Intent(MainActivity.this, CreateActivity.class);
         startActivity(intent);
+    }
+
+    public void dbInsertHabits(String habitName, String habitColor, Integer objDays, String habitProgress) {
+        dbHelper.getWritableDatabase();
+        String progressString = new String();
+        for (int i = 0; i < objDays; i++) {
+            progressString = progressString + "0";
+        }
+        db.execSQL("INSERT INTO Habits (habitName, habitColor, objDays, habitProgress) Values ('" + habitName + "', '" + habitColor + "', '" + objDays + "', '" + progressString + "');");
     }
 }
 

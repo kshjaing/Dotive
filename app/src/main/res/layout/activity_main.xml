@@ -16,29 +16,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp">
+
                 <TextView
                     android:id="@+id/txtSettings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="설정"
-                    android:fontFamily="@font/katuri"
-                    android:textSize="20sp"
                     android:layout_alignParentRight="true"
+                    android:layout_marginTop="20dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginTop="20dp">
-                </TextView>
+                    android:fontFamily="@font/katuri"
+                    android:text="설정"
+                    android:textColor="#232323"
+                    android:textSize="20sp"></TextView>
 
                 <TextView
                     android:id="@+id/txtEdit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="편집"
-                    android:fontFamily="@font/katuri"
-                    android:textSize="20sp"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp">
-                </TextView>
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/katuri"
+                    android:text="편집"
+                    android:textColor="#232323"
+                    android:textSize="20sp"></TextView>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/rlBox"
