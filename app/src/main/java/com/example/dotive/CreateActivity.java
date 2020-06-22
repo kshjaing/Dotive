@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -32,6 +33,7 @@ public class CreateActivity extends Activity {
     ConstraintLayout cl;
     Button btnCreate;
     ImageButton red, orange, green, blue, purple, gray;
+    Integer intRed, intOrange, intGreen, intBlue, intPurple, intGray = 0;
     DBInterface DBin;
 
     @Override
@@ -62,46 +64,84 @@ public class CreateActivity extends Activity {
         purple = findViewById(R.id.btncolorPurple);
         gray = findViewById(R.id.btncolorBluegray);
 
+
         red.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-
+            public void onClick(View v){
+                intRed = 1;
+                intOrange = intGreen = intBlue = intPurple = intGray = 0;
                 red.setBackgroundResource(R.drawable.colorbutton_red_pressed);
+                orange.setBackgroundResource(R.drawable.colorbutton_orange);
+                green.setBackgroundResource(R.drawable.colorbutton_green);
+                blue.setBackgroundResource(R.drawable.colorbutton_blue);
+                purple.setBackgroundResource(R.drawable.colorbutton_purple);
+                gray.setBackgroundResource(R.drawable.colorbutton_bluegray);
+
             }
         });
         orange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                orange.setBackgroundResource(R.drawable.colorbutton_red_pressed);
+                intOrange = 1;
+                intRed = intGreen = intBlue = intPurple = intGray = 0;
+                red.setBackgroundResource(R.drawable.colorbutton_red);
+                green.setBackgroundResource(R.drawable.colorbutton_green);
+                blue.setBackgroundResource(R.drawable.colorbutton_blue);
+                purple.setBackgroundResource(R.drawable.colorbutton_purple);
+                gray.setBackgroundResource(R.drawable.colorbutton_bluegray);
+                orange.setBackgroundResource(R.drawable.colorbutton_orange_pressed);
             }
         });
         green.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                green.setBackgroundResource(R.drawable.colorbutton_red_pressed);
+                intGreen = 1;
+                intOrange = intRed = intBlue = intPurple = intGray = 0;
+                red.setBackgroundResource(R.drawable.colorbutton_red);
+                orange.setBackgroundResource(R.drawable.colorbutton_orange);
+                blue.setBackgroundResource(R.drawable.colorbutton_blue);
+                purple.setBackgroundResource(R.drawable.colorbutton_purple);
+                gray.setBackgroundResource(R.drawable.colorbutton_bluegray);
+                green.setBackgroundResource(R.drawable.colorbutton_green_pressed);
             }
         });
         blue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                blue.setBackgroundResource(R.drawable.colorbutton_red_pressed);
+                intBlue = 1;
+                intOrange = intGreen = intRed = intPurple = intGray = 0;
+                red.setBackgroundResource(R.drawable.colorbutton_red);
+                orange.setBackgroundResource(R.drawable.colorbutton_orange);
+                green.setBackgroundResource(R.drawable.colorbutton_green);
+                purple.setBackgroundResource(R.drawable.colorbutton_purple);
+                gray.setBackgroundResource(R.drawable.colorbutton_bluegray);
+                blue.setBackgroundResource(R.drawable.colorbutton_blue_pressed);
             }
         });
         purple.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                purple.setBackgroundResource(R.drawable.colorbutton_red_pressed);
+                intPurple = 1;
+                intOrange = intGreen = intBlue = intRed = intGray = 0;
+                red.setBackgroundResource(R.drawable.colorbutton_red);
+                orange.setBackgroundResource(R.drawable.colorbutton_orange);
+                green.setBackgroundResource(R.drawable.colorbutton_green);
+                gray.setBackgroundResource(R.drawable.colorbutton_bluegray);
+                blue.setBackgroundResource(R.drawable.colorbutton_blue);
+                purple.setBackgroundResource(R.drawable.colorbutton_purple_pressed);
             }
         });
         gray.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                gray.setBackgroundResource(R.drawable.colorbutton_red_pressed);
+                intGray = 1;
+                intOrange = intGreen = intBlue = intPurple = intRed = 0;
+                red.setBackgroundResource(R.drawable.colorbutton_red);
+                orange.setBackgroundResource(R.drawable.colorbutton_orange);
+                green.setBackgroundResource(R.drawable.colorbutton_green);
+                purple.setBackgroundResource(R.drawable.colorbutton_purple);
+                blue.setBackgroundResource(R.drawable.colorbutton_blue);
+                gray.setBackgroundResource(R.drawable.colorbutton_bluegray_pressed);
             }
         });
 

@@ -69,10 +69,12 @@
         android:layout_height="30dp"
         android:layout_marginStart="52dp"
         android:layout_marginLeft="52dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginRight="25dp"
         android:background="@drawable/colorbutton_red"
+        app:layout_constraintEnd_toStartOf="@+id/btncolorOrange"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtHabit" />
+        tools:layout_editor_absoluteY="412dp" />
 
     <ImageButton
         android:id="@+id/btncolorBlue"
@@ -80,10 +82,9 @@
         android:layout_height="30dp"
         android:layout_marginStart="25dp"
         android:layout_marginLeft="25dp"
-        android:layout_marginTop="20dp"
         android:background="@drawable/colorbutton_blue"
         app:layout_constraintStart_toEndOf="@+id/btncolorGreen"
-        app:layout_constraintTop_toBottomOf="@+id/edtHabit" />
+        tools:layout_editor_absoluteY="412dp" />
 
     <ImageButton
         android:id="@+id/btncolorBluegray"
@@ -91,13 +92,12 @@
         android:layout_height="30dp"
         android:layout_marginStart="25dp"
         android:layout_marginLeft="25dp"
-        android:layout_marginTop="21dp"
         android:layout_marginEnd="55dp"
         android:layout_marginRight="55dp"
         android:background="@drawable/colorbutton_bluegray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btncolorPurple"
-        app:layout_constraintTop_toBottomOf="@+id/edtHabit" />
+        tools:layout_editor_absoluteY="413dp" />
 
     <ImageButton
         android:id="@+id/btncolorGreen"
@@ -105,10 +105,9 @@
         android:layout_height="30dp"
         android:layout_marginStart="25dp"
         android:layout_marginLeft="25dp"
-        android:layout_marginTop="20dp"
         android:background="@drawable/colorbutton_green"
         app:layout_constraintStart_toEndOf="@+id/btncolorOrange"
-        app:layout_constraintTop_toBottomOf="@+id/edtHabit" />
+        tools:layout_editor_absoluteY="412dp" />
 
     <ImageButton
         android:id="@+id/btncolorOrange"
@@ -116,10 +115,9 @@
         android:layout_height="30dp"
         android:layout_marginStart="25dp"
         android:layout_marginLeft="25dp"
-        android:layout_marginTop="21dp"
         android:background="@drawable/colorbutton_orange"
         app:layout_constraintStart_toEndOf="@+id/btncolorRed"
-        app:layout_constraintTop_toBottomOf="@+id/edtHabit" />
+        tools:layout_editor_absoluteY="413dp" />
 
     <ImageButton
         android:id="@+id/btncolorPurple"
@@ -127,9 +125,8 @@
         android:layout_height="30dp"
         android:layout_marginStart="25dp"
         android:layout_marginLeft="25dp"
-        android:layout_marginTop="21dp"
         android:background="@drawable/colorbutton_purple"
         app:layout_constraintStart_toEndOf="@+id/btncolorBlue"
-        app:layout_constraintTop_toBottomOf="@+id/edtHabit" />
+        tools:layout_editor_absoluteY="413dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
