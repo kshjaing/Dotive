@@ -90,14 +90,13 @@ public class MainActivity extends AppCompatActivity {
 
         linearLayout = (LinearLayout) view_main.findViewById(R.id.linearLayout);
 
-        button1 = new Button(this);
-        button2 = new Button(this);
-
         //버튼위에 제목 (물 1L 마시기 등)
         linearLayout2 = (LinearLayout) view_main.findViewById(R.id.linearLayout2);
 
+        /*button1 = new Button(this);
+        button2 = new Button(this);
         textView1 = new TextView(this);
-        textView2 = new TextView(this);
+        textView2 = new TextView(this);*/
 
         Painting_Circle painting_circle = new Painting_Circle(this); //CustomView.java 파일을 불러와 실행
 
@@ -118,18 +117,18 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true); //이 값은 자동으로 뒤로가기 버튼 생성
         linearLayout.addView(actionview);
 
-        linearLayout.addView(button1);
+        /*linearLayout.addView(button1);
         linearLayout.addView(button2);
 
         linearLayout2.addView(textView1);
-        linearLayout2.addView(textView2);
+        linearLayout2.addView(textView2);*/
 
         //java 코드로 폰트 설정 (xml 에서 fontFamily)
         Typeface typeface = Typeface.createFromAsset(getAssets(), "font/katuri.ttf");
 
         //버튼 명, 버튼 id 설정
 
-        button1.setText(Habit_Name);
+        /*button1.setText(Habit_Name);
         button1.setTypeface(typeface);
 
         button2.setText("다이어트");
@@ -139,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
         textView1.setTypeface(typeface);
 
         textView2.setText(Habit_Name);
-        textView2.setTypeface(typeface);
+        textView2.setTypeface(typeface);*/
 
         //이렇게 안하면 픽셀로 값이 저장되기에 dp로 계산하는 것. value에서 원하는 숫자로 고치면 됨.
         //dp 값으로 가져오기
@@ -216,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
 
         textView1.setLayoutParams(textView_LinearParams);
         textView2.setLayoutParams(textView_LinearParams);
-
+        
         //클릭 이벤트리스너
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
