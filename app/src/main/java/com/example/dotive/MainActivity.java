@@ -37,6 +37,8 @@ import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.lang.reflect.Type;
+
 public class MainActivity extends AppCompatActivity{
     public static Context context_main;
     public static int totalHabit = 0;  //총 습관 개수
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity{
     LinearLayout ll;
     FrameLayout fl;
     Button[] boxBtnArr;
+    CustomMainBox[] mainBoxes;
+
 
 
 
@@ -126,10 +130,10 @@ public class MainActivity extends AppCompatActivity{
 
                 //다크모드에 따른 버튼 색변경(임시)
                 if (!isDarkmode) {
-                    boxBtnArr[i].setBackgroundColor(Color.WHITE);
+                    boxBtnArr[i].setBackgroundResource(R.drawable.custom_mainbox);
                 }
                 else {
-                    boxBtnArr[i].setBackgroundColor(Color.parseColor("#2C323E"));
+                    boxBtnArr[i].setBackgroundResource(R.drawable.custom_mainbox_dark);
                 }
                 //태그설정
                 boxBtnArr[i].setTag("box_" + i);
@@ -151,6 +155,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
+    @SuppressLint("ResourceType")
     protected void onResume() {
         super.onResume();
 
@@ -164,8 +169,9 @@ public class MainActivity extends AppCompatActivity{
             sv.setBackgroundColor(Color.parseColor("#FFEBD3"));
             txtSettings.setTextColor(Color.parseColor("#232323"));
             txtEdit.setTextColor(Color.parseColor("#232323"));
+
             for (int i = 0; i < totalHabit; i++) {
-                ll.findViewWithTag("box_" + i).setBackgroundColor(Color.WHITE);
+                ll.findViewWithTag("box_" + i).setBackgroundResource(R.drawable.custom_mainbox);
             }
         }
 
@@ -173,8 +179,9 @@ public class MainActivity extends AppCompatActivity{
             sv.setBackgroundColor(Color.parseColor("#272B36"));
             txtSettings.setTextColor(Color.WHITE);
             txtEdit.setTextColor(Color.WHITE);
+
             for (int i = 0; i < totalHabit; i++) {
-                ll.findViewWithTag("box_" + i).setBackgroundColor(Color.parseColor("#2C323E"));
+                ll.findViewWithTag("box_" + i).setBackgroundResource(R.drawable.custom_mainbox);
             }
         }
     }

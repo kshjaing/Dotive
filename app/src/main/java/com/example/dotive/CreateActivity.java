@@ -30,7 +30,7 @@ import static com.example.dotive.MainActivity.context_main;
 import static com.example.dotive.MainActivity.db;
 import static com.example.dotive.MainActivity.isDarkmode;
 
-public class CreateActivity extends Activity implements DBInterface{
+public class CreateActivity extends Activity {
 
     ConstraintLayout cl;
     Button btnCreate;
