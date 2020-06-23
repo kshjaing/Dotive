@@ -36,11 +36,14 @@ public class SettingsActivity extends Activity {
         super.onCreate(savedInstanceState);
         dbHelper.getWritableDatabase();
         //db.execSQL("DELETE FROM Settings");
+
+        //설정 테이블에 자료가 있는지 판단할수있는 count 변수
         cursor = db.rawQuery("SELECT COUNT(darkmode) FROM Settings", null);
         while(cursor.moveToNext()) {
             intDarkmodeCount = Integer.parseInt(cursor.getString(0));
         }
 
+        //테이블에 아무런 내용이 없을때, 즉 처음에만 insert문 실행
         if (intDarkmodeCount == 0) {
             insertSettings();
         }
@@ -83,11 +86,13 @@ public class SettingsActivity extends Activity {
                     isDarkmode = 1;
                     darkmodeBtn.setText("다크모드");
                     cl.setBackgroundColor(Color.parseColor("#1C1C1F"));
+                    txtConfirm.setTextColor(Color.WHITE);
                 }
                 else {
                     isDarkmode = 0;
                     darkmodeBtn.setText("라이트모드");
                     cl.setBackgroundColor(Color.parseColor("#FFEBD3"));
+                    txtConfirm.setTextColor(Color.BLACK);
                 }
             }
         });
@@ -109,9 +114,6 @@ public class SettingsActivity extends Activity {
                 startActivity(intent);
             }
         });
-
-
-
     }
 
     protected void onDestroy() {
