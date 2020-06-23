@@ -10,6 +10,8 @@ import androidx.core.content.ContextCompat;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -17,6 +19,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -70,6 +73,23 @@ public class MainActivity extends AppCompatActivity {
     //습관 개수에따라 버튼 증가
     static int TotalHabit = 1;
 
+    //습관 테이블 개수 (0이면 값이 존재하지 않음)
+    int Habits_Table_Count = 0;
+
+    //CreateActivity 에서 intent 값
+    String Habit_Name = ""; //습관명
+    int i_Habit_Color = 0; //습관 색깔
+    String Habit_Color = ""; //습관 색깔
+    //int edit_Habit_Day_Num = 0; //습관 목표일 수
+    String edit_Habit_Day_Num = ""; //습관 목표일 수
+    String Habit_Progress = "";
+
+    //DB에서 받아온 값
+    static String[] Arr_Habit_Name = {};//습관명
+    static int[] Arr_Habit_Color = {};//습관 색깔
+    static int[] Arr_edit_Habit_Day_Num = {}; //습관 목표일 수
+    static String[] Arr_Habit_Progress = {}; //습관 진행도
+
     //버튼 위치
     static String Button_X = "";
     static String Button_Y = "";
@@ -80,14 +100,42 @@ public class MainActivity extends AppCompatActivity {
         //setContentView(R.layout.activity_main);
         //setContentView(new MyView(this));  (클래스 MyView를 바로 실행)
 
-        Intent intent = getIntent();
-        final String Habit_Name = intent.getStringExtra("Habit_Name"); //습관명
-        final int Habit_Color = Integer.parseInt(intent.getStringExtra("Habit_Color")); //습관 색깔
-        final int edit_Habit_Day_Num = Integer.parseInt(intent.getStringExtra("edit_Habit_Day_Num")); //습관 목표일 수
 
-        Log.e("습관명", Habit_Name);
-        Log.e("습관컬러", Integer.toString(Habit_Color));
-        Log.e("습관 목표일 수", Integer.toString(edit_Habit_Day_Num));
+        //Habits 테이블에 습관이 존재하지 않다면 CreateActivity.java로 돌아간다.
+
+        QUERY_Habits();
+        Log.e("MainActivity.java","Habits_Table_Count : " + Habits_Table_Count);
+        //final Habits_Table_Count = 0;
+        //습관 하나 이상 존재함
+        //존재하면 DB 에서 값을 받아온다.
+        if(Habits_Table_Count > 1) { //2부터 값이 1개 존재
+
+            /*Intent intent = getIntent();
+            Habit_Name = intent.getStringExtra("Habit_Name"); //습관명
+            Habit_Color = Integer.parseInt(intent.getStringExtra("Habit_Color")); //습관 색깔
+            edit_Habit_Day_Num = Integer.parseInt(intent.getStringExtra("edit_Habit_Day_Num")); //습관 목표일 수
+            Log.e("습관명", Habit_Name);
+            Log.e("습관컬러", Integer.toString(Habit_Color));
+            Log.e("습관 목표일 수", Integer.toString(edit_Habit_Day_Num));*/
+
+            /*for (int i = 0; i<Habits_Table_Count; i++) {
+                Log.e("습관명 " + i, Arr_Habit_Name[i]);
+                Log.e("습관컬러 " + i, Integer.toString(Arr_Habit_Color[i]));
+                Log.e("습관 목표일 수 " + i, Integer.toString(Arr_edit_Habit_Day_Num[i]));
+            }*/
+
+            Log.e("MainActivity.java","Habit_Name : " + Habit_Name);
+            Log.e("MainActivity.java","Habit_Color : " + Habit_Color);
+            Log.e("MainActivity.java","edit_Habit_Day_Num : " + edit_Habit_Day_Num);
+            Log.e("MainActivity.java","Habit_Progress : " + Habit_Progress);
+        }
+        else {
+            Intent intent2 = new Intent(MainActivity.this, CreateActivity.class);
+            startActivity(intent2);
+        }
+
+
+
 
         //객체 인스턴스 초기화.
 
@@ -265,7 +313,7 @@ public class MainActivity extends AppCompatActivity {
 
             //습관 제목 텍스트뷰의 백그라운드 컬러 값 (CreateActivity에서 받아온 값)
             GradientDrawable bgShape = (GradientDrawable) Arr_TextView_Habit_Name[i].getBackground().getCurrent(); //GradientDrawable 그대로 하면 오류남 마지막에 .getCurrent() 중요
-            bgShape.setColor(Habit_Color);
+            bgShape.setColor(i_Habit_Color);
 
             //습관 버튼 절대 좌표
             Arr_Btn_Habit[i].setLayoutParams(Button_LinearParams);
@@ -329,6 +377,45 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void QUERY_Habits() {
+        try {
+            String uriString = "content://com.example.dotive/Habits";
+            Uri uri = new Uri.Builder().build().parse(uriString);
+
+            String[] columns = new String[] {"habitName","habitColor","objDays","habitProgress"};
+            Cursor cursor = getContentResolver().query(uri, columns, null, null, "habitName ASC");
+            Log.e("MainActivity.java","QUERY 결과 : " + cursor.getCount());
+
+            int index = 1;
+
+            while (cursor.moveToNext()) { //각 레코드 값을 출력함.
+                String habitName = cursor.getString(cursor.getColumnIndex(columns[0]));
+                String habitColor = cursor.getString(cursor.getColumnIndex(columns[1]));
+                int objDays = cursor.getInt(cursor.getColumnIndex(columns[2]));
+                String habitProgress = cursor.getString(cursor.getColumnIndex(columns[3]));
+
+                Habit_Name += habitName + "_"; //습관명
+                Habit_Color += habitColor + "_"; //습관 색깔
+                edit_Habit_Day_Num += objDays + "_"; //습관 목표일 수
+                Habit_Progress += habitProgress + "_"; //습관 진행도
+
+                //Log.e("Main_QUERY_Habits :","Habit_Name : " + Habit_Name);
+
+                /*Arr_Habit_Name[index - 1] = habitName; //습관명
+                Arr_Habit_Color[index - 1] = Integer.parseInt(habitColor); //습관 색깔
+                Arr_edit_Habit_Day_Num[index - 1] = objDays; //습관 목표일 수
+                Arr_Habit_Progress[index - 1] = habitProgress; //습관 진행도*/
+
+                Log.e("MainActivity.java", "레코드 " + index + " :" + habitName + ", " + habitColor + ", " + objDays + ", " + habitProgress);
+                index += 1;
+            }
+            Habits_Table_Count = index;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /*//버튼 위에 습관일수 배열로 그리기

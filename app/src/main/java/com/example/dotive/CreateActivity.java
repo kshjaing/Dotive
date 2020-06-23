@@ -4,9 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,6 +35,8 @@ public class CreateActivity extends AppCompatActivity {
     TextView Warning_Habit_Name; //습관명 비어있을 경우 경고
     TextView Warning_Habit_Num; //습관 목표일 수 비어있을 경우 경고
 
+    static String[] Arr_habit_progress; //습관 진행도 배열로 저장
+    static String habit_progress = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +83,10 @@ public class CreateActivity extends AppCompatActivity {
                     intent.putExtra("Habit_Color",Integer.toString(int_Color)); //습관 색깔
                     intent.putExtra("edit_Habit_Day_Num",edit_Habit_Day_Num.getText().toString()); //습관 목표일 수
                     MainActivity.TotalHabit +=1; //습관 버튼 개수
+
+                    //habits 테이블을 추가한다.
+                    INSERT_Habits();
+
                     startActivity(intent);
                 }
                 else
@@ -115,6 +124,43 @@ public class CreateActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    //습관을 추가한다.
+    public void INSERT_Habits() {
+        Log.e("CreateActivity.java", " INSERT_Habits 메서드 호출됨.");
+
+        String uriString = "content://com.example.dotive/Habits";
+        Uri uri = new Uri.Builder().build().parse(uriString);
+
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+        String[] columns = cursor.getColumnNames();
+        Log.e("CreateActivity.java", "columns count = " + columns.length);
+
+        for (int i = 0; i < columns.length; i++) {
+            Log.e("CreateActivity.java", "레코드 " + i + " : " + columns[i]);
+        }
+
+        ContentValues values = new ContentValues();
+        values.put("habitName", edit_Habit_Name.getText().toString()); //습관명
+        Log.e("CreateActivity.java","습관명 추가");
+        values.put("habitColor", Integer.toString(int_Color)); //습관 색깔
+        Log.e("CreateActivity.java","습관 색깔 추가");
+        values.put("objDays", edit_Habit_Day_Num.getText().toString()); //습관 목표일 수
+        Log.e("CreateActivity.java","습관 목표일 수 추가");
+
+        //습관 목표일 수 만큼 0을 그려서 habitsProgress 값에 문자열으로 저장.
+        for (int i = 0; i <Integer.parseInt(edit_Habit_Day_Num.getText().toString()); i++) {
+            Log.e("CreateaActivity.java","edit_Habit_Day_Num 습관 목표일 수 : " + Integer.parseInt(edit_Habit_Day_Num.getText().toString()));
+                habit_progress += "0,";
+        }
+        values.put("habitProgress",habit_progress); //배열로 추가시키고 문자열로 변환
+        Log.e("CreateActivity.java","습관 프로그레스 추가");
+        String string_habit_progress = String.valueOf(habit_progress);
+        Log.e("CreateActivity.java","habitProgress 문자열 : "+ string_habit_progress);
+
+        uri = getContentResolver().insert(uri, values);
+        Log.e("CreateActivity.java", "INSERT 결과 : " + uri.toString());
     }
 
     public void openColorPicker() {
