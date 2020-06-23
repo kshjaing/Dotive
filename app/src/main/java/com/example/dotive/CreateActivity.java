@@ -72,6 +72,7 @@ public class CreateActivity extends Activity implements DBInterface{
         gray = findViewById(R.id.btncolorBluegray);
 
 
+
         red.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
