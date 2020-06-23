@@ -9,7 +9,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
-import static com.example.dotive.MainActivity.activityMoveCount;
 import static com.example.dotive.MainActivity.isDarkmode;
 
 public class SettingsActivity extends Activity {

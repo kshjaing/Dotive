@@ -40,7 +40,6 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity{
     public static Context context_main;
     public static int totalHabit = 0;  //총 습관 개수
-    public static int activityMoveCount = 0; //액티비티 이동 횟수
     public static Boolean isCreatePressed = false;  //습관생성 버튼클릭여부
     public static Boolean isDarkmode = false;   //다크모드 여부
     public static SQLiteDatabase db = null;
