@@ -18,6 +18,7 @@ import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
@@ -36,13 +37,14 @@ import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements DBInterface{
+public class MainActivity extends AppCompatActivity{
     public static Context context_main;
     public static int totalHabit = 0;  //총 습관 개수
     public static int activityMoveCount = 0; //액티비티 이동 횟수
     public static Boolean isCreatePressed = false;  //습관생성 버튼클릭여부
     public static Boolean isDarkmode = false;   //다크모드 여부
     public static SQLiteDatabase db = null;
+    public static DBHelper dbHelper;
     Cursor cursor;
 
     Space space;
@@ -51,12 +53,10 @@ public class MainActivity extends AppCompatActivity implements DBInterface{
     LinearLayout ll;
     FrameLayout fl;
     Button[] boxBtnArr;
-    Button boxBtn;
-    public static DBHelper dbHelper;
 
 
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +95,12 @@ public class MainActivity extends AppCompatActivity implements DBInterface{
         //선형 레이아웃 생성
         ll = new LinearLayout(this);
         ll = findViewById(R.id.ll);
+
+        //총 습관 개수 뽑아옴
+        cursor = db.rawQuery("SELECT COUNT(id) FROM Habits", null);
+        while(cursor.moveToNext()) {
+            totalHabit = Integer.parseInt(cursor.getString(0));
+        }
 
 
         //----------------------------앱 시작 시 총 습관 개수 계산해서 버튼 생성-----------------------------
@@ -177,11 +183,6 @@ public class MainActivity extends AppCompatActivity implements DBInterface{
     public void ibtnPlus_onClick(View view) {
         Intent intent = new Intent(MainActivity.this, CreateActivity.class);
         startActivity(intent);
-    }
-
-    public void dbInsertHabits(String habitName, String habitColor, Integer objDays, String habitProgress) {
-        dbHelper.getWritableDatabase();
-        db.execSQL("INSERT INTO Habits (habitName, habitColor, objDays, habitProgress) Values ('" + habitName + "', '" + habitColor + "', '" + objDays + "', '" + habitProgress + "');");
     }
 }
 

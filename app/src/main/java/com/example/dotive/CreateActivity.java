@@ -152,7 +152,7 @@ public class CreateActivity extends Activity implements DBInterface{
         
 
 
-        //다크모드
+        //액티비티 들어올때 다크모드 체크
         if (!isDarkmode) {
             cl.setBackgroundColor(Color.parseColor("#FFEBD3"));
         }
@@ -177,16 +177,17 @@ public class CreateActivity extends Activity implements DBInterface{
                     return;
                 }
 
+                //목표일수 EditText에 텍스트가 있으면 그 숫자를 변수에 삽입
                 if (edtObjectDays.length() != 0) {
                     objectDays = Integer.parseInt(edtObjectDays.getText().toString());
                 }
 
+                //습관 진행도 표시 문자열
                 String progressString = new String();
                 for (int i = 0; i < objectDays; i++) {
                     progressString = progressString + "0";
                 }
                 Intent intent = new Intent(CreateActivity.this, MainActivity.class);
-                MainActivity.totalHabit += 1;
                 MainActivity.isCreatePressed = true;
                 dbInsertHabits(edtHabitName.getText().toString(), curColor, objectDays, progressString);
                 startActivity(intent);
@@ -196,8 +197,7 @@ public class CreateActivity extends Activity implements DBInterface{
 
     protected void onResume() {
         super.onResume();
-
-        //다크모드
+        //다크모드 체크
         if (!isDarkmode) {
             cl.setBackgroundColor(Color.parseColor("#FFEBD3"));
         }
@@ -208,7 +208,7 @@ public class CreateActivity extends Activity implements DBInterface{
     }
 
 
-    @Override
+    //Habits 테이블에 습관 추가
     public void dbInsertHabits(String habitName, String habitColor, Integer objDays, String habitProgress) {
         MainActivity.dbHelper.getWritableDatabase();
         db.execSQL("INSERT INTO Habits (habitName, habitColor, objDays, habitProgress) Values ('" + habitName + "', '" + habitColor + "', '" + objDays + "', '" + habitProgress + "');");
