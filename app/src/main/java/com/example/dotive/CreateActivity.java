@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Space;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,14 +27,18 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import org.w3c.dom.Text;
 
 import static com.example.dotive.MainActivity.context_main;
+import static com.example.dotive.MainActivity.db;
 import static com.example.dotive.MainActivity.isDarkmode;
 
-public class CreateActivity extends Activity {
+public class CreateActivity extends Activity implements DBInterface{
 
     ConstraintLayout cl;
     Button btnCreate;
+    EditText edtHabitName, edtObjectDays;
     ImageButton red, orange, green, blue, purple, gray;
     Integer intRed, intOrange, intGreen, intBlue, intPurple, intGray = 0;
+    Integer objectDays = 1;
+    String curColor = "red";
     DBInterface DBin;
 
     @Override
@@ -46,6 +51,8 @@ public class CreateActivity extends Activity {
         super.onStart();
         cl = new ConstraintLayout(this);
         cl = findViewById(R.id.cl);
+        edtHabitName = findViewById(R.id.edtHabit);
+        edtObjectDays = findViewById(R.id.edtObjDays);
 
 
         //-----------------------------색상 버튼들 생성 및 이벤트 설정------------------------------------
@@ -68,8 +75,7 @@ public class CreateActivity extends Activity {
         red.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                intRed = 1;
-                intOrange = intGreen = intBlue = intPurple = intGray = 0;
+                curColor = "red";
                 red.setBackgroundResource(R.drawable.colorbutton_red_pressed);
                 orange.setBackgroundResource(R.drawable.colorbutton_orange);
                 green.setBackgroundResource(R.drawable.colorbutton_green);
@@ -82,8 +88,7 @@ public class CreateActivity extends Activity {
         orange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intOrange = 1;
-                intRed = intGreen = intBlue = intPurple = intGray = 0;
+                curColor = "orange";
                 red.setBackgroundResource(R.drawable.colorbutton_red);
                 green.setBackgroundResource(R.drawable.colorbutton_green);
                 blue.setBackgroundResource(R.drawable.colorbutton_blue);
@@ -95,8 +100,7 @@ public class CreateActivity extends Activity {
         green.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intGreen = 1;
-                intOrange = intRed = intBlue = intPurple = intGray = 0;
+                curColor = "green";
                 red.setBackgroundResource(R.drawable.colorbutton_red);
                 orange.setBackgroundResource(R.drawable.colorbutton_orange);
                 blue.setBackgroundResource(R.drawable.colorbutton_blue);
@@ -108,8 +112,7 @@ public class CreateActivity extends Activity {
         blue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intBlue = 1;
-                intOrange = intGreen = intRed = intPurple = intGray = 0;
+                curColor = "blue";
                 red.setBackgroundResource(R.drawable.colorbutton_red);
                 orange.setBackgroundResource(R.drawable.colorbutton_orange);
                 green.setBackgroundResource(R.drawable.colorbutton_green);
@@ -121,8 +124,7 @@ public class CreateActivity extends Activity {
         purple.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intPurple = 1;
-                intOrange = intGreen = intBlue = intRed = intGray = 0;
+                curColor = "purple";
                 red.setBackgroundResource(R.drawable.colorbutton_red);
                 orange.setBackgroundResource(R.drawable.colorbutton_orange);
                 green.setBackgroundResource(R.drawable.colorbutton_green);
@@ -134,8 +136,7 @@ public class CreateActivity extends Activity {
         gray.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intGray = 1;
-                intOrange = intGreen = intBlue = intPurple = intRed = 0;
+                curColor = "gray";
                 red.setBackgroundResource(R.drawable.colorbutton_red);
                 orange.setBackgroundResource(R.drawable.colorbutton_orange);
                 green.setBackgroundResource(R.drawable.colorbutton_green);
@@ -163,16 +164,32 @@ public class CreateActivity extends Activity {
         //습관 추가 버튼 클릭 이벤트 부여
         btnCreate = new Button(this);
         btnCreate = findViewById(R.id.btnCreate);
+
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (edtHabitName.getText().toString() == "") {
+                    Toast.makeText(CreateActivity.this, "습관명을 입력해주세요!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else if (edtObjectDays.getText().toString() == "") {
+                    Toast.makeText(CreateActivity.this, "목표일수를 입력해주세요!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (edtObjectDays.length() != 0) {
+                    objectDays = Integer.parseInt(edtObjectDays.getText().toString());
+                }
+
+                String progressString = new String();
+                for (int i = 0; i < objectDays; i++) {
+                    progressString = progressString + "0";
+                }
                 Intent intent = new Intent(CreateActivity.this, MainActivity.class);
                 MainActivity.totalHabit += 1;
                 MainActivity.isCreatePressed = true;
-                //DBin.dbInsertHabits();
-                //intent.putExtra("totalHabit+", totalHabit);
+                dbInsertHabits(edtHabitName.getText().toString(), curColor, objectDays, progressString);
                 startActivity(intent);
-                Log.d("total", String.valueOf(MainActivity.totalHabit));
             }
         });
     }
@@ -191,5 +208,10 @@ public class CreateActivity extends Activity {
     }
 
 
+    @Override
+    public void dbInsertHabits(String habitName, String habitColor, Integer objDays, String habitProgress) {
+        MainActivity.dbHelper.getWritableDatabase();
+        db.execSQL("INSERT INTO Habits (habitName, habitColor, objDays, habitProgress) Values ('" + habitName + "', '" + habitColor + "', '" + objDays + "', '" + habitProgress + "');");
+    }
 }
 

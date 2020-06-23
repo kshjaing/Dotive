@@ -36,7 +36,7 @@ import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DBInterface{
     public static Context context_main;
     public static int totalHabit = 0;  //총 습관 개수
     public static int activityMoveCount = 0; //액티비티 이동 횟수
@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     FrameLayout fl;
     Button[] boxBtnArr;
     Button boxBtn;
-    DBHelper dbHelper;
+    public static DBHelper dbHelper;
 
 
 
@@ -75,10 +75,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-        //DB 객체 가져옴
-        HabitDBManager DBManager = HabitDBManager.getInstance(this);
 
 
 
@@ -185,11 +181,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void dbInsertHabits(String habitName, String habitColor, Integer objDays, String habitProgress) {
         dbHelper.getWritableDatabase();
-        String progressString = new String();
-        for (int i = 0; i < objDays; i++) {
-            progressString = progressString + "0";
-        }
-        db.execSQL("INSERT INTO Habits (habitName, habitColor, objDays, habitProgress) Values ('" + habitName + "', '" + habitColor + "', '" + objDays + "', '" + progressString + "');");
+        db.execSQL("INSERT INTO Habits (habitName, habitColor, objDays, habitProgress) Values ('" + habitName + "', '" + habitColor + "', '" + objDays + "', '" + habitProgress + "');");
     }
 }
 
