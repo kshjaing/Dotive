@@ -168,11 +168,11 @@ public class CreateActivity extends Activity implements DBInterface{
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (edtHabitName.getText().toString() == "") {
+                if (edtHabitName.length() == 0) {
                     Toast.makeText(CreateActivity.this, "습관명을 입력해주세요!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                else if (edtObjectDays.getText().toString() == "") {
+                else if (edtObjectDays.length() == 0) {
                     Toast.makeText(CreateActivity.this, "목표일수를 입력해주세요!", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -212,6 +212,7 @@ public class CreateActivity extends Activity implements DBInterface{
     public void dbInsertHabits(String habitName, String habitColor, Integer objDays, String habitProgress) {
         MainActivity.dbHelper.getWritableDatabase();
         db.execSQL("INSERT INTO Habits (habitName, habitColor, objDays, habitProgress) Values ('" + habitName + "', '" + habitColor + "', '" + objDays + "', '" + habitProgress + "');");
+        db.close();
     }
 }
 
