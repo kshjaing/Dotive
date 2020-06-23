@@ -36,7 +36,9 @@ public class CreateActivity extends AppCompatActivity {
     TextView Warning_Habit_Num; //습관 목표일 수 비어있을 경우 경고
 
     static String[] Arr_habit_progress; //습관 진행도 배열로 저장
-    static String habit_progress = "";
+
+    String habit_progress = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -143,21 +145,23 @@ public class CreateActivity extends AppCompatActivity {
 
         ContentValues values = new ContentValues();
         values.put("habitName", edit_Habit_Name.getText().toString()); //습관명
-        Log.e("CreateActivity.java","습관명 추가");
+        Log.e("CreateActivity.java","습관명 : " + edit_Habit_Name.getText().toString());
         values.put("habitColor", Integer.toString(int_Color)); //습관 색깔
-        Log.e("CreateActivity.java","습관 색깔 추가");
+        Log.e("CreateActivity.java","습관 색깔 : " + int_Color);
         values.put("objDays", edit_Habit_Day_Num.getText().toString()); //습관 목표일 수
-        Log.e("CreateActivity.java","습관 목표일 수 추가");
+        Log.e("CreateActivity.java","습관 목표일 수 : " + edit_Habit_Day_Num.getText().toString());
+
+        int progress = Integer.parseInt(edit_Habit_Day_Num.getText().toString());
 
         //습관 목표일 수 만큼 0을 그려서 habitsProgress 값에 문자열으로 저장.
-        for (int i = 0; i <Integer.parseInt(edit_Habit_Day_Num.getText().toString()); i++) {
-            Log.e("CreateaActivity.java","edit_Habit_Day_Num 습관 목표일 수 : " + Integer.parseInt(edit_Habit_Day_Num.getText().toString()));
+        for (int i = 0; i <progress; i++) {
                 habit_progress += "0,";
         }
+
+        habit_progress = habit_progress.substring(0, habit_progress.length() - 1); //마지막 쉼표 제거
+
         values.put("habitProgress",habit_progress); //배열로 추가시키고 문자열로 변환
-        Log.e("CreateActivity.java","습관 프로그레스 추가");
-        String string_habit_progress = String.valueOf(habit_progress);
-        Log.e("CreateActivity.java","habitProgress 문자열 : "+ string_habit_progress);
+        Log.e("CreateActivity.java","습관 프로그레스 : " + habit_progress);
 
         uri = getContentResolver().insert(uri, values);
         Log.e("CreateActivity.java", "INSERT 결과 : " + uri.toString());

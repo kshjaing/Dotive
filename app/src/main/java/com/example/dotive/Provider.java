@@ -52,7 +52,7 @@ public class Provider extends ContentProvider {
             case HABITS:
                 cursor = sqLiteDatabase.query(DatabaseHelper.TABLE_NAME,
                         DatabaseHelper.ALL_COLUMNS,
-                        s, null, null, null, DatabaseHelper.Habits_NAME + " ASC"); //습관 추가된대로 아래로 간다.
+                        s, null, null, null, DatabaseHelper.Habits_ID + " ASC"); //자동 증가되는 ID 값 순
                 break;
             default:
                 throw new IllegalArgumentException("알 수 없는 URI " + uri);

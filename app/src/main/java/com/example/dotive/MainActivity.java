@@ -385,7 +385,7 @@ public class MainActivity extends AppCompatActivity {
             Uri uri = new Uri.Builder().build().parse(uriString);
 
             String[] columns = new String[] {"habitName","habitColor","objDays","habitProgress"};
-            Cursor cursor = getContentResolver().query(uri, columns, null, null, "habitName ASC");
+            Cursor cursor = getContentResolver().query(uri, columns, null, null, "id ASC");
             Log.e("MainActivity.java","QUERY 결과 : " + cursor.getCount());
 
             int index = 1;
@@ -400,13 +400,6 @@ public class MainActivity extends AppCompatActivity {
                 Habit_Color += habitColor + "_"; //습관 색깔
                 edit_Habit_Day_Num += objDays + "_"; //습관 목표일 수
                 Habit_Progress += habitProgress + "_"; //습관 진행도
-
-                //Log.e("Main_QUERY_Habits :","Habit_Name : " + Habit_Name);
-
-                /*Arr_Habit_Name[index - 1] = habitName; //습관명
-                Arr_Habit_Color[index - 1] = Integer.parseInt(habitColor); //습관 색깔
-                Arr_edit_Habit_Day_Num[index - 1] = objDays; //습관 목표일 수
-                Arr_Habit_Progress[index - 1] = habitProgress; //습관 진행도*/
 
                 Log.e("MainActivity.java", "레코드 " + index + " :" + habitName + ", " + habitColor + ", " + objDays + ", " + habitProgress);
                 index += 1;
