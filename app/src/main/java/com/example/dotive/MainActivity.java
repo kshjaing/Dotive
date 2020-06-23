@@ -61,12 +61,12 @@ public class MainActivity extends AppCompatActivity {
 
     LinearLayout linearLayout;
     Button Btn_Habit_Add;
-    Button [] Arr_Btn_Habit;
+    Button[] Arr_Btn_Habit;
     Button button1;
     Button button2;
 
     LinearLayout linearLayout2;
-    TextView [] Arr_TextView_Habit_Name;
+    TextView[] Arr_TextView_Habit_Name;
     TextView textView1;
     TextView textView2;
 
@@ -78,21 +78,17 @@ public class MainActivity extends AppCompatActivity {
 
     //CreateActivity 에서 intent 값
     String Habit_Name = ""; //습관명
-    int i_Habit_Color = 0; //습관 색깔
+    //int i_Habit_Color = 0; //습관 색깔
     String Habit_Color = ""; //습관 색깔
     //int edit_Habit_Day_Num = 0; //습관 목표일 수
     String edit_Habit_Day_Num = ""; //습관 목표일 수
     String Habit_Progress = "";
 
     //DB에서 받아온 값
-    static String[] Arr_Habit_Name = {};//습관명
-    static int[] Arr_Habit_Color = {};//습관 색깔
-    static int[] Arr_edit_Habit_Day_Num = {}; //습관 목표일 수
-    static String[] Arr_Habit_Progress = {}; //습관 진행도
-
-    //버튼 위치
-    static String Button_X = "";
-    static String Button_Y = "";
+    String[] Arr_Habit_Name = {};//습관명
+    String[] Arr_Habit_Color = {};//습관 색깔
+    String[] Arr_edit_Habit_Day_Num = {}; //습관 목표일 수
+    String[] Arr_Habit_Progress = {}; //습관 진행도
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,11 +100,12 @@ public class MainActivity extends AppCompatActivity {
         //Habits 테이블에 습관이 존재하지 않다면 CreateActivity.java로 돌아간다.
 
         QUERY_Habits();
-        Log.e("MainActivity.java","Habits_Table_Count : " + Habits_Table_Count);
+
+        Log.e("MainActivity.java", "Habits_Table_Count : " + Habits_Table_Count);
         //final Habits_Table_Count = 0;
         //습관 하나 이상 존재함
         //존재하면 DB 에서 값을 받아온다.
-        if(Habits_Table_Count > 1) { //2부터 값이 1개 존재
+        if (Habits_Table_Count > 1) { //2부터 값이 1개 존재
 
             /*Intent intent = getIntent();
             Habit_Name = intent.getStringExtra("Habit_Name"); //습관명
@@ -124,17 +121,20 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("습관 목표일 수 " + i, Integer.toString(Arr_edit_Habit_Day_Num[i]));
             }*/
 
-            Log.e("MainActivity.java","Habit_Name : " + Habit_Name);
-            Log.e("MainActivity.java","Habit_Color : " + Habit_Color);
-            Log.e("MainActivity.java","edit_Habit_Day_Num : " + edit_Habit_Day_Num);
-            Log.e("MainActivity.java","Habit_Progress : " + Habit_Progress);
-        }
-        else {
+            Log.e("MainActivity.java", "Habit_Name : " + Habit_Name);
+            Log.e("MainActivity.java", "Habit_Color : " + Habit_Color);
+            Log.e("MainActivity.java", "edit_Habit_Day_Num : " + edit_Habit_Day_Num);
+            Log.e("MainActivity.java", "Habit_Progress 습관 진행도: " + Habit_Progress);
+
+            Arr_Habit_Name = Habit_Name.split("_");
+            Arr_Habit_Color = Habit_Color.split("_");
+            Arr_edit_Habit_Day_Num = edit_Habit_Day_Num.split("_");
+            Arr_Habit_Progress = Habit_Progress.split("_");
+
+        } else {
             Intent intent2 = new Intent(MainActivity.this, CreateActivity.class);
             startActivity(intent2);
         }
-
-
 
 
         //객체 인스턴스 초기화.
@@ -157,10 +157,10 @@ public class MainActivity extends AppCompatActivity {
         textView1 = new TextView(this);
         textView2 = new TextView(this);*/
 
-        //Painting_Circle1 painting_circle = new Painting_Circle1(this); //CustomView.java 파일을 불러와 실행
+        Painting_Circle1 painting_circle = new Painting_Circle1(this); //CustomView.java 파일을 불러와 실행
 
         //동적 view 생성
-        //frameLayout.addView(painting_circle); //버튼 위의 원 배열을 위해
+        frameLayout.addView(painting_circle); //버튼 위의 원 배열을 위해
 
         //main 액션 바 만들기
 
@@ -276,10 +276,12 @@ public class MainActivity extends AppCompatActivity {
         /*textView1.setLayoutParams(textView_LinearParams);
         textView2.setLayoutParams(textView_LinearParams);*/
 
-        Arr_Btn_Habit = new Button[TotalHabit - 1];
-        Arr_TextView_Habit_Name = new TextView[TotalHabit - 1];
+        int Table_Count = Habits_Table_Count;
+        Arr_Btn_Habit = new Button[Table_Count - 1];
+        Arr_TextView_Habit_Name = new TextView[Table_Count - 1];
 
-        for(int i = 0; i< TotalHabit - 1; i++) {
+        for (int i = 0; i < Table_Count - 1; i++) {
+
             //습관 버튼 인스턴스 초기화
             Arr_Btn_Habit[i] = new Button(this);
             linearLayout.addView(Arr_Btn_Habit[i]);
@@ -289,11 +291,11 @@ public class MainActivity extends AppCompatActivity {
             linearLayout2.addView(Arr_TextView_Habit_Name[i]);
 
             //습관 버튼 글꼴 및 Text
-            Arr_Btn_Habit[i].setText(Habit_Name);
+            Arr_Btn_Habit[i].setText(Arr_Habit_Name[i]);
             Arr_Btn_Habit[i].setTypeface(typeface);
 
             //습관 제목 텍스트뷰 글꼴 및 Text
-            Arr_TextView_Habit_Name[i].setText(Habit_Name);
+            Arr_TextView_Habit_Name[i].setText(Arr_Habit_Name[i]);
             Arr_TextView_Habit_Name[i].setTypeface(typeface);
 
             //습관 버튼 Width, Height
@@ -309,11 +311,11 @@ public class MainActivity extends AppCompatActivity {
             Arr_Btn_Habit[i].setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.radius));
 
             //습관 제목 텍스트뷰 CSS
-            Arr_TextView_Habit_Name[i].setBackground(ContextCompat.getDrawable(this,R.drawable.textview_custom_css));
+            Arr_TextView_Habit_Name[i].setBackground(ContextCompat.getDrawable(this, R.drawable.textview_custom_css));
 
             //습관 제목 텍스트뷰의 백그라운드 컬러 값 (CreateActivity에서 받아온 값)
             GradientDrawable bgShape = (GradientDrawable) Arr_TextView_Habit_Name[i].getBackground().getCurrent(); //GradientDrawable 그대로 하면 오류남 마지막에 .getCurrent() 중요
-            bgShape.setColor(i_Habit_Color);
+            bgShape.setColor(Integer.parseInt(Arr_Habit_Color[i]));
 
             //습관 버튼 절대 좌표
             Arr_Btn_Habit[i].setLayoutParams(Button_LinearParams);
@@ -384,9 +386,9 @@ public class MainActivity extends AppCompatActivity {
             String uriString = "content://com.example.dotive/Habits";
             Uri uri = new Uri.Builder().build().parse(uriString);
 
-            String[] columns = new String[] {"habitName","habitColor","objDays","habitProgress"};
+            String[] columns = new String[]{"habitName", "habitColor", "objDays", "habitProgress"};
             Cursor cursor = getContentResolver().query(uri, columns, null, null, "id ASC");
-            Log.e("MainActivity.java","QUERY 결과 : " + cursor.getCount());
+            Log.e("MainActivity.java", "QUERY 결과 : " + cursor.getCount());
 
             int index = 1;
 
@@ -411,7 +413,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /*//버튼 위에 습관일수 배열로 그리기
+    //버튼 위에 습관일수 배열로 그리기
     //CustomView 에 버튼 좌표를 구할 수 없어 여기서 그린다.
 
     public class Painting_Circle1 extends View {
@@ -441,27 +443,77 @@ public class MainActivity extends AppCompatActivity {
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
             float X, Y;
-            Y = button1.getY();
-            X = button1.getX();
+
+            for(int i = 0; i< Habits_Table_Count - 1; i++) {
+                Y = Arr_Btn_Habit[i].getY(); //버튼 Y좌표
+                X = Arr_Btn_Habit[i].getX(); //버튼 X좌표
+
+                //버튼 width, height
+                int W = Arr_Btn_Habit[i].getWidth();
+                int H = Arr_Btn_Habit[i].getHeight();
+                //W/2 H/2 Center
+
+                int Object_Days = Integer.parseInt(Arr_edit_Habit_Day_Num[i]);
+                //원을 그린다.
+
+                //일단 수동으로 배치해봤고 자동화 할 것이다.
+
+                //1일 ~ 4일 반지름 100
+                if(Object_Days < 5) {
+                    if(Object_Days == 1) {
+                        //중앙
+                        paint.setColor(Color.RED);
+                        canvas.drawCircle(X + W/2, Y + H/2 , 100, paint);
+                    }
+                    else if(Object_Days == 2) {
+                        //좌우 2개
+                        paint.setColor(Color.YELLOW);
+                        canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, paint);
+                        canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, paint);
+                    }
+                    else if(Object_Days == 3) {
+                        //3개
+                        paint.setColor(Color.BLACK);
+                        canvas.drawCircle(X + W/2 - 300, Y + H/2, 100, paint);
+                        canvas.drawCircle(X + W/2, Y + H/2, 100, paint);
+                        canvas.drawCircle(X + W/2 + 300, Y + H/2, 100, paint);
+                    }
+                    else if(Object_Days == 4) {
+                        //4개
+                        paint.setColor(Color.BLUE);
+                        canvas.drawCircle(X + W/2 - 400, Y + H/2, 100, paint);
+                        canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, paint);
+                        canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, paint);
+                        canvas.drawCircle(X + W/2 + 400, Y + H/2, 100, paint);
+                    }
+                } //5일 ~ 14일 반지름 50
+                else if(Object_Days < 15) {
+                    //canvas Draw
+                } //15일 이상 반지름 35
+                else if(Object_Days > 14) {
+                    //canvas Draw
+                }
+            }
+
+
+
+            /*Y = Arr_Btn_Habit[0].getY();
+            X = Arr_Btn_Habit[0].getX();
             //원을 그린다.
 
-            //1일 ~ 4일 반지름
+            //1일 ~ 4일 반지름 100
             //5일 ~ 14일 반지름 50
-            //15일 ~ 무한정 반지름
+            //15일 ~ 무한정 반지름 35
             paint.setColor(Color.RED);
-            canvas.drawCircle(X + 150, Y + 200, 50, paint);
+            canvas.drawCircle(X + 150, Y + 200, 35, paint);
             paint.setColor(Color.RED);
             canvas.drawCircle(X + 300, Y + 200, 50, paint);
-            /*
-            Y = button2.getY();
-            X = button2.getX();
             paint.setColor(Color.RED);
-            canvas.drawCircle(X,Y,50,paint);
+            canvas.drawCircle(X + 450, Y + 200, 100, paint);*/
+        }
 
-}
-
-    private void init(Context context) {
-        paint = new Paint();
+        private void init(Context context) {
+            paint = new Paint();
+        }
     }
-}*/
 }
