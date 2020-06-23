@@ -2,109 +2,147 @@ package com.example.dotive;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.ColorRes;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+import org.w3c.dom.Text;
+
+import static com.example.dotive.MainActivity.db;
+import static com.example.dotive.MainActivity.dbHelper;
 import static com.example.dotive.MainActivity.isDarkmode;
+import static com.example.dotive.MainActivity.totalHabit;
 
 public class SettingsActivity extends Activity {
 
-    ScrollView sv;
-    LinearLayout llhor;
-    LinearLayout llleft;
-    LinearLayout llcenter;
-    LinearLayout llright;
-    Button darkmodeBtn;
+    ConstraintLayout cl;
+    Button darkmodeBtn, resetBtn;
+    Integer intDarkmodeCount;
+    TextView txtConfirm;
+    Cursor cursor = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //스크롤뷰 생성
-        sv = new ScrollView(this);
-        if (!isDarkmode) {
-            sv.setBackgroundColor(Color.parseColor("#FFF7CD"));
+        dbHelper.getWritableDatabase();
+        //db.execSQL("DELETE FROM Settings");
+        cursor = db.rawQuery("SELECT COUNT(darkmode) FROM Settings", null);
+        while(cursor.moveToNext()) {
+            intDarkmodeCount = Integer.parseInt(cursor.getString(0));
         }
 
-        else {
-            sv.setBackgroundColor(Color.parseColor("#1C1C1F"));
+        if (intDarkmodeCount == 0) {
+            insertSettings();
         }
-        setContentView(sv);
 
-
-        //선형 레이아웃 생성(가장 밑에 수평, 그 위에 수직 레이아웃3개 배치)
-        llhor = new LinearLayout(this);
-        llleft = new LinearLayout(this);
-        llcenter = new LinearLayout(this);
-        llright = new LinearLayout(this);
-        llhor.setOrientation(LinearLayout.HORIZONTAL);
-        llcenter.setOrientation(LinearLayout.VERTICAL);
-
-
-        /* 색 지정으로 선형 레이아웃 비율 확인(테스트용)
-        llcenter.setBackgroundColor(Color.BLUE);
-        llleft.setBackgroundColor(Color.RED);
-        llright.setBackgroundColor(Color.GREEN);*/
-
-
-        //양쪽 레이아웃과 가운데 레이아웃 비율을 1:10으로 설정
-        final LinearLayout.LayoutParams linearParamsVerticalSide = new LinearLayout.LayoutParams(
-                1, LinearLayout.LayoutParams.MATCH_PARENT, 1);
-        final LinearLayout.LayoutParams linearParamsVerticalCenter = new LinearLayout.LayoutParams(
-                1, LinearLayout.LayoutParams.MATCH_PARENT, 10);
-        final LinearLayout.LayoutParams linearParamsHorizontal = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        final LinearLayout.LayoutParams buttons = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-
-        llhor.setLayoutParams(linearParamsHorizontal);
-        llleft.setLayoutParams(linearParamsVerticalSide);
-        llcenter.setLayoutParams(linearParamsVerticalCenter);
-        llright.setLayoutParams(linearParamsVerticalSide);
-
-        sv.addView(llhor);
-        llhor.addView(llleft);
-        llhor.addView(llcenter);
-        llhor.addView(llright);
-
-
-        darkmodeBtn = new Button(this);
-        darkmodeBtn.setText("라이트모드");
-        darkmodeBtn.setLayoutParams(buttons);
-        darkmodeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isDarkmode) {
-                    isDarkmode = true;
-                    darkmodeBtn.setText("다크모드");
-                    sv.setBackgroundColor(Color.parseColor("#1C1C1F"));
-                }
-                else {
-                    isDarkmode = false;
-                    darkmodeBtn.setText("라이트모드");
-                    sv.setBackgroundColor(Color.parseColor("#FFF7CD"));
-                }
-            }
-        });
-
-        llcenter.addView(darkmodeBtn);
+        cursor = db.rawQuery("SELECT darkmode FROM Settings", null);
+        while(cursor.moveToNext()) {
+            isDarkmode = Integer.parseInt(cursor.getString(0));
+        }
     }
 
     protected void onStart() {
         super.onStart();
+        cl = new ConstraintLayout(this);
+        darkmodeBtn = new Button(this);
+        resetBtn = new Button(this);
+        txtConfirm = new TextView(this);
 
-        if (!isDarkmode) {
+        setContentView(R.layout.activity_settings);
+
+        cl = findViewById(R.id.clSettings);
+        darkmodeBtn = findViewById(R.id.btnDarkmode);
+        resetBtn = findViewById(R.id.btnReset);
+        txtConfirm = findViewById(R.id.txtConfirm);
+        if (isDarkmode == 0) {
             darkmodeBtn.setText("라이트모드");
+            cl.setBackgroundColor(Color.parseColor("#FFEBD3"));
+            txtConfirm.setTextColor(Color.BLACK);
         }
 
-        else if (isDarkmode){
+        else {
             darkmodeBtn.setText("다크모드");
+            cl.setBackgroundColor(Color.parseColor("#1C1C1F"));
+            txtConfirm.setTextColor(Color.WHITE);
         }
 
+        darkmodeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isDarkmode == 0) {
+                    isDarkmode = 1;
+                    darkmodeBtn.setText("다크모드");
+                    cl.setBackgroundColor(Color.parseColor("#1C1C1F"));
+                }
+                else {
+                    isDarkmode = 0;
+                    darkmodeBtn.setText("라이트모드");
+                    cl.setBackgroundColor(Color.parseColor("#FFEBD3"));
+                }
+            }
+        });
+
+        resetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                totalHabit = 0;
+                deleteHabits();
+                Toast.makeText(SettingsActivity.this, "모든 데이터가 초기화되었습니다!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        txtConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateSettings();
+                Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
+    }
+
+    protected void onDestroy() {
+        super.onDestroy();
+        db.close();
+        dbHelper.close();
+        cursor.close();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        updateSettings();
+        Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
+
+
+    //Habits 테이블의 모든 데이터 지우기
+    public void deleteHabits() {
+        MainActivity.dbHelper.getWritableDatabase();
+        db.execSQL("DELETE FROM Habits");
+    }
+
+    public void insertSettings() {
+        MainActivity.dbHelper.getWritableDatabase();
+        db.execSQL("INSERT INTO Settings (darkmode, habitStrength, language) Values('" + isDarkmode + "', '기본', '한국어')");
+    }
+
+    public void updateSettings() {
+        MainActivity.dbHelper.getWritableDatabase();
+        db.execSQL("UPDATE Settings SET darkmode = '" + isDarkmode +"', habitStrength = '기본', language = '한국어'");
     }
 }

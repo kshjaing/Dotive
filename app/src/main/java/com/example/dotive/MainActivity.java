@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity{
     public static Context context_main;
     public static int totalHabit = 0;  //총 습관 개수
     public static Boolean isCreatePressed = false;  //습관생성 버튼클릭여부
-    public static Boolean isDarkmode = false;   //다크모드 여부
+    public static Integer isDarkmode = 0;   //다크모드 여부, 0이 false, 1이 true
     public static SQLiteDatabase db = null;
     public static DBHelper dbHelper;
     Cursor cursor;
@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity{
     TextView txtSettings, txtEdit;
     ScrollView sv;
     LinearLayout ll;
+    RelativeLayout rl;
     FrameLayout fl;
     Button[] boxBtnArr;
     CustomMainBox[] mainBoxes;
@@ -67,6 +68,18 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         dbHelper = new DBHelper(this, 4);
         db = dbHelper.getWritableDatabase();
+
+        //다크모드 인수 가져옴
+        cursor = db.rawQuery("SELECT darkmode FROM Settings", null);
+        while(cursor.moveToNext()) {
+            isDarkmode = Integer.parseInt(cursor.getString(0));
+        }
+
+        //총 습관 개수 뽑아옴
+        cursor = db.rawQuery("SELECT COUNT(id) FROM Habits", null);
+        while(cursor.moveToNext()) {
+            totalHabit = Integer.parseInt(cursor.getString(0));
+        }
 
         //설정버튼 클릭이벤트 부여
         txtSettings = new TextView(this);
@@ -86,7 +99,7 @@ public class MainActivity extends AppCompatActivity{
         sv = findViewById(R.id.sv);
 
         //다크모드
-        if (!isDarkmode) {
+        if (isDarkmode == 0) {
             sv.setBackgroundColor(Color.parseColor("#FFEBD3"));
         }
 
@@ -99,11 +112,9 @@ public class MainActivity extends AppCompatActivity{
         ll = new LinearLayout(this);
         ll = findViewById(R.id.ll);
 
-        //총 습관 개수 뽑아옴
-        cursor = db.rawQuery("SELECT COUNT(id) FROM Habits", null);
-        while(cursor.moveToNext()) {
-            totalHabit = Integer.parseInt(cursor.getString(0));
-        }
+
+
+
 
 
         //----------------------------앱 시작 시 총 습관 개수 계산해서 버튼 생성-----------------------------
@@ -129,7 +140,7 @@ public class MainActivity extends AppCompatActivity{
                 boxBtnArr[i].setLayoutParams(linearParams);
 
                 //다크모드에 따른 버튼 색변경(임시)
-                if (!isDarkmode) {
+                if (isDarkmode == 0) {
                     boxBtnArr[i].setBackgroundResource(R.drawable.custom_mainbox);
                 }
                 else {
@@ -158,14 +169,15 @@ public class MainActivity extends AppCompatActivity{
     @SuppressLint("ResourceType")
     protected void onResume() {
         super.onResume();
-
+        Log.d("total", String.valueOf(totalHabit));
+        Log.d("total", String.valueOf(isDarkmode));
         txtSettings = new TextView(this);
         txtSettings = findViewById(R.id.txtSettings);
         txtEdit = new TextView(this);
         txtEdit = findViewById(R.id.txtEdit);
 
         //메인액티비티로 돌아왔을 때 다크모드 체크
-        if (!isDarkmode) {
+        if (isDarkmode == 0) {
             sv.setBackgroundColor(Color.parseColor("#FFEBD3"));
             txtSettings.setTextColor(Color.parseColor("#232323"));
             txtEdit.setTextColor(Color.parseColor("#232323"));
@@ -184,6 +196,13 @@ public class MainActivity extends AppCompatActivity{
                 ll.findViewWithTag("box_" + i).setBackgroundResource(R.drawable.custom_mainbox);
             }
         }
+    }
+
+    protected void onDestroy() {
+        super.onDestroy();
+        db.close();
+        dbHelper.close();
+        cursor.close();
     }
 
     public void ibtnPlus_onClick(View view) {

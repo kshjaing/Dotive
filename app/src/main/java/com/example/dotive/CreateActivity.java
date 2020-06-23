@@ -154,7 +154,7 @@ public class CreateActivity extends Activity {
 
 
         //액티비티 들어올때 다크모드 체크
-        if (!isDarkmode) {
+        if (isDarkmode == 0) {
             cl.setBackgroundColor(Color.parseColor("#FFEBD3"));
         }
 
@@ -191,6 +191,7 @@ public class CreateActivity extends Activity {
                 Intent intent = new Intent(CreateActivity.this, MainActivity.class);
                 MainActivity.isCreatePressed = true;
                 dbInsertHabits(edtHabitName.getText().toString(), curColor, objectDays, progressString);
+                db.close();
                 startActivity(intent);
             }
         });
@@ -199,7 +200,7 @@ public class CreateActivity extends Activity {
     protected void onResume() {
         super.onResume();
         //다크모드 체크
-        if (!isDarkmode) {
+        if (isDarkmode == 0) {
             cl.setBackgroundColor(Color.parseColor("#FFEBD3"));
         }
 
@@ -213,7 +214,6 @@ public class CreateActivity extends Activity {
     public void dbInsertHabits(String habitName, String habitColor, Integer objDays, String habitProgress) {
         MainActivity.dbHelper.getWritableDatabase();
         db.execSQL("INSERT INTO Habits (habitName, habitColor, objDays, habitProgress) Values ('" + habitName + "', '" + habitColor + "', '" + objDays + "', '" + habitProgress + "');");
-        db.close();
     }
 }
 
