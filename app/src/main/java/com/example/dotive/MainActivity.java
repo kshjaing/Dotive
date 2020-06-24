@@ -37,6 +37,8 @@ import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.lang.reflect.Type;
 
 public class MainActivity extends AppCompatActivity{
@@ -51,10 +53,11 @@ public class MainActivity extends AppCompatActivity{
     Space space;
     TextView txtSettings, txtEdit;
     ScrollView sv;
-    LinearLayout ll;
+    LinearLayout ll, ll2;
     RelativeLayout rl;
     FrameLayout fl;
     Button[] boxBtnArr;
+    TextView[] txtViewArr;
     CustomMainBox[] mainBoxes;
 
 
@@ -110,7 +113,9 @@ public class MainActivity extends AppCompatActivity{
 
         //선형 레이아웃 생성
         ll = new LinearLayout(this);
+        ll2 = new LinearLayout(this);
         ll = findViewById(R.id.ll);
+        ll2 = findViewById(R.id.ll2);
 
 
 
@@ -121,6 +126,7 @@ public class MainActivity extends AppCompatActivity{
 
         if (totalHabit > 0) {
             boxBtnArr = new Button[totalHabit];
+            txtViewArr = new TextView[totalHabit];
             Space[] spaces = new Space[totalHabit];
 
             //px을 dp로 변환
@@ -129,15 +135,39 @@ public class MainActivity extends AppCompatActivity{
             int spaceHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,40,
                     getResources().getDisplayMetrics());           //여백 높이
 
+            //습관제목 텍스트뷰 관련 dp값들 선언
+            int txtWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,170,
+                    getResources().getDisplayMetrics());
+            int paddingHor = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,24,
+                    getResources().getDisplayMetrics());
+            int paddingVer = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,6,
+                    getResources().getDisplayMetrics());
+            int marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,34,
+                    getResources().getDisplayMetrics());
+
             //습관 수만큼 박스 생성
             for (int i = 0; i < totalHabit; i++) {
                 boxBtnArr[i] = new Button(this);
                 boxBtnArr[i].setHeight(height);
+                txtViewArr[i] = new TextView(this);
+
+                Typeface typeface = Typeface.createFromAsset(this.getAssets(), "katuri.ttf");
 
                 LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                LinearLayout.LayoutParams txtView_linearParams = new LinearLayout.LayoutParams(
+                        txtWidth, LinearLayout.LayoutParams.WRAP_CONTENT);
                 linearParams.setMargins(0, 0, 0, spaceHeight);
+                txtView_linearParams.setMargins(0, marginTop, 0, 0);
+
                 boxBtnArr[i].setLayoutParams(linearParams);
+                txtViewArr[i].setLayoutParams(txtView_linearParams);
+                boxBtnArr[i].setTypeface(typeface);
+                txtViewArr[i].setTypeface(typeface);
+                txtViewArr[i].setPadding(paddingHor, paddingVer, paddingHor, paddingVer);
+                txtViewArr[i].setTextSize(20);
+                txtViewArr[i].setGravity(View.TEXT_ALIGNMENT_CENTER);
+                txtViewArr[i].setBackgroundResource(R.drawable.txtview_round);
 
                 //다크모드에 따른 버튼 색변경(임시)
                 if (isDarkmode == 0) {
@@ -153,6 +183,7 @@ public class MainActivity extends AppCompatActivity{
                 spaces[i].setMinimumHeight(spaceHeight);
                 ll.addView(spaces[i]);
                 ll.addView(boxBtnArr[i]);
+                ll2.addView(txtViewArr[i]);
 
 
                 //클릭시 버튼 태그 토스트(테스트용)
