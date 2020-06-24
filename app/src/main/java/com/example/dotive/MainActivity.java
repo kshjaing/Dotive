@@ -119,6 +119,9 @@ public class MainActivity extends AppCompatActivity{
         ll = findViewById(R.id.ll);
         ll2 = findViewById(R.id.ll2);
 
+        //ll.setBackgroundColor(Color.YELLOW);
+        //ll2.setBackgroundColor(Color.GREEN);
+
 
 
 
@@ -152,7 +155,12 @@ public class MainActivity extends AppCompatActivity{
                     getResources().getDisplayMetrics());
             int txt_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,220,
                     getResources().getDisplayMetrics());
+            Typeface typeface = Typeface.createFromAsset(getAssets(), "font/katuri.ttf");
 
+            LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams txtView_linearParams = new LinearLayout.LayoutParams(
+                    txtWidth, LinearLayout.LayoutParams.WRAP_CONTENT);
 
 
             //습관 수만큼 박스 생성
@@ -161,12 +169,6 @@ public class MainActivity extends AppCompatActivity{
                 boxBtnArr[i].setHeight(height);
                 txtViewArr[i] = new TextView(this);
 
-                Typeface typeface = Typeface.createFromAsset(getAssets(), "font/katuri.ttf");
-
-                LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                LinearLayout.LayoutParams txtView_linearParams = new LinearLayout.LayoutParams(
-                        txtWidth, LinearLayout.LayoutParams.WRAP_CONTENT);
                 linearParams.setMargins(0, btn_marginTop, 0, spaceHeight);
                 txtView_linearParams.setMargins(marginLeft, marginTop, 0, txt_marginBottom);
                 boxBtnArr[i].setLayoutParams(linearParams);
