@@ -19,6 +19,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
+import android.media.JetPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -42,7 +43,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 /*
- * 20200622 수정
+ * 20200624 수정
  * MainActivity : 추가한 습관들 나열. */
 
 /* 최종목표가 표시될 곳
@@ -203,18 +204,18 @@ public class MainActivity extends AppCompatActivity {
         //이렇게 안하면 픽셀로 값이 저장되기에 dp로 계산하는 것. value에서 원하는 숫자로 고치면 됨.
         //dp 값으로 가져오기
         int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 340, getResources().getDisplayMetrics());
-        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 160, getResources().getDisplayMetrics());
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 190, getResources().getDisplayMetrics());
 
-        int textView_width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 150, getResources().getDisplayMetrics());
+        int textView_width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 190, getResources().getDisplayMetrics());
         int textView_height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
 
-        int btn_margin_left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 35, getResources().getDisplayMetrics());
+        int btn_margin_left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, getResources().getDisplayMetrics());
         int btn_margin_bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
         int btn_margin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
 
         //textView만 따로 마진값을 준다.
-        int textView_btn_margin_left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 130, getResources().getDisplayMetrics());
-        int textView_btn_margin_bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 130, getResources().getDisplayMetrics());
+        int textView_btn_margin_left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 115, getResources().getDisplayMetrics());
+        int textView_btn_margin_bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 160, getResources().getDisplayMetrics());
         int textView_btn_margin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 70, getResources().getDisplayMetrics());
 
         //버튼들의 너비 높이 정함.
@@ -319,22 +320,37 @@ public class MainActivity extends AppCompatActivity {
 
             //습관 버튼 절대 좌표
             Arr_Btn_Habit[i].setLayoutParams(Button_LinearParams);
-            Arr_Btn_Habit[i].setLayoutParams(Button_LinearParams);
 
             //습관 제목 텍스트뷰 절대 좌표
             Arr_TextView_Habit_Name[i].setLayoutParams(textView_LinearParams);
-            Arr_TextView_Habit_Name[i].setLayoutParams(textView_LinearParams);
+
+            final int a = i; //final 에러 방지 로컬변수로 선언해서 사용함.
+
+            //습관 버튼 클릭 리스너
+            Arr_Btn_Habit[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, HabitActivity.class);
+                    intent.putExtra("Final_Target", Arr_TextView_Habit_Name[a].getText()); //버튼의 이름을 HabitActivity에 전달.
+                    startActivity(intent);
+                }
+            });
         }
 
 
-        //습관 추가 버튼
+        //습관 추가 버튼 (이 버튼은 동적 버튼 맨 아래에 위치해야 하므로 여기서 addView 했다.)
+        //이 부분 버튼 가운데 정렬 필요 or 이미지 버튼이 아닌 css로 그리던지
         Btn_Habit_Add = new Button(this);
-        linearLayout.addView(Btn_Habit_Add);
         Btn_Habit_Add.setBackgroundResource(R.drawable.habit_add_image);
+        Btn_Habit_Add.setLayoutParams(Button_LinearParams);
+        //Btn_Habit_Add.setWidth(30);
+        //Btn_Habit_Add.setHeight(30);
+        //Btn_Habit_Add.setGravity(Gravity.RIGHT);
 
-        //클릭 이벤트리스너
+        linearLayout.addView(Btn_Habit_Add);
 
-        //습관 추가 버튼 클릭 이벤트
+
+        //습관 추가 버튼 클릭 리스너
         Btn_Habit_Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -342,15 +358,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent1);
             }
         });
-
-        /*button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, HabitActivity.class);
-                intent.putExtra("Final_Target", textView1.getText()); //버튼의 이름을 HabitActivity에 전달.
-                startActivity(intent);
-            }
-        });*/
 
         //제일 위에 있는것을 뿌려야 차례대로 child view 들이 보인다. (중간꺼든 다른거 넣으면 페이탈 에러)
         setContentView(scrollView);
@@ -456,9 +463,24 @@ public class MainActivity extends AppCompatActivity {
                 int Object_Days = Integer.parseInt(Arr_edit_Habit_Day_Num[i]);
                 //원을 그린다.
 
-                //일단 수동으로 배치해봤고 자동화 할 것이다.
-
+                //X좌표 Y좌표 중앙 정렬
+                //float X_Center = X + W/2;
+                //float Y_Center = Y + H/2;
+                //char Point;
                 //1일 ~ 4일 반지름 100
+
+                /*if(Object_Days < 5) {
+                    paint.setColor(Color.RED);
+                    for (int j = 0; j < Object_Days; j++) {
+                        if(Object_Days == 1) canvas.drawCircle(X_Center, Y_Center, 100, paint);
+                        if(Object_Days == 2) {
+                            Point = '-';
+                            canvas.drawCircle(X_Center - 135, Y_Center, 100, paint);
+                        }
+                    }
+                }*/
+
+                //일단 수동으로 배치해봤고 자동화 할 것이다.
                 if(Object_Days < 5) {
                     if(Object_Days == 1) {
                         //중앙
@@ -487,11 +509,150 @@ public class MainActivity extends AppCompatActivity {
                         canvas.drawCircle(X + W/2 + 400, Y + H/2, 100, paint);
                     }
                 } //5일 ~ 14일 반지름 50
+                //아래 주석은 14일치
+                /*canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 300, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 150, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 150, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 300, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 450, Y + H/2 - 140 , 55, paint);
+
+                        canvas.drawCircle(X + W/2 - 450, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 300, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 150, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 150, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 300, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 450, Y + H/2 + 40 , 55, paint);*/
                 else if(Object_Days < 15) {
-                    //canvas Draw
+                    if(Object_Days == 5) {
+                        paint.setColor(Color.GREEN);
+                        canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 300, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 150, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 150, Y + H/2 - 140 , 55, paint);
+                    }
+                    else if(Object_Days == 6) {
+                        canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 300, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 150, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 150, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 300, Y + H/2 - 140 , 55, paint);
+                    }
+                    else if(Object_Days == 7) {
+                        canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 300, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 150, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 150, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 300, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 450, Y + H/2 - 140 , 55, paint);
+                    }
+                    else if(Object_Days == 8) {
+                        canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 300, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 150, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 150, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 300, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 450, Y + H/2 - 140 , 55, paint);
+
+                        canvas.drawCircle(X + W/2 - 450, Y + H/2 + 40 , 55, paint);
+                    }
+                    else if(Object_Days == 9) {
+                        canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 300, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 150, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 150, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 300, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 450, Y + H/2 - 140 , 55, paint);
+
+                        canvas.drawCircle(X + W/2 - 450, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 300, Y + H/2 + 40 , 55, paint);
+                    }
+                    else if(Object_Days == 10) {
+                        canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 300, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 150, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 150, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 300, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 450, Y + H/2 - 140 , 55, paint);
+
+                        canvas.drawCircle(X + W/2 - 450, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 300, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 150, Y + H/2 + 40 , 55, paint);
+                    }
+                    else if(Object_Days == 11) {
+                        canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 300, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 150, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 150, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 300, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 450, Y + H/2 - 140 , 55, paint);
+
+                        canvas.drawCircle(X + W/2 - 450, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 300, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 150, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2, Y + H/2 + 40 , 55, paint);
+                    }
+                    else if(Object_Days == 12) {
+                        canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 300, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 150, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 150, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 300, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 450, Y + H/2 - 140 , 55, paint);
+
+                        canvas.drawCircle(X + W/2 - 450, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 300, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 150, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 150, Y + H/2 + 40 , 55, paint);
+                    }
+                    else if(Object_Days == 13) {
+                        canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 300, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 150, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 150, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 300, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 450, Y + H/2 - 140 , 55, paint);
+
+                        canvas.drawCircle(X + W/2 - 450, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 300, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 150, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 150, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 300, Y + H/2 + 40 , 55, paint);
+                    }
+                    else if (Object_Days == 14) {
+                        canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 300, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 150, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 150, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 300, Y + H/2 - 140 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 450, Y + H/2 - 140 , 55, paint);
+
+                        canvas.drawCircle(X + W/2 - 450, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 300, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2 - 150, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 150, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 300, Y + H/2 + 40 , 55, paint);
+                        canvas.drawCircle(X + W/2 + 450, Y + H/2 + 40 , 55, paint);
+                    }
                 } //15일 이상 반지름 35
                 else if(Object_Days > 14) {
                     //canvas Draw
+                    //이 부분도 10일치 모양이 완성되면 그 패턴에 맞춰서 계속 증가만 시키면 된다.
                 }
             }
 

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item android:state_pressed="true">
         <shape>
             <padding android:bottom="4dp" android:left="8dp" android:right="8dp" android:top="4dp" />
             <gradient android:angle="270" android:endColor="#cdcdcd" android:startColor="#eeeeee" />
 
             <!-- <corners android:bottomLeftRadius="2dp" android:bottomRightRadius="2dp" android:topLeftRadius="2dp" android:topRightRadius="2dp" /> -->
-            <corners android:radius="45dp" />
+            <corners android:radius="0dp" />
         </shape>
     </item>
     <item android:state_pressed="false">
@@ -15,12 +14,7 @@
             <padding android:bottom="4dp" android:left="8dp" android:right="8dp" android:top="4dp" />
             <solid android:color="@color/white" />
             <!-- <corners android:bottomLeftRadius="2dp" android:bottomRightRadius="2dp" android:topLeftRadius="2dp" android:topRightRadius="2dp" /> -->
-            <corners android:radius="45dp" />
+            <corners android:radius="0dp" />
         </shape>
     </item>
 </selector>
-
-    <!-- corners : 코너의 둥근 정도 설정 -->
-    <!-- solid : 테두리와 보통 색을 지정하는 태그 -->
-    <!-- gradient : 그라디언트  ->  눌리는 듯한 느낌을 주기 위해 그라디언트 효과 적용 -->
-    <!-- item pressed true false  즉 눌렀을때 아닐때에 따라 디자인이 다르게 구성 가능 -->
