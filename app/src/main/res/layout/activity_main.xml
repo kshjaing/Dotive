@@ -48,19 +48,22 @@
                 android:layout_gravity="center">
 
                 <FrameLayout
-                    android:layout_width="match_parent"
+                    android:id="@+id/fl"
+                    android:layout_width="350dp"
                     android:layout_height="match_parent">
 
                     <LinearLayout
+                        android:id="@+id/ll"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"></LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"></LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/ll"
-                        android:layout_width="350dp"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"></LinearLayout>
                 </FrameLayout>
 
             </RelativeLayout>
