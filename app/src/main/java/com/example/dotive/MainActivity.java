@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity{
                 boxBtnArr[i].setHeight(height);
                 txtViewArr[i] = new TextView(this);
 
-                Typeface typeface = Typeface.createFromAsset(this.getAssets(), "katuri.ttf");
+                Typeface typeface = Typeface.createFromAsset(getAssets(), "font/katuri.ttf");
 
                 LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -168,6 +168,7 @@ public class MainActivity extends AppCompatActivity{
                 txtViewArr[i].setTextSize(20);
                 txtViewArr[i].setGravity(View.TEXT_ALIGNMENT_CENTER);
                 txtViewArr[i].setBackgroundResource(R.drawable.txtview_round);
+                txtViewArr[i].set
 
                 //다크모드에 따른 버튼 색변경(임시)
                 if (isDarkmode == 0) {
