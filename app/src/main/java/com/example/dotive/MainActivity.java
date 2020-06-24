@@ -187,9 +187,8 @@ public class MainActivity extends AppCompatActivity{
                 //태그설정
                 boxBtnArr[i].setTag("box_" + i);
                 cursor = db.rawQuery("SELECT habitName FROM Habits", null);
-                cursor.moveToNext();
-                txtViewArr[i].setText(cursor.getString(i));
-
+                cursor.moveToPosition(i);
+                txtViewArr[i].setText(cursor.getString(0));
 
                 spaces[i] = new Space(this);
                 spaces[i].setMinimumHeight(spaceHeight);
