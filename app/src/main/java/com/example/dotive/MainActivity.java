@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity{
     Button[] boxBtnArr;
     TextView[] txtViewArr;
     CustomMainBox[] mainBoxes;
+    String habitName;
 
 
 
@@ -140,10 +141,16 @@ public class MainActivity extends AppCompatActivity{
                     getResources().getDisplayMetrics());
             int paddingHor = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,24,
                     getResources().getDisplayMetrics());
-            int paddingVer = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,6,
+            int paddingVer = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,8,
                     getResources().getDisplayMetrics());
             int marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,34,
                     getResources().getDisplayMetrics());
+            int marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,90,
+                    getResources().getDisplayMetrics());
+            int btn_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,50,
+                    getResources().getDisplayMetrics());
+
+
 
             //습관 수만큼 박스 생성
             for (int i = 0; i < totalHabit; i++) {
@@ -157,9 +164,8 @@ public class MainActivity extends AppCompatActivity{
                         LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 LinearLayout.LayoutParams txtView_linearParams = new LinearLayout.LayoutParams(
                         txtWidth, LinearLayout.LayoutParams.WRAP_CONTENT);
-                linearParams.setMargins(0, 0, 0, spaceHeight);
-                txtView_linearParams.setMargins(0, marginTop, 0, 0);
-
+                linearParams.setMargins(0, btn_marginTop, 0, spaceHeight);
+                txtView_linearParams.setMargins(marginLeft, marginTop, 0, 0);
                 boxBtnArr[i].setLayoutParams(linearParams);
                 txtViewArr[i].setLayoutParams(txtView_linearParams);
                 boxBtnArr[i].setTypeface(typeface);
@@ -167,8 +173,14 @@ public class MainActivity extends AppCompatActivity{
                 txtViewArr[i].setPadding(paddingHor, paddingVer, paddingHor, paddingVer);
                 txtViewArr[i].setTextSize(20);
                 txtViewArr[i].setGravity(View.TEXT_ALIGNMENT_CENTER);
+                /*
+                for (int j = 0; j < totalHabit; i++) {
+                    cursor = db.rawQuery("SELECT habitName FROM Habits", null);
+                    while(cursor.moveToNext()) {
+                        txtViewArr[i].setText(cursor.getString(j));
+                    }
+                }*/
                 txtViewArr[i].setBackgroundResource(R.drawable.txtview_round);
-                txtViewArr[i].set
 
                 //다크모드에 따른 버튼 색변경(임시)
                 if (isDarkmode == 0) {
@@ -182,7 +194,7 @@ public class MainActivity extends AppCompatActivity{
 
                 spaces[i] = new Space(this);
                 spaces[i].setMinimumHeight(spaceHeight);
-                ll.addView(spaces[i]);
+                //ll.addView(spaces[i]);
                 ll.addView(boxBtnArr[i]);
                 ll2.addView(txtViewArr[i]);
 
