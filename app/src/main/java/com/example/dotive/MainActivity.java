@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity{
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -172,14 +173,8 @@ public class MainActivity extends AppCompatActivity{
                 txtViewArr[i].setTypeface(typeface);
                 txtViewArr[i].setPadding(paddingHor, paddingVer, paddingHor, paddingVer);
                 txtViewArr[i].setTextSize(20);
-                txtViewArr[i].setGravity(View.TEXT_ALIGNMENT_CENTER);
-                /*
-                for (int j = 0; j < totalHabit; i++) {
-                    cursor = db.rawQuery("SELECT habitName FROM Habits", null);
-                    while(cursor.moveToNext()) {
-                        txtViewArr[i].setText(cursor.getString(j));
-                    }
-                }*/
+                txtViewArr[i].setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                txtViewArr[i].setTextColor(Color.WHITE);
                 txtViewArr[i].setBackgroundResource(R.drawable.txtview_round);
 
                 //다크모드에 따른 버튼 색변경(임시)
@@ -191,6 +186,10 @@ public class MainActivity extends AppCompatActivity{
                 }
                 //태그설정
                 boxBtnArr[i].setTag("box_" + i);
+                cursor = db.rawQuery("SELECT habitName FROM Habits", null);
+                cursor.moveToNext();
+                txtViewArr[i].setText(cursor.getString(i));
+
 
                 spaces[i] = new Space(this);
                 spaces[i].setMinimumHeight(spaceHeight);
