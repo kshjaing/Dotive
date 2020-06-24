@@ -35,6 +35,7 @@ public class CreateActivity extends Activity {
     ConstraintLayout cl;
     Button btnCreate;
     EditText edtHabitName, edtObjectDays;
+    TextView txtHabit, txtObjdays;
     ImageButton red, orange, green, blue, purple, gray;
     Integer intRed, intOrange, intGreen, intBlue, intPurple, intGray = 0;
     Integer objectDays = 1;
@@ -62,6 +63,8 @@ public class CreateActivity extends Activity {
         blue = new ImageButton(this);
         purple = new ImageButton(this);
         gray = new ImageButton(this);
+        txtHabit = new TextView(this);
+        txtObjdays = new TextView(this);
 
 
         red = findViewById(R.id.btncolorRed);
@@ -70,6 +73,8 @@ public class CreateActivity extends Activity {
         blue = findViewById(R.id.btncolorBlue);
         purple = findViewById(R.id.btncolorPurple);
         gray = findViewById(R.id.btncolorBluegray);
+        txtHabit = findViewById(R.id.txtHabit);
+        txtObjdays = findViewById(R.id.txtObjdays);
 
 
 
@@ -156,10 +161,14 @@ public class CreateActivity extends Activity {
         //액티비티 들어올때 다크모드 체크
         if (isDarkmode == 0) {
             cl.setBackgroundColor(Color.parseColor("#FFEBD3"));
+            txtHabit.setTextColor(Color.BLACK);
+            txtObjdays.setTextColor(Color.BLACK);
         }
 
         else {
             cl.setBackgroundColor(Color.parseColor("#272B36"));
+            txtHabit.setTextColor(Color.WHITE);
+            txtObjdays.setTextColor(Color.WHITE);
         }
 
         //습관 추가 버튼 클릭 이벤트 부여
@@ -196,19 +205,6 @@ public class CreateActivity extends Activity {
             }
         });
     }
-
-    protected void onResume() {
-        super.onResume();
-        //다크모드 체크
-        if (isDarkmode == 0) {
-            cl.setBackgroundColor(Color.parseColor("#FFEBD3"));
-        }
-
-        else {
-            cl.setBackgroundColor(Color.parseColor("#272B36"));
-        }
-    }
-
 
     //Habits 테이블에 습관 추가
     public void dbInsertHabits(String habitName, String habitColor, Integer objDays, String habitProgress) {
