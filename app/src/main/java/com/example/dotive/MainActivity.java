@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity{
             //px을 dp로 변환
             int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,200,
                     getResources().getDisplayMetrics());           //박스버튼 높이
-            int spaceHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,40,
+            int spaceHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,42,
                     getResources().getDisplayMetrics());           //여백 높이
 
             //습관제목 텍스트뷰 관련 dp값들 선언
@@ -149,11 +149,13 @@ public class MainActivity extends AppCompatActivity{
                     getResources().getDisplayMetrics());
             int marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,34,
                     getResources().getDisplayMetrics());
+            int txtHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,40,
+                    getResources().getDisplayMetrics());
             int marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,90,
                     getResources().getDisplayMetrics());
-            int btn_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,50,
+            int btn_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,54,
                     getResources().getDisplayMetrics());
-            int txt_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,220,
+            int txt_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,225,
                     getResources().getDisplayMetrics());
             Typeface typeface = Typeface.createFromAsset(getAssets(), "font/katuri.ttf");
 
@@ -168,16 +170,19 @@ public class MainActivity extends AppCompatActivity{
                 boxBtnArr[i] = new Button(this);
                 boxBtnArr[i].setHeight(height);
                 txtViewArr[i] = new TextView(this);
+                txtViewArr[i].setHeight(txtHeight);
 
                 linearParams.setMargins(0, btn_marginTop, 0, spaceHeight);
+
                 txtView_linearParams.setMargins(marginLeft, marginTop, 0, txt_marginBottom);
                 boxBtnArr[i].setLayoutParams(linearParams);
                 txtViewArr[i].setLayoutParams(txtView_linearParams);
                 boxBtnArr[i].setTypeface(typeface);
                 txtViewArr[i].setTypeface(typeface);
-                txtViewArr[i].setPadding(paddingHor, paddingVer, paddingHor, paddingVer);
+                //txtViewArr[i].setPadding(paddingHor, paddingVer, paddingHor, paddingVer);
                 txtViewArr[i].setTextSize(20);
                 txtViewArr[i].setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                txtViewArr[i].setGravity(Gravity.CENTER);
                 txtViewArr[i].setTextColor(Color.WHITE);
                 txtViewArr[i].setBackgroundResource(R.drawable.txtview_round);
 
