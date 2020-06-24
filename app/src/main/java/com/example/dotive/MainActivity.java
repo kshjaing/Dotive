@@ -150,6 +150,8 @@ public class MainActivity extends AppCompatActivity{
                     getResources().getDisplayMetrics());
             int btn_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,50,
                     getResources().getDisplayMetrics());
+            int txt_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,220,
+                    getResources().getDisplayMetrics());
 
 
 
@@ -166,7 +168,7 @@ public class MainActivity extends AppCompatActivity{
                 LinearLayout.LayoutParams txtView_linearParams = new LinearLayout.LayoutParams(
                         txtWidth, LinearLayout.LayoutParams.WRAP_CONTENT);
                 linearParams.setMargins(0, btn_marginTop, 0, spaceHeight);
-                txtView_linearParams.setMargins(marginLeft, marginTop, 0, 0);
+                txtView_linearParams.setMargins(marginLeft, marginTop, 0, txt_marginBottom);
                 boxBtnArr[i].setLayoutParams(linearParams);
                 txtViewArr[i].setLayoutParams(txtView_linearParams);
                 boxBtnArr[i].setTypeface(typeface);
