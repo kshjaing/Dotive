@@ -2,17 +2,13 @@ package com.example.dotive;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatButton;
-
-import org.w3c.dom.Text;
 
 public class CustomMainBox extends AppCompatButton {
     FrameLayout fl;
@@ -58,7 +54,7 @@ public class CustomMainBox extends AppCompatButton {
         textView.setPadding(txtPaddinghor, txtPaddingver, txtPaddinghor, txtPaddingver);
         textView.setTextColor(Color.BLACK);
         textView.setGravity(TEXT_ALIGNMENT_CENTER);
-        textView.setBackgroundResource(R.drawable.txtview_round);
+        textView.setBackgroundResource(R.drawable.txtview_round_red);
 
         setHeight(height);
         setBackgroundResource(R.drawable.custom_mainbox);

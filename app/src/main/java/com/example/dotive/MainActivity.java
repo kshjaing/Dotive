@@ -2,44 +2,29 @@ package com.example.dotive;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.Typeface;
-import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.app.Activity;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Type;
 
 public class MainActivity extends AppCompatActivity{
     public static Context context_main;
@@ -165,6 +150,7 @@ public class MainActivity extends AppCompatActivity{
                     txtWidth, LinearLayout.LayoutParams.WRAP_CONTENT);
 
 
+
             //습관 수만큼 박스 생성
             for (int i = 0; i < totalHabit; i++) {
                 boxBtnArr[i] = new Button(this);
@@ -178,12 +164,31 @@ public class MainActivity extends AppCompatActivity{
                 boxBtnArr[i].setLayoutParams(linearParams);
                 txtViewArr[i].setLayoutParams(txtView_linearParams);
                 txtViewArr[i].setTypeface(typeface);
-                //txtViewArr[i].setPadding(paddingHor, paddingVer, paddingHor, paddingVer);
+                txtViewArr[i].setPadding(paddingHor, paddingVer, paddingHor, paddingVer);
                 txtViewArr[i].setTextSize(20);
                 txtViewArr[i].setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 txtViewArr[i].setGravity(Gravity.CENTER);
                 txtViewArr[i].setTextColor(Color.WHITE);
-                txtViewArr[i].setBackgroundResource(R.drawable.txtview_round);
+                txtViewArr[i].setMaxLines(2);
+                txtViewArr[i].setEllipsize(TextUtils.TruncateAt.END);
+
+                cursor = db.rawQuery("SELECT habitColor FROM Habits", null);
+                cursor.moveToPosition(i);
+                String strng = cursor.getString(0);
+                switch (cursor.getString(0)) {
+                    case "red" : txtViewArr[i].setBackgroundResource(R.drawable.txtview_round_red);
+                    break;
+                    case "orange" : txtViewArr[i].setBackgroundResource(R.drawable.txtview_round_orange);
+                        break;
+                    case "green" : txtViewArr[i].setBackgroundResource(R.drawable.txtview_round_green);
+                        break;
+                    case "blue" : txtViewArr[i].setBackgroundResource(R.drawable.txtview_round_blue);
+                        break;
+                    case "purple" : txtViewArr[i].setBackgroundResource(R.drawable.txtview_round_purple);
+                        break;
+                    case "gray" : txtViewArr[i].setBackgroundResource(R.drawable.txtview_round_gray);
+                        break;
+                }
 
 
                 //다크모드에 따른 버튼 색변경(임시)
