@@ -120,27 +120,25 @@ public class MainActivity extends AppCompatActivity{
             Space[] spaces = new Space[totalHabit];
 
             //px을 dp로 변환
-            int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,200,
+            int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,220,
                     getResources().getDisplayMetrics());           //박스버튼 높이
             int spaceHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,42,
                     getResources().getDisplayMetrics());           //여백 높이
 
             //습관제목 텍스트뷰 관련 dp값들 선언
-            int txtWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,170,
+            int txtWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,210,
                     getResources().getDisplayMetrics());
             int paddingHor = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,24,
                     getResources().getDisplayMetrics());
-            int paddingVer = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,8,
-                    getResources().getDisplayMetrics());
             int marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,34,
                     getResources().getDisplayMetrics());
-            int txtHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,40,
+            int txtHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,46,
                     getResources().getDisplayMetrics());
-            int marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,90,
+            int marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,70,
                     getResources().getDisplayMetrics());
-            int btn_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,54,
+            int btn_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,57,
                     getResources().getDisplayMetrics());
-            int txt_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,225,
+            int txt_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,245,
                     getResources().getDisplayMetrics());
             Typeface typeface = Typeface.createFromAsset(getAssets(), "font/katuri.ttf");
 
@@ -164,12 +162,12 @@ public class MainActivity extends AppCompatActivity{
                 boxBtnArr[i].setLayoutParams(linearParams);
                 txtViewArr[i].setLayoutParams(txtView_linearParams);
                 txtViewArr[i].setTypeface(typeface);
-                txtViewArr[i].setPadding(paddingHor, paddingVer, paddingHor, paddingVer);
+                txtViewArr[i].setPadding(paddingHor, 0, paddingHor, 0);
                 txtViewArr[i].setTextSize(20);
-                txtViewArr[i].setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                 txtViewArr[i].setGravity(Gravity.CENTER);
                 txtViewArr[i].setTextColor(Color.WHITE);
-                txtViewArr[i].setMaxLines(2);
+                txtViewArr[i].setAutoSizeTextTypeUniformWithConfiguration(15, 24, 2, TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM);
+                txtViewArr[i].setMaxLines(1);
                 txtViewArr[i].setEllipsize(TextUtils.TruncateAt.END);
 
                 cursor = db.rawQuery("SELECT habitColor FROM Habits", null);
@@ -249,7 +247,7 @@ public class MainActivity extends AppCompatActivity{
             txtEdit.setTextColor(Color.WHITE);
 
             for (int i = 0; i < totalHabit; i++) {
-                ll.findViewWithTag("box_" + i).setBackgroundResource(R.drawable.custom_mainbox);
+                ll.findViewWithTag("box_" + i).setBackgroundResource(R.drawable.custom_mainbox_dark);
             }
         }
     }
