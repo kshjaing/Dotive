@@ -177,7 +177,6 @@ public class MainActivity extends AppCompatActivity{
                 txtView_linearParams.setMargins(marginLeft, marginTop, 0, txt_marginBottom);
                 boxBtnArr[i].setLayoutParams(linearParams);
                 txtViewArr[i].setLayoutParams(txtView_linearParams);
-                boxBtnArr[i].setTypeface(typeface);
                 txtViewArr[i].setTypeface(typeface);
                 //txtViewArr[i].setPadding(paddingHor, paddingVer, paddingHor, paddingVer);
                 txtViewArr[i].setTextSize(20);
@@ -185,6 +184,7 @@ public class MainActivity extends AppCompatActivity{
                 txtViewArr[i].setGravity(Gravity.CENTER);
                 txtViewArr[i].setTextColor(Color.WHITE);
                 txtViewArr[i].setBackgroundResource(R.drawable.txtview_round);
+
 
                 //다크모드에 따른 버튼 색변경(임시)
                 if (isDarkmode == 0) {
