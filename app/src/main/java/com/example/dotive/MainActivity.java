@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity{
             Typeface typeface = Typeface.createFromAsset(getAssets(), "font/katuri.ttf");
 
             LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
             LinearLayout.LayoutParams txtView_linearParams = new LinearLayout.LayoutParams(
                     txtWidth, LinearLayout.LayoutParams.WRAP_CONTENT);
 
