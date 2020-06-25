@@ -125,7 +125,6 @@ public class SettingsActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         updateSettings();
         Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
         startActivity(intent);

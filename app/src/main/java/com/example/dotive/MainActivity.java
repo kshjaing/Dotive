@@ -1,10 +1,12 @@
 package com.example.dotive;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -257,6 +259,21 @@ public class MainActivity extends AppCompatActivity{
         db.close();
         dbHelper.close();
         cursor.close();
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("알림");
+        builder.setMessage("앱을 종료하시겠습니까?");
+        builder.setPositiveButton("취소", null);
+        builder.setNegativeButton("종료", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                android.os.Process.killProcess(android.os.Process.myPid());
+            }
+        });
+        builder.show();
     }
 
     public void ibtnPlus_onClick(View view) {

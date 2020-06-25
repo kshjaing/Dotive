@@ -206,6 +206,12 @@ public class CreateActivity extends Activity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(CreateActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
+
     //Habits 테이블에 습관 추가
     public void dbInsertHabits(String habitName, String habitColor, Integer objDays, String habitProgress) {
         MainActivity.dbHelper.getWritableDatabase();
