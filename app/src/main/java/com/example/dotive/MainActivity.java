@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity{
     Button[] boxBtnArr;
     TextView[] txtViewArr;
     CustomMainBox[] mainBoxes;
-    Integer[] objectDays;
     String habitName;
+    float btn_x, btn_y;
 
 
 
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity{
         if (totalHabit > 0) {
             boxBtnArr = new Button[totalHabit];
             txtViewArr = new TextView[totalHabit];
-            objectDays = new Integer[totalHabit];
+
 
 
             //px을 dp로 변환
@@ -238,6 +238,11 @@ public class MainActivity extends AppCompatActivity{
                 txtViewArr[i].setText(cursor.getString(0));
 
 
+                //각 버튼의 x,y좌표값 삽입
+                btn_x = boxBtnArr[i].getX();
+                btn_y = boxBtnArr[i].getY();
+
+
                 ll.addView(boxBtnArr[i]);
                 ll2.addView(txtViewArr[i]);
 
@@ -320,6 +325,8 @@ public class MainActivity extends AppCompatActivity{
     //원 그리기
     public class DrawCircle extends View {
         private Paint paint;
+        Integer[] objectDays = new Integer[totalHabit];
+
 
         public DrawCircle(Context context) {
             super(context);
@@ -338,17 +345,17 @@ public class MainActivity extends AppCompatActivity{
         @Override
         public void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-            float x, y;
-            x = 
-
+            //DB에서 각 습관별 목표일수 뽑아옴
+            cursor = db.rawQuery("SELECT objDays FROM Habits", null);
+            paint.setColor(Color.GREEN);
+            paint.setColor(Color.GREEN);
+            paint.setAntiAlias(true);
             for (int i = 0; i < totalHabit; i++) {
-                //DB에서 각 습관별 목표일수 뽑아옴
-                cursor = db.rawQuery("SELECT objDays FROM Habits", null);
                 while(cursor.moveToPosition(i)) {
                     objectDays[i] = Integer.parseInt(cursor.getString(0));
                 }
                     paint.setColor(Color.GREEN);
-                    canvas.drawCircle(200, 200, 100, paint);
+                    canvas.drawCircle(btn_x+170, btn_y+100, 100, paint);
             }
         }
     }
