@@ -42,6 +42,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 /*
  * 20200624 수정
  * MainActivity : 추가한 습관들 나열. */
@@ -70,6 +72,8 @@ public class MainActivity extends AppCompatActivity {
     TextView[] Arr_TextView_Habit_Name;
     TextView textView1;
     TextView textView2;
+
+    LinearLayout linearLayout3;  //이 값은 버튼 위에 paint 대신 버튼을 뿌린다.
 
     //습관 개수에따라 버튼 증가
     static int TotalHabit = 1;
@@ -281,6 +285,40 @@ public class MainActivity extends AppCompatActivity {
         Arr_Btn_Habit = new Button[Table_Count - 1];
         Arr_TextView_Habit_Name = new TextView[Table_Count - 1];
 
+        /*//페인트 버튼 생성 (버튼 위에 Paint 대신)
+        //int Button_Count = Integer.parseInt(edit_Habit_Day_Num);
+        //버튼 카운트는 버튼 생성 개수이며 for문을 돌려 총 습관 수만큼 반복하여
+        //그 수마다 각각의 습관 목표일 수를 저장한다.
+
+
+        //Button[] Arr_Paint_Button = {};
+        //Button[] Arr_Paint_Button = new Button[Button_Count]; //페인트 버튼
+        ArrayList<Button> list = new ArrayList<Button>();
+
+
+        //test 버튼 위에 버튼 뿌리기
+        for(int i = 0; i< Integer.parseInt(edit_Habit_Day_Num); i++) {
+            Arr_Paint_Button[i] = new Button(this);
+        }
+        linearLayout3 = new LinearLayout(this);
+        linearLayout3.setOrientation(LinearLayout.VERTICAL);
+        frameLayout.addView(linearLayout3); //페인트 버튼을 뿌릴 공간
+
+        for(int i = 0; i< Table_Count - 1; i++) {
+            int Button_Count = Integer.parseInt(Arr_edit_Habit_Day_Num[i]); //각각의 습관의 목표일 수를 계속 변하여 저장.
+            Button[] Arr_Paint_Button = list.toArray(new Button[i]);
+            Arr_Paint_Button[i] = new Button(this);
+            //Log.e("test","여기까진 도달");
+            for(int j = 0; j< Button_Count; j++) {
+                linearLayout3.addView(Arr_Paint_Button[0]); //Arr_Paint_Button[0] 이거 달라야 에러안떠
+            }
+        }
+/*for(int j = 0; j < Button_Count; j++) { //목표일 수 만큼 페인트 버튼 생성
+                Arr_Paint_Button[j] = new Button(this);
+                linearLayout3.addView(Arr_Paint_Button[i]);
+            }*/
+
+
         for (int i = 0; i < Table_Count - 1; i++) {
 
             //습관 버튼 인스턴스 초기화
@@ -464,23 +502,27 @@ public class MainActivity extends AppCompatActivity {
                 //원을 그린다.
 
                 //X좌표 Y좌표 중앙 정렬
-                //float X_Center = X + W/2;
-                //float Y_Center = Y + H/2;
-                //char Point;
+                float X_Center = X + W/2;
+                float Y_Center = Y + H/2;
+                int index = 0;
                 //1일 ~ 4일 반지름 100
 
-                /*if(Object_Days < 5) {
+                if(Object_Days < 5) {
                     paint.setColor(Color.RED);
                     for (int j = 0; j < Object_Days; j++) {
-                        if(Object_Days == 1) canvas.drawCircle(X_Center, Y_Center, 100, paint);
-                        if(Object_Days == 2) {
-                            Point = '-';
-                            canvas.drawCircle(X_Center - 135, Y_Center, 100, paint);
+                        if(Object_Days == j+1)
+                        {
+                            for(int k = 0; k < Object_Days; k++)
+                            {
+                                canvas.drawCircle(X_Center + index, Y_Center, 100, paint);
+                                index +=135;
+                                //canvas.drawCircle(X_Center, Y_Center, 100, paint);
+                            }
                         }
                     }
-                }*/
+                }
 
-                //일단 수동으로 배치해봤고 자동화 할 것이다.
+                /*//일단 수동으로 배치해봤고 자동화 할 것이다.
                 if(Object_Days < 5) {
                     if(Object_Days == 1) {
                         //중앙
@@ -508,7 +550,7 @@ public class MainActivity extends AppCompatActivity {
                         canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, paint);
                         canvas.drawCircle(X + W/2 + 400, Y + H/2, 100, paint);
                     }
-                } //5일 ~ 14일 반지름 50
+                } //5일 ~ 14일 반지름 50*/
                 //아래 주석은 14일치
                 /*canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
                         canvas.drawCircle(X + W/2 - 300, Y + H/2 - 140 , 55, paint);
@@ -525,7 +567,7 @@ public class MainActivity extends AppCompatActivity {
                         canvas.drawCircle(X + W/2 + 150, Y + H/2 + 40 , 55, paint);
                         canvas.drawCircle(X + W/2 + 300, Y + H/2 + 40 , 55, paint);
                         canvas.drawCircle(X + W/2 + 450, Y + H/2 + 40 , 55, paint);*/
-                else if(Object_Days < 15) {
+                /*else if(Object_Days < 15) {
                     if(Object_Days == 5) {
                         paint.setColor(Color.GREEN);
                         canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
@@ -653,7 +695,7 @@ public class MainActivity extends AppCompatActivity {
                 else if(Object_Days > 14) {
                     //canvas Draw
                     //이 부분도 10일치 모양이 완성되면 그 패턴에 맞춰서 계속 증가만 시키면 된다.
-                }
+                }*/
             }
 
 
