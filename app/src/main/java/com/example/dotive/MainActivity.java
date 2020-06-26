@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity{
         ll3.setBackgroundColor(Color.GREEN);
 
         DrawCircle dc = new DrawCircle(this);
-        ll3.addView(dc);
+        fl.addView(dc);
 
 
         //ll.setBackgroundColor(Color.YELLOW);
@@ -338,6 +338,8 @@ public class MainActivity extends AppCompatActivity{
         @Override
         public void onDraw(Canvas canvas) {
             super.onDraw(canvas);
+            float x, y;
+            x = 
 
             for (int i = 0; i < totalHabit; i++) {
                 //DB에서 각 습관별 목표일수 뽑아옴
