@@ -504,26 +504,76 @@ public class MainActivity extends AppCompatActivity {
                 //X좌표 Y좌표 중앙 정렬
                 float X_Center = X + W/2;
                 float Y_Center = Y + H/2;
-                int index = 0;
+                int index_X = 0;
+                int index_Y = 0;
                 //1일 ~ 4일 반지름 100
 
-                if(Object_Days < 5) {
+                /*if(Object_Days < 5) {
                     paint.setColor(Color.RED);
                     for (int j = 0; j < Object_Days; j++) {
                         if(Object_Days == j+1)
                         {
                             for(int k = 0; k < Object_Days; k++)
                             {
-                                canvas.drawCircle(X_Center + index, Y_Center, 100, paint);
-                                index +=135;
-                                //canvas.drawCircle(X_Center, Y_Center, 100, paint);
+                                //canvas.drawCircle(X_Center + index, Y_Center, 100, paint);
+                                //index +=135;
+                                canvas.drawCircle(X_Center, Y_Center, 100, paint);
                             }
                         }
                     }
+                }*/
+
+                if(Object_Days < 5) {
+                    if(Object_Days == 1) {
+                        //중앙
+                        paint.setColor(Color.RED);
+                        canvas.drawCircle(X + W/2, Y + H/2 , 100, paint);
+                    }
+                    else if(Object_Days == 2) {
+                        //좌우 2개
+                        paint.setColor(Color.YELLOW);
+                        canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, paint);
+                        canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, paint);
+                    }
+                    else if(Object_Days == 3) {
+                        //3개
+                        paint.setColor(Color.BLACK);
+                        canvas.drawCircle(X + W/2 - 300, Y + H/2, 100, paint);
+                        canvas.drawCircle(X + W/2, Y + H/2, 100, paint);
+                        canvas.drawCircle(X + W/2 + 300, Y + H/2, 100, paint);
+                    }
+                    else if(Object_Days == 4) {
+                        //4개
+                        paint.setColor(Color.BLUE);
+                        canvas.drawCircle(X + W/2 - 400, Y + H/2, 100, paint);
+                        canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, paint);
+                        canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, paint);
+                        canvas.drawCircle(X + W/2 + 400, Y + H/2, 100, paint);
+                    }
                 }
 
-                /*//일단 수동으로 배치해봤고 자동화 할 것이다.
-                if(Object_Days < 5) {
+                index_X = -450;
+                if(Object_Days > 4 && Object_Days <15) {
+                    for(int a = 0; a<Object_Days; a++) {
+
+                        canvas.drawCircle(X + W/2 + index_X, Y + H/2 - 140 + index_Y , 55, paint);
+                        index_X +=150;
+                        if(a == 6) {index_X = -450; index_Y = 180;} //7개 이상부터 즉 8개부터 위치 변경
+                    }
+                }
+                else if(Object_Days >14) {
+                    for(int a = 0; a<Object_Days; a++) {
+
+                        canvas.drawCircle(X + W/2 + index_X, Y + H/2 - 140 + index_Y , 35, paint);
+                        index_X +=100;
+                        if(a == 9) {index_X = -450; index_Y = 100;} //10개 이상부터 즉 11개부터 위치 변경
+                        if(a == 19) {index_X = -450; index_Y = 200;}
+                        if(a == 29) {index_X = -450; index_Y = 300;}
+                    }
+                }
+
+                //일단 수동으로 배치해봤고 자동화 할 것이다.
+                /*if(Object_Days < 5) {
                     if(Object_Days == 1) {
                         //중앙
                         paint.setColor(Color.RED);
@@ -570,11 +620,17 @@ public class MainActivity extends AppCompatActivity {
                 /*else if(Object_Days < 15) {
                     if(Object_Days == 5) {
                         paint.setColor(Color.GREEN);
+
                         canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
                         canvas.drawCircle(X + W/2 - 300, Y + H/2 - 140 , 55, paint);
                         canvas.drawCircle(X + W/2 - 150, Y + H/2 - 140 , 55, paint);
                         canvas.drawCircle(X + W/2, Y + H/2 - 140 , 55, paint);
                         canvas.drawCircle(X + W/2 + 150, Y + H/2 - 140 , 55, paint);
+                        index = -450;
+                        for(int a = 0; a<Object_Days; a++) {
+                            canvas.drawCircle(X + W/2 + index, Y + H/2 - 140 , 55, paint);
+                            index +=150;
+                        }
                     }
                     else if(Object_Days == 6) {
                         canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
