@@ -10,7 +10,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -61,13 +63,13 @@ public class MainActivity extends AppCompatActivity{
         dbHelper = new DBHelper(this, 4);
         db = dbHelper.getWritableDatabase();
 
-        //다크모드 인수 가져옴
+        //DB에서 다크모드 인수 가져옴
         cursor = db.rawQuery("SELECT darkmode FROM Settings", null);
         while(cursor.moveToNext()) {
             isDarkmode = Integer.parseInt(cursor.getString(0));
         }
 
-        //총 습관 개수 뽑아옴
+        //DB에서 총 습관 개수 뽑아옴
         cursor = db.rawQuery("SELECT COUNT(id) FROM Habits", null);
         while(cursor.moveToNext()) {
             totalHabit = Integer.parseInt(cursor.getString(0));
@@ -90,7 +92,7 @@ public class MainActivity extends AppCompatActivity{
         sv = new ScrollView(this);
         sv = findViewById(R.id.sv);
 
-        //다크모드
+        //다크모드에 따른 배경색 변화
         if (isDarkmode == 0) {
             sv.setBackgroundColor(Color.parseColor("#FFEBD3"));
         }
@@ -100,7 +102,7 @@ public class MainActivity extends AppCompatActivity{
         }
 
 
-        //선형 레이아웃 생성
+        //선형 레이아웃 생성 (ll에 박스, ll2에 텍스트뷰 배치)
         ll = new LinearLayout(this);
         ll2 = new LinearLayout(this);
         ll = findViewById(R.id.ll);
@@ -119,59 +121,71 @@ public class MainActivity extends AppCompatActivity{
         if (totalHabit > 0) {
             boxBtnArr = new Button[totalHabit];
             txtViewArr = new TextView[totalHabit];
-            Space[] spaces = new Space[totalHabit];
+
 
             //px을 dp로 변환
-            int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,220,
-                    getResources().getDisplayMetrics());           //박스버튼 높이
-            int spaceHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,42,
-                    getResources().getDisplayMetrics());           //여백 높이
-
-            //습관제목 텍스트뷰 관련 dp값들 선언
-            int txtWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,210,
-                    getResources().getDisplayMetrics());
-            int paddingHor = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,24,
-                    getResources().getDisplayMetrics());
-            int marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,34,
-                    getResources().getDisplayMetrics());
-            int txtHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,46,
-                    getResources().getDisplayMetrics());
-            int marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,70,
+            //박스 관련 dp값 설정
+            int btn_Height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,220,
                     getResources().getDisplayMetrics());
             int btn_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,57,
                     getResources().getDisplayMetrics());
+            int btn_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,42,
+                    getResources().getDisplayMetrics());
+
+            //습관제목 텍스트뷰 관련 dp값 설정
+            int txt_Width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,210,
+                    getResources().getDisplayMetrics());
+            int txt_Height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,46,
+                    getResources().getDisplayMetrics());
+            int txt_paddingHor = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,24,
+                    getResources().getDisplayMetrics());
+            int txt_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,34,
+                    getResources().getDisplayMetrics());
+            int txt_marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,70,
+                    getResources().getDisplayMetrics());
             int txt_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,245,
                     getResources().getDisplayMetrics());
+
+
+
             Typeface typeface = Typeface.createFromAsset(getAssets(), "font/katuri.ttf");
 
-            LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
+
+
+            LinearLayout.LayoutParams btn_linearParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
             LinearLayout.LayoutParams txtView_linearParams = new LinearLayout.LayoutParams(
-                    txtWidth, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    txt_Width, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            //박스 마진 설정
+            btn_linearParams.setMargins(0, btn_marginTop, 0, btn_marginBottom);
+
+            //습관제목 텍스트뷰 마진 설정
+            txtView_linearParams.setMargins(txt_marginLeft, txt_marginTop, 0, txt_marginBottom);
 
 
-
-            //습관 수만큼 박스 생성
+            //습관 수만큼 박스 및 습관제목 텍스트뷰 생성
             for (int i = 0; i < totalHabit; i++) {
                 boxBtnArr[i] = new Button(this);
-                boxBtnArr[i].setHeight(height);
+                boxBtnArr[i].setHeight(btn_Height);
                 txtViewArr[i] = new TextView(this);
-                txtViewArr[i].setHeight(txtHeight);
-
-                linearParams.setMargins(0, btn_marginTop, 0, spaceHeight);
-
-                txtView_linearParams.setMargins(marginLeft, marginTop, 0, txt_marginBottom);
-                boxBtnArr[i].setLayoutParams(linearParams);
+                txtViewArr[i].setHeight(txt_Height);
+                boxBtnArr[i].setLayoutParams(btn_linearParams);
                 txtViewArr[i].setLayoutParams(txtView_linearParams);
+
+
+                //습관제목 텍스트뷰 각 속성들 설정
                 txtViewArr[i].setTypeface(typeface);
-                txtViewArr[i].setPadding(paddingHor, 0, paddingHor, 0);
+                txtViewArr[i].setPadding(txt_paddingHor, 0, txt_paddingHor, 0);
                 txtViewArr[i].setTextSize(20);
                 txtViewArr[i].setGravity(Gravity.CENTER);
                 txtViewArr[i].setTextColor(Color.WHITE);
-                txtViewArr[i].setAutoSizeTextTypeUniformWithConfiguration(15, 24, 2, TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM);
+                txtViewArr[i].setAutoSizeTextTypeUniformWithConfiguration(15, 24, 1, TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM);
                 txtViewArr[i].setMaxLines(1);
                 txtViewArr[i].setEllipsize(TextUtils.TruncateAt.END);
 
+
+                //DB에서 각 습관의 색깔값을 가져와서 적용
                 cursor = db.rawQuery("SELECT habitColor FROM Habits", null);
                 cursor.moveToPosition(i);
                 String strng = cursor.getString(0);
@@ -191,22 +205,23 @@ public class MainActivity extends AppCompatActivity{
                 }
 
 
-                //다크모드에 따른 버튼 색변경(임시)
+                //다크모드에 따른 박스 색변경(임시)
                 if (isDarkmode == 0) {
                     boxBtnArr[i].setBackgroundResource(R.drawable.custom_mainbox);
                 }
                 else {
                     boxBtnArr[i].setBackgroundResource(R.drawable.custom_mainbox_dark);
                 }
-                //태그설정
+
+                //각 박스 마다 태그설정
                 boxBtnArr[i].setTag("box_" + i);
                 cursor = db.rawQuery("SELECT habitName FROM Habits", null);
+
+                //DB에서 습관명 가져와서 텍스트뷰에 적용
                 cursor.moveToPosition(i);
                 txtViewArr[i].setText(cursor.getString(0));
 
-                spaces[i] = new Space(this);
-                spaces[i].setMinimumHeight(spaceHeight);
-                //ll.addView(spaces[i]);
+
                 ll.addView(boxBtnArr[i]);
                 ll2.addView(txtViewArr[i]);
 
@@ -225,8 +240,6 @@ public class MainActivity extends AppCompatActivity{
     @SuppressLint("ResourceType")
     protected void onResume() {
         super.onResume();
-        Log.d("total", String.valueOf(totalHabit));
-        Log.d("total", String.valueOf(isDarkmode));
         txtSettings = new TextView(this);
         txtSettings = findViewById(R.id.txtSettings);
         txtEdit = new TextView(this);
@@ -261,6 +274,8 @@ public class MainActivity extends AppCompatActivity{
         cursor.close();
     }
 
+
+    //뒤로가기 키 눌렀을 때 이벤트 설정
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -280,29 +295,16 @@ public class MainActivity extends AppCompatActivity{
         Intent intent = new Intent(MainActivity.this, CreateActivity.class);
         startActivity(intent);
     }
+
+
 }
 
 
 
 
-    /* 원 생성
-    @Override
-    protected void onDraw(Canvas canvas) {
-        Paint paint = new Paint();
 
-        setBackgroundColor(Color.BLACK);
-        paint.setColor(Color.parseColor("#578DC2"));
-        paint.setAntiAlias(true);
-        for (int i = 0; i < 30; i++) {
-            if (i < 10) {
-                canvas.drawCircle(215 + i * 110, 400, 32, paint);
-            } else if (10 <= i && i < 20) {
-                canvas.drawCircle(215 + i * 110 - 1100, 520, 32, paint);
-            } else if (20 <= i && i < 30) {
-                canvas.drawCircle(215 + i * 110 - 2200, 640, 32, paint);
-            }
-        }
-    }*/
+
+
 
 
 
