@@ -26,6 +26,7 @@ import static com.example.dotive.MainActivity.totalHabit;
 public class DrawCircle extends View {
     Paint paint;
     Cursor cursor;
+    Integer curObjDays;
     Integer[] objectDays = new Integer[totalHabit];
     float btn_x, btn_y;
 
@@ -58,16 +59,14 @@ public class DrawCircle extends View {
         db = dbHelper.getWritableDatabase();
 
 
-        paint.setColor(Color.GREEN);
-        paint.setAntiAlias(true);
-
         for (int i = 0; i < totalHabit; i++) {
 
+            //paint[i].setAntiAlias(true);
             //DB에서 각 습관별 목표일수 뽑아옴
             cursor = db.rawQuery("SELECT objDays FROM Habits", null);
             cursor.moveToPosition(i);
             objectDays[i] = Integer.parseInt(cursor.getString(0));
-
+            curObjDays = Integer.parseInt(cursor.getString(0));
             btn_x = MainActivity.boxBtnArr[i].getX();
             btn_y = MainActivity.boxBtnArr[i].getY();
             if (isDarkmode == 0) {
@@ -101,17 +100,28 @@ public class DrawCircle extends View {
 
             //습관개수 4~14개
             if (4 <= objectDays[i] && objectDays[i] <= 14) {
-                canvas.drawCircle(btn_x + btn_Width / 2, btn_y + btn_Height / 2, radius / 2, paint);
+                for (int j = 0; j < i; j++) {
+                    if (j < 7){
+                        canvas.drawCircle(btn_x + radius * (j + 1) * 1.2f, btn_y + btn_Height / 2 - radius, radius * 0.45f, paint);
+                    }
+                    else {
+                        canvas.drawCircle(btn_x + radius * (j - 6) * 1.2f, btn_y + btn_Height / 2 + radius * 0.7f, radius * 0.45f, paint);
+                    }
+                }
             }
 
             //습관개수 15~30개
             if (15 <= objectDays[i] && objectDays[i] <= 30) {
-                canvas.drawCircle(btn_x + btn_Width / 2, btn_y + btn_Height / 2, radius * 0.3f, paint);
+                for (int j = 0; j < i; j++) {
+                    canvas.drawCircle(btn_x + radius * (j + 2), btn_y + btn_Height / 2, radius * 0.3f, paint);
+                }
             }
 
             //습관개수 31개 이상(스크롤)
             if (31 <= objectDays[i]) {
-                canvas.drawCircle(btn_x + btn_Width / 2, btn_y + btn_Height / 2, radius * 0.3f, paint);
+                for (int j = 0; j < i; j++) {
+                    canvas.drawCircle(btn_x + radius * j, btn_y + btn_Height / 2, radius * 0.3f, paint);
+                }
             }
         }
     }
