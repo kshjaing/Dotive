@@ -1,5 +1,6 @@
 package com.example.dotive;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity{
     Button[] boxBtnArr;
     TextView[] txtViewArr;
     CustomMainBox[] mainBoxes;
+    Integer[] objectDays;
     String habitName;
 
 
@@ -63,6 +66,7 @@ public class MainActivity extends AppCompatActivity{
         dbHelper = new DBHelper(this, 4);
         db = dbHelper.getWritableDatabase();
 
+
         //DB에서 다크모드 인수 가져옴
         cursor = db.rawQuery("SELECT darkmode FROM Settings", null);
         while(cursor.moveToNext()) {
@@ -74,6 +78,7 @@ public class MainActivity extends AppCompatActivity{
         while(cursor.moveToNext()) {
             totalHabit = Integer.parseInt(cursor.getString(0));
         }
+
 
         //설정버튼 클릭이벤트 부여
         txtSettings = new TextView(this);
@@ -121,6 +126,7 @@ public class MainActivity extends AppCompatActivity{
         if (totalHabit > 0) {
             boxBtnArr = new Button[totalHabit];
             txtViewArr = new TextView[totalHabit];
+            objectDays = new Integer[totalHabit];
 
 
             //px을 dp로 변환
@@ -298,9 +304,43 @@ public class MainActivity extends AppCompatActivity{
         startActivity(intent);
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        
+
+
+
+    //원 그리기
+    public class DrawCircle extends View {
+        private Paint paint;
+
+        public DrawCircle(Context context) {
+            super(context);
+            init(context);
+        }
+
+        public DrawCircle(Context context, @Nullable AttributeSet attrs) {
+            super(context, attrs);
+            init(context);
+        }
+
+        private void init(Context context) {
+            paint = new Paint();
+        }
+
+        @Override
+        public void onDraw(Canvas canvas) {
+            super.onDraw(canvas);
+
+            for (int i = 0; i < totalHabit; i++) {
+                //DB에서 각 습관별 목표일수 뽑아옴
+                cursor = db.rawQuery("SELECT objDays FROM Habits", null);
+                while(cursor.moveToPosition(i))
+                    objectDays[i] = Integer.parseInt(cursor.getString(0));
+
+                if (0 < objectDays[i] && objectDays[i] < 5) {
+                    paint.setColor(Color.GREEN);
+                    canvas.drawCircle(0, 0, 100, paint);
+                }
+            }
+        }
     }
 }
 
