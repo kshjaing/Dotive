@@ -50,22 +50,18 @@ public class DrawCircle extends View {
 
         paint.setColor(Color.GREEN);
         paint.setAntiAlias(true);
-        canvas.drawCircle(100, 100, 100, paint);
 
-/*
         for (int i = 0; i < totalHabit; i++) {
 
             //DB에서 각 습관별 목표일수 뽑아옴
             cursor = db.rawQuery("SELECT objDays FROM Habits", null);
             cursor.moveToPosition(i);
                 objectDays[i] = cursor.getString(0);
-                Log.d("object", Arrays.toString(objectDays));
-                Log.d("object", String.valueOf(totalHabit));
 
-            btn_x = findViewById(R.id.ll).findViewWithTag("box_" + i).getX();
-            btn_y = findViewById(R.id.ll).findViewWithTag("box_" + i).getY();
+            btn_x = MainActivity.boxBtnArr[i].getX();
+            btn_y = MainActivity.boxBtnArr[i].getY();
             paint.setColor(Color.GREEN);
             canvas.drawCircle(btn_x + 170, btn_y + 100, 100, paint);
-        }*/
+        }
     }
 }

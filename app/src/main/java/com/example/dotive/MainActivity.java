@@ -46,8 +46,8 @@ public class MainActivity extends AppCompatActivity{
     ScrollView sv;
     LinearLayout ll, ll2, ll3;
     FrameLayout fl;
-    Button[] boxBtnArr;
-    TextView[] txtViewArr;
+    public static Button[] boxBtnArr;
+    public static TextView[] txtViewArr;
 
 
 
@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity{
                     getResources().getDisplayMetrics());
             int txt_paddingLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,24,
                     getResources().getDisplayMetrics());
-            int txt_paddingRight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,5,
+            int txt_paddingRight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,24,
                     getResources().getDisplayMetrics());
             int txt_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,34,
                     getResources().getDisplayMetrics());
@@ -188,9 +188,9 @@ public class MainActivity extends AppCompatActivity{
                 txtViewArr[i].setPadding(txt_paddingLeft, 0, txt_paddingRight, 0);
                 txtViewArr[i].setGravity(Gravity.CENTER);
                 txtViewArr[i].setTextColor(Color.WHITE);
-                txtViewArr[i].setAutoSizeTextTypeUniformWithConfiguration(15, 24, 1, TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM);
+                txtViewArr[i].setAutoSizeTextTypeUniformWithConfiguration(14, 22, 1, TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM);
                 txtViewArr[i].setMaxLines(1);
-                txtViewArr[i].setEllipsize(TextUtils.TruncateAt.END);
+                //txtViewArr[i].setEllipsize(TextUtils.TruncateAt.END);
 
 
                 //DB에서 각 습관의 색깔값을 가져와서 적용
