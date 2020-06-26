@@ -296,7 +296,9 @@ public class MainActivity extends AppCompatActivity{
         startActivity(intent);
     }
 
-
+    protected void onDraw(Canvas canvas) {
+        super(canvas);
+    }
 }
 
 
