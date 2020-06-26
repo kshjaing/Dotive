@@ -26,7 +26,10 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import org.w3c.dom.Text;
 
+import java.util.zip.DataFormatException;
+
 import static com.example.dotive.MainActivity.context_main;
+import static com.example.dotive.MainActivity.currentDate;
 import static com.example.dotive.MainActivity.db;
 import static com.example.dotive.MainActivity.isDarkmode;
 
@@ -213,7 +216,7 @@ public class CreateActivity extends Activity {
     //Habits 테이블에 습관 추가
     public void dbInsertHabits(String habitName, String habitColor, Integer objDays, String habitProgress) {
         MainActivity.dbHelper.getWritableDatabase();
-        db.execSQL("INSERT INTO Habits (habitName, habitColor, objDays, habitProgress) Values ('" + habitName + "', '" + habitColor + "', '" + objDays + "', '" + habitProgress + "');");
+        db.execSQL("INSERT INTO Habits (habitName, habitColor, objDays, habitProgress, createDate) Values ('" + habitName + "', '" + habitColor + "', '" + objDays + "', '" + habitProgress + "', CURRENT_TIMESTAMP);");
     }
 }
 

@@ -15,7 +15,7 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE Habits (id INTEGER PRIMARY KEY AUTOINCREMENT, habitName TEXT, habitColor TEXT," +
-                "objDays INTEGER, habitProgress TEXT)");
+                "objDays INTEGER, habitProgress TEXT, createDate TEXT)");
         db.execSQL("CREATE TABLE Settings (darkmode INTEGER, habitStrength TEXT, language TEXT)");
     }
 

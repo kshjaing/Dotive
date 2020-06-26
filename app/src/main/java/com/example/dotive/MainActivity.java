@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity{
                     getResources().getDisplayMetrics());
             int txt_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,34,
                     getResources().getDisplayMetrics());
-            int txt_marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,70,
+            int txt_marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,75,
                     getResources().getDisplayMetrics());
             int txt_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,245,
                     getResources().getDisplayMetrics());
