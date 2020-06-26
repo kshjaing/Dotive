@@ -101,7 +101,7 @@ public class SettingsActivity extends Activity {
             @Override
             public void onClick(View v) {
                 totalHabit = 0;
-                deleteHabits();
+                truncateHabits();
                 Toast.makeText(SettingsActivity.this, "모든 데이터가 초기화되었습니다!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -132,9 +132,11 @@ public class SettingsActivity extends Activity {
 
 
     //Habits 테이블의 모든 데이터 지우기
-    public void deleteHabits() {
+    public void truncateHabits() {
         MainActivity.dbHelper.getWritableDatabase();
-        db.execSQL("DELETE FROM Habits");
+        db.execSQL("DROP TABLE Habits");
+        db.execSQL("CREATE TABLE Habits (id INTEGER PRIMARY KEY AUTOINCREMENT, habitName TEXT, habitColor TEXT," +
+                "objDays INTEGER, habitProgress TEXT)");
     }
 
     public void insertSettings() {

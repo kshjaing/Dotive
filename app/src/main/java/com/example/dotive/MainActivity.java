@@ -107,15 +107,11 @@ public class MainActivity extends AppCompatActivity{
         fl = new FrameLayout(this);
         ll = new LinearLayout(this);
         ll2 = new LinearLayout(this);
-        ll3 = new LinearLayout(this);
         fl = findViewById(R.id.fl);
         ll = findViewById(R.id.ll);
         ll2 = findViewById(R.id.ll2);
-        ll3 = findViewById(R.id.ll3);
-        ll3.setBackgroundColor(Color.GREEN);
 
-        DrawCircle dc = new DrawCircle(this);
-        fl.addView(dc);
+
 
 
         //ll.setBackgroundColor(Color.YELLOW);
@@ -233,7 +229,8 @@ public class MainActivity extends AppCompatActivity{
                 cursor.moveToPosition(i);
                 txtViewArr[i].setText(cursor.getString(0));
 
-
+                DrawCircle dc = new DrawCircle(this);
+                fl.addView(dc);
                 ll.addView(boxBtnArr[i]);
                 ll2.addView(txtViewArr[i]);
 
@@ -308,6 +305,7 @@ public class MainActivity extends AppCompatActivity{
     public void ibtnPlus_onClick(View view) {
         Intent intent = new Intent(MainActivity.this, CreateActivity.class);
         startActivity(intent);
+        Log.d("total", String.valueOf(totalHabit));
     }
 }
 
