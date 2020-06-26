@@ -235,8 +235,11 @@ public class MainActivity extends AppCompatActivity{
                 cursor.moveToPosition(i);
                 txtViewArr[i].setText(cursor.getString(0));
 
+
+                //DrawCircle 클래스 객체 생성해서 레이아웃에 원 배치
                 DrawCircle dc = new DrawCircle(this);
                 fl.addView(dc);
+
                 ll.addView(boxBtnArr[i]);
                 ll2.addView(txtViewArr[i]);
 

@@ -37,10 +37,8 @@ public class CreateActivity extends Activity {
     EditText edtHabitName, edtObjectDays;
     TextView txtHabit, txtObjdays;
     ImageButton red, orange, green, blue, purple, gray;
-    Integer intRed, intOrange, intGreen, intBlue, intPurple, intGray = 0;
     Integer objectDays = 1;
     String curColor = "red";
-    DBInterface DBin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
