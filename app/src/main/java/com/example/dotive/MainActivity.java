@@ -39,15 +39,15 @@ public class MainActivity extends AppCompatActivity{
     public static Integer isDarkmode = 0;   //다크모드 여부, 0이 false, 1이 true
     public static SQLiteDatabase db = null;
     public static DBHelper dbHelper;
+    public static Button[] boxBtnArr;       //습관전체 박스
+    public static TextView[] txtViewArr;    //습관명 텍스트뷰
+    public static String habitProgress;     //습관 진행도 표현 문자열
     Cursor cursor;
-
-    Space space;
     TextView txtSettings, txtEdit;
     ScrollView sv;
-    LinearLayout ll, ll2, ll3;
+    LinearLayout ll, ll2;
     FrameLayout fl;
-    public static Button[] boxBtnArr;
-    public static TextView[] txtViewArr;
+
 
 
 
@@ -63,16 +63,22 @@ public class MainActivity extends AppCompatActivity{
         db = dbHelper.getWritableDatabase();
 
 
-        //DB에서 다크모드 인수 가져옴
+        //DB에서 '다크모드' 인수 가져와서 변수 초기화
         cursor = db.rawQuery("SELECT darkmode FROM Settings", null);
         while(cursor.moveToNext()) {
             isDarkmode = Integer.parseInt(cursor.getString(0));
         }
 
-        //DB에서 총 습관 개수 뽑아옴
+        //DB에서 '총 습관 개수' 가져와서 변수 초기화
         cursor = db.rawQuery("SELECT COUNT(id) FROM Habits", null);
         while(cursor.moveToNext()) {
             totalHabit = Integer.parseInt(cursor.getString(0));
+        }
+
+        //DB에서 '습관 진행도' 문자열 가져와서 변수 초기화
+        cursor = db.rawQuery("SELECT habitProgress FROM Habits", null);
+        while(cursor.moveToNext()) {
+            habitProgress = cursor.getString(0);
         }
 
 

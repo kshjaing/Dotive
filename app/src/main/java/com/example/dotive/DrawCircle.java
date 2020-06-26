@@ -18,6 +18,7 @@ import java.util.Arrays;
 import static com.example.dotive.MainActivity.context_main;
 import static com.example.dotive.MainActivity.db;
 import static com.example.dotive.MainActivity.dbHelper;
+import static com.example.dotive.MainActivity.isDarkmode;
 import static com.example.dotive.MainActivity.totalHabit;
 
 public class DrawCircle extends View {
@@ -56,11 +57,16 @@ public class DrawCircle extends View {
             //DB에서 각 습관별 목표일수 뽑아옴
             cursor = db.rawQuery("SELECT objDays FROM Habits", null);
             cursor.moveToPosition(i);
-                objectDays[i] = cursor.getString(0);
+            objectDays[i] = cursor.getString(0);
 
             btn_x = MainActivity.boxBtnArr[i].getX();
             btn_y = MainActivity.boxBtnArr[i].getY();
-            paint.setColor(Color.GREEN);
+            if (isDarkmode == 0) {
+                paint.setColor(Color.parseColor("#d9d9d9"));
+            }
+            else {
+                paint.setColor(Color.parseColor("#7b879b"));
+            }
             canvas.drawCircle(btn_x + 170, btn_y + 100, 100, paint);
         }
     }
