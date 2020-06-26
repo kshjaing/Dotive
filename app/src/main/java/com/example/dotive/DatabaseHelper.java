@@ -16,8 +16,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String Habits_COLOR = "habitColor"; //습관 색깔
     public static final String Habits_OBJDAYS = "objDays"; //목표 일수
     public static final String Habits_PROGRESS = "habitProgress"; //습관 진행도
+    public static final String Habits_CREATEDAYS = "habitCreateDay"; //습관 생성 날짜
 
-    public static final String[] ALL_COLUMNS = {Habits_ID, Habits_NAME, Habits_COLOR, Habits_OBJDAYS,Habits_PROGRESS};
+    public static final String[] ALL_COLUMNS = {Habits_ID, Habits_NAME, Habits_COLOR, Habits_OBJDAYS,Habits_PROGRESS, Habits_CREATEDAYS};
 
     private static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE_NAME + " (" +
@@ -25,7 +26,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     Habits_NAME + " TEXT, " +
                     Habits_COLOR + " TEXT, " +
                     Habits_OBJDAYS + " INTEGER, " +
-                    Habits_PROGRESS + " TEXT)";
+                    Habits_PROGRESS + " TEXT, " +
+                    Habits_CREATEDAYS + " TEXT " + ")";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

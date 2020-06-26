@@ -42,7 +42,11 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /*
  * 20200624 수정
@@ -65,15 +69,9 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout linearLayout;
     Button Btn_Habit_Add;
     Button[] Arr_Btn_Habit;
-    Button button1;
-    Button button2;
 
     LinearLayout linearLayout2;
     TextView[] Arr_TextView_Habit_Name;
-    TextView textView1;
-    TextView textView2;
-
-    LinearLayout linearLayout3;  //이 값은 버튼 위에 paint 대신 버튼을 뿌린다.
 
     //습관 개수에따라 버튼 증가
     static int TotalHabit = 1;
@@ -88,13 +86,16 @@ public class MainActivity extends AppCompatActivity {
     //int edit_Habit_Day_Num = 0; //습관 목표일 수
     String edit_Habit_Day_Num = ""; //습관 목표일 수
     String Habit_Progress = "";
+    String Habit_Create_Day = "";// 습관 생성 날짜
 
     //DB에서 받아온 값
     String[] Arr_Habit_Name = {};//습관명
     String[] Arr_Habit_Color = {};//습관 색깔
     String[] Arr_edit_Habit_Day_Num = {}; //습관 목표일 수
     String[] Arr_Habit_Progress = {}; //습관 진행도
+    String[] Arr_Habit_Create_Day = {}; //습관 생성 날짜
 
+    long count; //생성날짜 오늘날짜 차이
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,16 +127,18 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("습관 목표일 수 " + i, Integer.toString(Arr_edit_Habit_Day_Num[i]));
             }*/
 
+            //DB에서 받은 값 확인
             Log.e("MainActivity.java", "Habit_Name : " + Habit_Name);
             Log.e("MainActivity.java", "Habit_Color : " + Habit_Color);
             Log.e("MainActivity.java", "edit_Habit_Day_Num : " + edit_Habit_Day_Num);
             Log.e("MainActivity.java", "Habit_Progress 습관 진행도: " + Habit_Progress);
+            Log.e("MainActivity.java", "habitCreateDay : " + Habit_Create_Day);
 
             Arr_Habit_Name = Habit_Name.split("_");
             Arr_Habit_Color = Habit_Color.split("_");
             Arr_edit_Habit_Day_Num = edit_Habit_Day_Num.split("_");
             Arr_Habit_Progress = Habit_Progress.split("_");
-
+            Arr_Habit_Create_Day = Habit_Create_Day.split("_");
         } else {
             Intent intent2 = new Intent(MainActivity.this, CreateActivity.class);
             startActivity(intent2);
@@ -157,10 +160,6 @@ public class MainActivity extends AppCompatActivity {
         //버튼위에 제목 (물 1L 마시기 등)
         linearLayout2 = (LinearLayout) view_main.findViewById(R.id.linearLayout2);
 
-        /*button1 = new Button(this);
-        button2 = new Button(this);
-        textView1 = new TextView(this);
-        textView2 = new TextView(this);*/
 
         Painting_Circle1 painting_circle = new Painting_Circle1(this); //CustomView.java 파일을 불러와 실행
 
@@ -182,28 +181,9 @@ public class MainActivity extends AppCompatActivity {
         linearLayout.addView(actionview);
 
 
-        /*linearLayout.addView(button1);
-        linearLayout.addView(button2);
-
-        linearLayout2.addView(textView1);
-        linearLayout2.addView(textView2);*/
-
         //java 코드로 폰트 설정 (xml 에서 fontFamily)
         Typeface typeface = Typeface.createFromAsset(getAssets(), "font/katuri.ttf");
 
-        //버튼 명, 버튼 id 설정
-
-        /*button1.setText(Habit_Name);
-        button1.setTypeface(typeface);
-
-        button2.setText("다이어트");
-        button2.setTypeface(typeface);
-
-        textView1.setText(Habit_Name);
-        textView1.setTypeface(typeface);
-
-        textView2.setText(Habit_Name);
-        textView2.setTypeface(typeface);*/
 
         //이렇게 안하면 픽셀로 값이 저장되기에 dp로 계산하는 것. value에서 원하는 숫자로 고치면 됨.
         //dp 값으로 가져오기
@@ -221,35 +201,6 @@ public class MainActivity extends AppCompatActivity {
         int textView_btn_margin_left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 115, getResources().getDisplayMetrics());
         int textView_btn_margin_bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 160, getResources().getDisplayMetrics());
         int textView_btn_margin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 70, getResources().getDisplayMetrics());
-
-        //버튼들의 너비 높이 정함.
-        /*button1.setWidth(width);
-        button1.setHeight(height);
-
-        button2.setWidth(width);
-        button2.setHeight(height);
-
-        textView1.setWidth(textView_width);
-        textView1.setHeight(textView_height);
-        textView1.setGravity(Gravity.CENTER);
-
-        textView2.setWidth(textView_width);
-        textView2.setHeight(textView_height);
-        textView2.setGravity(Gravity.CENTER);*/
-
-        //버튼 백그라운드 설정 = radius 값 설정을 위해 필요 (버튼 둥글게 하기 위해 xml으로 새로 짜야함)
-        /*button1.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.radius));
-        button2.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.radius));
-
-        textView1.setBackground(ContextCompat.getDrawable(this, R.drawable.textview_custom_css)); //StateListDrawable 속성이지만
-        textView2.setBackground(ContextCompat.getDrawable(this, R.drawable.textview_custom_css));*/
-
-        //textview 제목 컬러 지정
-        /*GradientDrawable bgShape = (GradientDrawable) textView1.getBackground().getCurrent(); //GradientDrawable 그대로 하면 오류남 마지막에 .getCurrent() 중요
-        bgShape.setColor(Habit_Color);
-
-        bgShape = (GradientDrawable) textView2.getBackground().getCurrent();
-        bgShape.setColor(Habit_Color);*/
 
 
         //margin 설정을 위해 (margin을 Layout에서 부모값을 정하고 그곳에 마진을 아까 dp 계산한 int 값으로 지정.)
@@ -269,54 +220,14 @@ public class MainActivity extends AppCompatActivity {
         Button_LinearParams.bottomMargin = btn_margin_bottom;
         Button_LinearParams.topMargin = btn_margin_top;
 
-        //각각의 버튼들에게 위에 계산된 마진을 추가해줌.
-        /*button1.setLayoutParams(Button_LinearParams);
-        button2.setLayoutParams(Button_LinearParams);*/
-
         //margin 값 dp로 설정해주는중. textview 적용 (물 1L 마시기)
         textView_LinearParams.leftMargin = textView_btn_margin_left; //size
         textView_LinearParams.bottomMargin = textView_btn_margin_bottom;
         textView_LinearParams.topMargin = textView_btn_margin_top;
 
-        /*textView1.setLayoutParams(textView_LinearParams);
-        textView2.setLayoutParams(textView_LinearParams);*/
-
         int Table_Count = Habits_Table_Count;
         Arr_Btn_Habit = new Button[Table_Count - 1];
         Arr_TextView_Habit_Name = new TextView[Table_Count - 1];
-
-        /*//페인트 버튼 생성 (버튼 위에 Paint 대신)
-        //int Button_Count = Integer.parseInt(edit_Habit_Day_Num);
-        //버튼 카운트는 버튼 생성 개수이며 for문을 돌려 총 습관 수만큼 반복하여
-        //그 수마다 각각의 습관 목표일 수를 저장한다.
-
-
-        //Button[] Arr_Paint_Button = {};
-        //Button[] Arr_Paint_Button = new Button[Button_Count]; //페인트 버튼
-        ArrayList<Button> list = new ArrayList<Button>();
-
-
-        //test 버튼 위에 버튼 뿌리기
-        for(int i = 0; i< Integer.parseInt(edit_Habit_Day_Num); i++) {
-            Arr_Paint_Button[i] = new Button(this);
-        }
-        linearLayout3 = new LinearLayout(this);
-        linearLayout3.setOrientation(LinearLayout.VERTICAL);
-        frameLayout.addView(linearLayout3); //페인트 버튼을 뿌릴 공간
-
-        for(int i = 0; i< Table_Count - 1; i++) {
-            int Button_Count = Integer.parseInt(Arr_edit_Habit_Day_Num[i]); //각각의 습관의 목표일 수를 계속 변하여 저장.
-            Button[] Arr_Paint_Button = list.toArray(new Button[i]);
-            Arr_Paint_Button[i] = new Button(this);
-            //Log.e("test","여기까진 도달");
-            for(int j = 0; j< Button_Count; j++) {
-                linearLayout3.addView(Arr_Paint_Button[0]); //Arr_Paint_Button[0] 이거 달라야 에러안떠
-            }
-        }
-/*for(int j = 0; j < Button_Count; j++) { //목표일 수 만큼 페인트 버튼 생성
-                Arr_Paint_Button[j] = new Button(this);
-                linearLayout3.addView(Arr_Paint_Button[i]);
-            }*/
 
 
         for (int i = 0; i < Table_Count - 1; i++) {
@@ -324,6 +235,7 @@ public class MainActivity extends AppCompatActivity {
             //습관 버튼 인스턴스 초기화
             Arr_Btn_Habit[i] = new Button(this);
             linearLayout.addView(Arr_Btn_Habit[i]);
+
 
             //습관 제목 텍스트뷰 인스턴스 초기화
             Arr_TextView_Habit_Name[i] = new TextView(this);
@@ -362,6 +274,8 @@ public class MainActivity extends AppCompatActivity {
             //습관 제목 텍스트뷰 절대 좌표
             Arr_TextView_Habit_Name[i].setLayoutParams(textView_LinearParams);
 
+
+
             final int a = i; //final 에러 방지 로컬변수로 선언해서 사용함.
 
             //습관 버튼 클릭 리스너
@@ -386,8 +300,6 @@ public class MainActivity extends AppCompatActivity {
         //Btn_Habit_Add.setGravity(Gravity.RIGHT);
 
         linearLayout.addView(Btn_Habit_Add);
-
-
         //습관 추가 버튼 클릭 리스너
         Btn_Habit_Add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -431,7 +343,7 @@ public class MainActivity extends AppCompatActivity {
             String uriString = "content://com.example.dotive/Habits";
             Uri uri = new Uri.Builder().build().parse(uriString);
 
-            String[] columns = new String[]{"habitName", "habitColor", "objDays", "habitProgress"};
+            String[] columns = new String[]{"habitName", "habitColor", "objDays", "habitProgress","habitCreateDay"};
             Cursor cursor = getContentResolver().query(uri, columns, null, null, "id ASC");
             Log.e("MainActivity.java", "QUERY 결과 : " + cursor.getCount());
 
@@ -442,13 +354,15 @@ public class MainActivity extends AppCompatActivity {
                 String habitColor = cursor.getString(cursor.getColumnIndex(columns[1]));
                 int objDays = cursor.getInt(cursor.getColumnIndex(columns[2]));
                 String habitProgress = cursor.getString(cursor.getColumnIndex(columns[3]));
+                String habitCreateDay = cursor.getString(cursor.getColumnIndex(columns[4]));
 
                 Habit_Name += habitName + "_"; //습관명
                 Habit_Color += habitColor + "_"; //습관 색깔
                 edit_Habit_Day_Num += objDays + "_"; //습관 목표일 수
                 Habit_Progress += habitProgress + "_"; //습관 진행도
+                Habit_Create_Day += habitCreateDay + "_"; //습관 생성 날짜
 
-                Log.e("MainActivity.java", "레코드 " + index + " :" + habitName + ", " + habitColor + ", " + objDays + ", " + habitProgress);
+                Log.e("MainActivity.java", "레코드 " + index + " :" + habitName + ", " + habitColor + ", " + objDays + ", " + habitProgress + ", " + habitCreateDay);
                 index += 1;
             }
             Habits_Table_Count = index;
@@ -463,6 +377,7 @@ public class MainActivity extends AppCompatActivity {
 
     public class Painting_Circle1 extends View {
         private Paint paint;
+        private Paint stroke;
 
         public Painting_Circle1(Context context) {
             super(context);
@@ -496,283 +411,111 @@ public class MainActivity extends AppCompatActivity {
                 //버튼 width, height
                 int W = Arr_Btn_Habit[i].getWidth();
                 int H = Arr_Btn_Habit[i].getHeight();
-                //W/2 H/2 Center
 
+                //목표일
                 int Object_Days = Integer.parseInt(Arr_edit_Habit_Day_Num[i]);
+
+                //습관 생성날짜 계산
+
+                final int ONE_DAY = 24 * 60 * 60 * 1000;
+
+                //날짜 배열로 저장
+                String[] Y_M_D =  Arr_Habit_Create_Day[i].split("-");
+
+                //DB에 저장된 날짜들 (습관 생성한 날)
+                int year = Integer.parseInt(Y_M_D[0]);
+                int month = Integer.parseInt(Y_M_D[1]);
+                int day = Integer.parseInt(Y_M_D[2]);;
+
+                //포맷
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                Calendar Create_dayCal = Calendar.getInstance(); //생성 날짜
+                //String a = simpleDateFormat.format(Create_dayCal.getTime()); //db에 생성 날짜 저장 이렇게
+                Calendar dDayCal = Calendar.getInstance(); //오늘 날짜
+
+                month -= 1; //달력
+
+                Create_dayCal.set(year,month,day); //생성 날짜 입력
+                Log.e("테스트",simpleDateFormat.format(Create_dayCal.getTime()) +"");
+                Log.e("테스트", simpleDateFormat.format(dDayCal.getTime()) + "");
+
+                long today = Create_dayCal.getTimeInMillis()/ONE_DAY;
+                long dday = dDayCal.getTimeInMillis()/ONE_DAY;
+                count = dday - today;
+                Log.e("테스트 마지막",count + "");
+
                 //원을 그린다.
 
-                //X좌표 Y좌표 중앙 정렬
-                float X_Center = X + W/2;
-                float Y_Center = Y + H/2;
                 int index_X = 0;
                 int index_Y = 0;
-                //1일 ~ 4일 반지름 100
 
-                /*if(Object_Days < 5) {
-                    paint.setColor(Color.RED);
-                    for (int j = 0; j < Object_Days; j++) {
-                        if(Object_Days == j+1)
-                        {
-                            for(int k = 0; k < Object_Days; k++)
-                            {
-                                //canvas.drawCircle(X_Center + index, Y_Center, 100, paint);
-                                //index +=135;
-                                canvas.drawCircle(X_Center, Y_Center, 100, paint);
-                            }
-                        }
-                    }
-                }*/
+                //1일 ~ 4일 반지름 100
+                paint.setStyle(Paint.Style.FILL);
+                paint.setColor(Color.GRAY);
+                stroke.setStyle(Paint.Style.STROKE);
+                stroke.setColor(Color.GREEN);
+                stroke.setStrokeWidth(10);
 
                 if(Object_Days < 5) {
                     if(Object_Days == 1) {
-                        //중앙
-                        paint.setColor(Color.RED);
                         canvas.drawCircle(X + W/2, Y + H/2 , 100, paint);
+                        if(count == 0) canvas.drawCircle(X + W/2, Y + H/2 , 100, stroke);
                     }
                     else if(Object_Days == 2) {
-                        //좌우 2개
-                        paint.setColor(Color.YELLOW);
                         canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, paint);
                         canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, paint);
+                        if(count == 0) canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, stroke);
+                        if(count == 1) canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, stroke);
                     }
                     else if(Object_Days == 3) {
-                        //3개
-                        paint.setColor(Color.BLACK);
                         canvas.drawCircle(X + W/2 - 300, Y + H/2, 100, paint);
                         canvas.drawCircle(X + W/2, Y + H/2, 100, paint);
                         canvas.drawCircle(X + W/2 + 300, Y + H/2, 100, paint);
+                        if(count == 0) canvas.drawCircle(X + W/2 - 300, Y + H/2, 100, stroke);
+                        if(count == 1) canvas.drawCircle(X + W/2, Y + H/2, 100, stroke);
+                        if(count == 2) canvas.drawCircle(X + W/2 + 300, Y + H/2, 100, stroke);
                     }
                     else if(Object_Days == 4) {
-                        //4개
-                        paint.setColor(Color.BLUE);
                         canvas.drawCircle(X + W/2 - 400, Y + H/2, 100, paint);
                         canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, paint);
                         canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, paint);
                         canvas.drawCircle(X + W/2 + 400, Y + H/2, 100, paint);
+                        if(count == 0) canvas.drawCircle(X + W/2 - 400, Y + H/2, 100, stroke);
+                        if(count == 1) canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, stroke);
+                        if(count == 2) canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, stroke);
+                        if(count == 3) canvas.drawCircle(X + W/2 + 400, Y + H/2, 100, stroke);
                     }
                 }
 
                 index_X = -450;
                 if(Object_Days > 4 && Object_Days <15) {
-                    for(int a = 0; a<Object_Days; a++) {
+                    for(int b = 0; b<Object_Days; b++) {
 
                         canvas.drawCircle(X + W/2 + index_X, Y + H/2 - 140 + index_Y , 55, paint);
+                        //현재 날짜에 테두리
+                        if(count == b) canvas.drawCircle(X + W/2 + index_X, Y + H/2 - 140 + index_Y , 55, stroke);
                         index_X +=150;
-                        if(a == 6) {index_X = -450; index_Y = 180;} //7개 이상부터 즉 8개부터 위치 변경
+                        if(b == 6) {index_X = -450; index_Y = 180;} //7개 이상부터 즉 8개부터 위치 변경
                     }
                 }
                 else if(Object_Days >14) {
-                    for(int a = 0; a<Object_Days; a++) {
+                    for(int b = 0; b<Object_Days; b++) {
 
                         canvas.drawCircle(X + W/2 + index_X, Y + H/2 - 140 + index_Y , 35, paint);
+                        if(count == b) canvas.drawCircle(X + W/2 + index_X, Y + H/2 - 140 + index_Y , 35, stroke);
                         index_X +=100;
-                        if(a == 9) {index_X = -450; index_Y = 100;} //10개 이상부터 즉 11개부터 위치 변경
-                        if(a == 19) {index_X = -450; index_Y = 200;}
-                        if(a == 29) {index_X = -450; index_Y = 300;}
+                        if(b == 9) {index_X = -450; index_Y = 100;} //10개 이상부터 즉 11개부터 위치 변경
+                        if(b == 19) {index_X = -450; index_Y = 200;}
+                        if(b == 29) { index_X = -450; index_Y = 300; break;} //31일 이상부터 그리지마
                     }
                 }
-
-                //일단 수동으로 배치해봤고 자동화 할 것이다.
-                /*if(Object_Days < 5) {
-                    if(Object_Days == 1) {
-                        //중앙
-                        paint.setColor(Color.RED);
-                        canvas.drawCircle(X + W/2, Y + H/2 , 100, paint);
-                    }
-                    else if(Object_Days == 2) {
-                        //좌우 2개
-                        paint.setColor(Color.YELLOW);
-                        canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, paint);
-                        canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, paint);
-                    }
-                    else if(Object_Days == 3) {
-                        //3개
-                        paint.setColor(Color.BLACK);
-                        canvas.drawCircle(X + W/2 - 300, Y + H/2, 100, paint);
-                        canvas.drawCircle(X + W/2, Y + H/2, 100, paint);
-                        canvas.drawCircle(X + W/2 + 300, Y + H/2, 100, paint);
-                    }
-                    else if(Object_Days == 4) {
-                        //4개
-                        paint.setColor(Color.BLUE);
-                        canvas.drawCircle(X + W/2 - 400, Y + H/2, 100, paint);
-                        canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, paint);
-                        canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, paint);
-                        canvas.drawCircle(X + W/2 + 400, Y + H/2, 100, paint);
-                    }
-                } //5일 ~ 14일 반지름 50*/
-                //아래 주석은 14일치
-                /*canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 300, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 150, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 150, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 300, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 450, Y + H/2 - 140 , 55, paint);
-
-                        canvas.drawCircle(X + W/2 - 450, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 300, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 150, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 150, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 300, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 450, Y + H/2 + 40 , 55, paint);*/
-                /*else if(Object_Days < 15) {
-                    if(Object_Days == 5) {
-                        paint.setColor(Color.GREEN);
-
-                        canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 300, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 150, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 150, Y + H/2 - 140 , 55, paint);
-                        index = -450;
-                        for(int a = 0; a<Object_Days; a++) {
-                            canvas.drawCircle(X + W/2 + index, Y + H/2 - 140 , 55, paint);
-                            index +=150;
-                        }
-                    }
-                    else if(Object_Days == 6) {
-                        canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 300, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 150, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 150, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 300, Y + H/2 - 140 , 55, paint);
-                    }
-                    else if(Object_Days == 7) {
-                        canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 300, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 150, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 150, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 300, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 450, Y + H/2 - 140 , 55, paint);
-                    }
-                    else if(Object_Days == 8) {
-                        canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 300, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 150, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 150, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 300, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 450, Y + H/2 - 140 , 55, paint);
-
-                        canvas.drawCircle(X + W/2 - 450, Y + H/2 + 40 , 55, paint);
-                    }
-                    else if(Object_Days == 9) {
-                        canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 300, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 150, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 150, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 300, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 450, Y + H/2 - 140 , 55, paint);
-
-                        canvas.drawCircle(X + W/2 - 450, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 300, Y + H/2 + 40 , 55, paint);
-                    }
-                    else if(Object_Days == 10) {
-                        canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 300, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 150, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 150, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 300, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 450, Y + H/2 - 140 , 55, paint);
-
-                        canvas.drawCircle(X + W/2 - 450, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 300, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 150, Y + H/2 + 40 , 55, paint);
-                    }
-                    else if(Object_Days == 11) {
-                        canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 300, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 150, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 150, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 300, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 450, Y + H/2 - 140 , 55, paint);
-
-                        canvas.drawCircle(X + W/2 - 450, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 300, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 150, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2, Y + H/2 + 40 , 55, paint);
-                    }
-                    else if(Object_Days == 12) {
-                        canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 300, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 150, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 150, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 300, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 450, Y + H/2 - 140 , 55, paint);
-
-                        canvas.drawCircle(X + W/2 - 450, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 300, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 150, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 150, Y + H/2 + 40 , 55, paint);
-                    }
-                    else if(Object_Days == 13) {
-                        canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 300, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 150, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 150, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 300, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 450, Y + H/2 - 140 , 55, paint);
-
-                        canvas.drawCircle(X + W/2 - 450, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 300, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 150, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 150, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 300, Y + H/2 + 40 , 55, paint);
-                    }
-                    else if (Object_Days == 14) {
-                        canvas.drawCircle(X + W/2 - 450, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 300, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 150, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 150, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 300, Y + H/2 - 140 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 450, Y + H/2 - 140 , 55, paint);
-
-                        canvas.drawCircle(X + W/2 - 450, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 300, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2 - 150, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 150, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 300, Y + H/2 + 40 , 55, paint);
-                        canvas.drawCircle(X + W/2 + 450, Y + H/2 + 40 , 55, paint);
-                    }
-                } //15일 이상 반지름 35
-                else if(Object_Days > 14) {
-                    //canvas Draw
-                    //이 부분도 10일치 모양이 완성되면 그 패턴에 맞춰서 계속 증가만 시키면 된다.
-                }*/
             }
-
-
-
-            /*Y = Arr_Btn_Habit[0].getY();
-            X = Arr_Btn_Habit[0].getX();
-            //원을 그린다.
-
-            //1일 ~ 4일 반지름 100
-            //5일 ~ 14일 반지름 50
-            //15일 ~ 무한정 반지름 35
-            paint.setColor(Color.RED);
-            canvas.drawCircle(X + 150, Y + 200, 35, paint);
-            paint.setColor(Color.RED);
-            canvas.drawCircle(X + 300, Y + 200, 50, paint);
-            paint.setColor(Color.RED);
-            canvas.drawCircle(X + 450, Y + 200, 100, paint);*/
         }
 
         private void init(Context context) {
             paint = new Paint();
+            stroke = new Paint();
         }
     }
 }

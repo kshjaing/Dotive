@@ -70,7 +70,7 @@ public class Provider extends ContentProvider {
         * */
         switch (uriMatcher.match(uri)) {
             case HABITS:
-                return "vnd.android.cursor.dir/persons";
+                return "vnd.android.cursor.dir/Habits";
             default:
                 throw new IllegalArgumentException("알 수 없는 URI " + uri);
         }

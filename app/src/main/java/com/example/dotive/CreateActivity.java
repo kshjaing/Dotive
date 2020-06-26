@@ -18,7 +18,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import petrov.kristiyan.colorpicker.ColorPicker;
 
@@ -151,6 +153,7 @@ public class CreateActivity extends AppCompatActivity {
         values.put("objDays", edit_Habit_Day_Num.getText().toString()); //습관 목표일 수
         Log.e("CreateActivity.java","습관 목표일 수 : " + edit_Habit_Day_Num.getText().toString());
 
+
         int progress = Integer.parseInt(edit_Habit_Day_Num.getText().toString());
 
         //습관 목표일 수 만큼 0을 그려서 habitsProgress 값에 문자열으로 저장.
@@ -162,6 +165,17 @@ public class CreateActivity extends AppCompatActivity {
 
         values.put("habitProgress",habit_progress); //배열로 추가시키고 문자열로 변환
         Log.e("CreateActivity.java","습관 프로그레스 : " + habit_progress);
+
+        //날짜 포맷 형식
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        //현재 습관 생성한 날짜를 저장한다.
+
+        Calendar CreateDay = Calendar.getInstance(); //현재 날짜 (=습관 생성 날짜)
+        String create_day = simpleDateFormat.format(CreateDay.getTime());
+
+        values.put("habitCreateDay", create_day);
+        Log.e("CreateActivity.java", "습관 생성 날짜: " + create_day);
 
         uri = getContentResolver().insert(uri, values);
         Log.e("CreateActivity.java", "INSERT 결과 : " + uri.toString());
