@@ -44,14 +44,10 @@ public class MainActivity extends AppCompatActivity{
     Space space;
     TextView txtSettings, txtEdit;
     ScrollView sv;
-    LinearLayout ll, ll2, ll3;
-    RelativeLayout rl;
+    public LinearLayout ll, ll2, ll3;
     FrameLayout fl;
     Button[] boxBtnArr;
     TextView[] txtViewArr;
-    CustomMainBox[] mainBoxes;
-    String habitName;
-    float btn_x, btn_y;
 
 
 
@@ -238,11 +234,6 @@ public class MainActivity extends AppCompatActivity{
                 txtViewArr[i].setText(cursor.getString(0));
 
 
-                //각 버튼의 x,y좌표값 삽입
-                btn_x = boxBtnArr[i].getX();
-                btn_y = boxBtnArr[i].getY();
-
-
                 ll.addView(boxBtnArr[i]);
                 ll2.addView(txtViewArr[i]);
 
@@ -317,47 +308,6 @@ public class MainActivity extends AppCompatActivity{
     public void ibtnPlus_onClick(View view) {
         Intent intent = new Intent(MainActivity.this, CreateActivity.class);
         startActivity(intent);
-    }
-
-
-
-
-    //원 그리기
-    public class DrawCircle extends View {
-        private Paint paint;
-        Integer[] objectDays = new Integer[totalHabit];
-
-
-        public DrawCircle(Context context) {
-            super(context);
-            init(context);
-        }
-
-        public DrawCircle(Context context, @Nullable AttributeSet attrs) {
-            super(context, attrs);
-            init(context);
-        }
-
-        private void init(Context context) {
-            paint = new Paint();
-        }
-
-        @Override
-        public void onDraw(Canvas canvas) {
-            super.onDraw(canvas);
-            //DB에서 각 습관별 목표일수 뽑아옴
-            cursor = db.rawQuery("SELECT objDays FROM Habits", null);
-            paint.setColor(Color.GREEN);
-            paint.setColor(Color.GREEN);
-            paint.setAntiAlias(true);
-            for (int i = 0; i < totalHabit; i++) {
-                while(cursor.moveToPosition(i)) {
-                    objectDays[i] = Integer.parseInt(cursor.getString(0));
-                }
-                    paint.setColor(Color.GREEN);
-                    canvas.drawCircle(btn_x+170, btn_y+100, 100, paint);
-            }
-        }
     }
 }
 
