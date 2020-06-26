@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity{
     Space space;
     TextView txtSettings, txtEdit;
     ScrollView sv;
-    LinearLayout ll, ll2;
+    LinearLayout ll, ll2, ll3;
     RelativeLayout rl;
     FrameLayout fl;
     Button[] boxBtnArr;
@@ -111,11 +111,14 @@ public class MainActivity extends AppCompatActivity{
         fl = new FrameLayout(this);
         ll = new LinearLayout(this);
         ll2 = new LinearLayout(this);
+        ll3 = new LinearLayout(this);
         fl = findViewById(R.id.fl);
         ll = findViewById(R.id.ll);
         ll2 = findViewById(R.id.ll2);
+        ll3 = findViewById(R.id.ll3);
 
-        fl.addView();
+        DrawCircle dc = new DrawCircle(this);
+        ll3.addView(dc);
 
 
         //ll.setBackgroundColor(Color.YELLOW);
@@ -340,10 +343,8 @@ public class MainActivity extends AppCompatActivity{
                 while(cursor.moveToPosition(i))
                     objectDays[i] = Integer.parseInt(cursor.getString(0));
 
-                if (0 < objectDays[i] && objectDays[i] < 5) {
                     paint.setColor(Color.GREEN);
-                    canvas.drawCircle(0, 0, 100, paint);
-                }
+                    canvas.drawCircle(200, 200, 100, paint);
             }
         }
     }
