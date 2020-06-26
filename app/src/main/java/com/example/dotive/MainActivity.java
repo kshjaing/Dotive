@@ -282,6 +282,7 @@ public class MainActivity extends AppCompatActivity{
                 ll.findViewWithTag("box_" + i).setBackgroundResource(R.drawable.custom_mainbox_dark);
             }
         }
+
     }
 
     protected void onDestroy() {
