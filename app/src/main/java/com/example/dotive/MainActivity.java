@@ -108,10 +108,15 @@ public class MainActivity extends AppCompatActivity{
 
 
         //선형 레이아웃 생성 (ll에 박스, ll2에 텍스트뷰 배치)
+        fl = new FrameLayout(this);
         ll = new LinearLayout(this);
         ll2 = new LinearLayout(this);
+        fl = findViewById(R.id.fl);
         ll = findViewById(R.id.ll);
         ll2 = findViewById(R.id.ll2);
+
+        fl.addView();
+
 
         //ll.setBackgroundColor(Color.YELLOW);
         //ll2.setBackgroundColor(Color.GREEN);
