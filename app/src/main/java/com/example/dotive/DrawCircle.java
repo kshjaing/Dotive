@@ -118,10 +118,10 @@ public class DrawCircle extends View {
             if (8 <= objectDays[i] && objectDays[i] <= 14) {
                 for (int j = 0; j < objectDays[i]; j++) {
                     if (j < 7){
-                        canvas.drawCircle(btn_x + radius * (j + 1) * 1.2f, btn_y + btn_Height / 2 - radius, radius * 0.45f, paint);
+                        canvas.drawCircle(btn_x + radius * (j + 1) * 1.25f, btn_y + btn_Height / 2 - radius, radius * 0.45f, paint);
                     }
                     else {
-                        canvas.drawCircle(btn_x + radius * (j - 6) * 1.2f, btn_y + btn_Height / 2 + radius * 0.7f, radius * 0.45f, paint);
+                        canvas.drawCircle(btn_x + radius * (j - 6) * 1.25f, btn_y + btn_Height / 2 + radius * 0.7f, radius * 0.45f, paint);
                     }
                 }
             }
