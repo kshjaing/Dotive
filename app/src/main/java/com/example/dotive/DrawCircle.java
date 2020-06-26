@@ -24,10 +24,11 @@ import static com.example.dotive.MainActivity.isDarkmode;
 import static com.example.dotive.MainActivity.totalHabit;
 
 public class DrawCircle extends View {
-    Paint paint;
+    Paint paint, strokePaint;
     Cursor cursor;
     Integer[] objectDays = new Integer[totalHabit];
     float btn_x, btn_y;
+
 
     int btn_Width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,360,
             getResources().getDisplayMetrics());
@@ -48,15 +49,16 @@ public class DrawCircle extends View {
 
     private void init(Context context) {
         paint = new Paint();
+        strokePaint = new Paint();
+        dbHelper = new DBHelper(context_main, 4);
     }
 
     @SuppressLint("CutPasteId")
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        dbHelper = new DBHelper(context_main, 4);
-        db = dbHelper.getWritableDatabase();
 
+        db = dbHelper.getWritableDatabase();
 
         for (int i = 0; i < totalHabit; i++) {
 
@@ -92,23 +94,31 @@ public class DrawCircle extends View {
                     break;
                 case 4:
                     for (int j = 0; j < 4; j++) {
-                        canvas.drawCircle(btn_x + btn_Width - radius * (j + 1) * 2, btn_y + btn_Height / 2, radius * 0.75f, paint);
+                        //현재날짜 테두리 테스트
+                        if (j == 1){
+                            strokePaint.setStrokeWidth(30);
+                            strokePaint.setStyle(Paint.Style.STROKE);
+                            strokePaint.setColor(Color.parseColor("#ffb313"));
+                            strokePaint.setAntiAlias(true);
+                            canvas.drawCircle(btn_x + radius * (j + 1) * 2, btn_y + btn_Height / 2, radius * 0.75f, strokePaint);
+                        }
+                        canvas.drawCircle(btn_x + radius * (j + 1) * 2, btn_y + btn_Height / 2, radius * 0.75f, paint);
                     }
                     break;
                 case 5:
                     for (int j = 0; j < 5; j++) {
-                        canvas.drawCircle(btn_x + btn_Width - radius * (j + 1) * 1.68f, btn_y + btn_Height / 2, radius * 0.65f, paint);
+                        canvas.drawCircle(btn_x + radius * (j + 1) * 1.68f, btn_y + btn_Height / 2, radius * 0.65f, paint);
                     }
                     break;
                 case 6:
                     for (int j = 0; j < 6; j++) {
-                        canvas.drawCircle(btn_x + btn_Width - radius * (j + 1) * 1.43f, btn_y + btn_Height / 2, radius * 0.55f, paint);
+                        canvas.drawCircle(btn_x + radius * (j + 1) * 1.43f, btn_y + btn_Height / 2, radius * 0.55f, paint);
 
                     }
                     break;
                 case 7:
                     for (int j = 0; j < 7; j++) {
-                        canvas.drawCircle(btn_x + btn_Width - radius * (j + 1) * 1.26f, btn_y + btn_Height / 2, radius * 0.45f, paint);
+                        canvas.drawCircle(btn_x + radius * (j + 1) * 1.26f, btn_y + btn_Height / 2, radius * 0.45f, paint);
 
                     }
                     break;

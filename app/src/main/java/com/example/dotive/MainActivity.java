@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity{
             txtEdit.setTextColor(Color.parseColor("#232323"));
 
             for (int i = 0; i < totalHabit; i++) {
-                ll.findViewWithTag("box_" + i).setBackgroundResource(R.drawable.custom_mainbox);
+                boxBtnArr[i].setBackgroundResource(R.drawable.custom_mainbox);
             }
         }
 
@@ -282,7 +282,7 @@ public class MainActivity extends AppCompatActivity{
             txtEdit.setTextColor(Color.WHITE);
 
             for (int i = 0; i < totalHabit; i++) {
-                ll.findViewWithTag("box_" + i).setBackgroundResource(R.drawable.custom_mainbox_dark);
+                boxBtnArr[i].setBackgroundResource(R.drawable.custom_mainbox_dark);
             }
         }
 
@@ -315,7 +315,6 @@ public class MainActivity extends AppCompatActivity{
     public void ibtnPlus_onClick(View view) {
         Intent intent = new Intent(MainActivity.this, CreateActivity.class);
         startActivity(intent);
-        Log.d("total", String.valueOf(totalHabit));
     }
 }
 
