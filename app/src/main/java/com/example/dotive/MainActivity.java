@@ -237,6 +237,8 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
+
+
     @SuppressLint("ResourceType")
     protected void onResume() {
         super.onResume();
@@ -296,9 +298,7 @@ public class MainActivity extends AppCompatActivity{
         startActivity(intent);
     }
 
-    protected void onDraw(Canvas canvas) {
-        super(canvas);
-    }
+
 }
 
 
