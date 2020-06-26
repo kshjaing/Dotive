@@ -99,11 +99,18 @@ public class DrawCircle extends View {
                 }
             }
 
+            //습관개수 4~14개
             if (4 <= objectDays[i] && objectDays[i] <= 14) {
                 canvas.drawCircle(btn_x + btn_Width / 2, btn_y + btn_Height / 2, radius / 2, paint);
             }
 
-            if (15 <= objectDays[i]) {
+            //습관개수 15~30개
+            if (15 <= objectDays[i] && objectDays[i] <= 30) {
+                canvas.drawCircle(btn_x + btn_Width / 2, btn_y + btn_Height / 2, radius * 0.3f, paint);
+            }
+
+            //습관개수 31개 이상(스크롤)
+            if (31 <= objectDays[i]) {
                 canvas.drawCircle(btn_x + btn_Width / 2, btn_y + btn_Height / 2, radius * 0.3f, paint);
             }
         }
