@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity{
         ll = findViewById(R.id.ll);
         ll2 = findViewById(R.id.ll2);
         ll3 = findViewById(R.id.ll3);
+        ll3.setBackgroundColor(Color.GREEN);
 
         DrawCircle dc = new DrawCircle(this);
         ll3.addView(dc);
@@ -151,7 +152,9 @@ public class MainActivity extends AppCompatActivity{
                     getResources().getDisplayMetrics());
             int txt_Height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,46,
                     getResources().getDisplayMetrics());
-            int txt_paddingHor = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,24,
+            int txt_paddingLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,24,
+                    getResources().getDisplayMetrics());
+            int txt_paddingRight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,5,
                     getResources().getDisplayMetrics());
             int txt_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,34,
                     getResources().getDisplayMetrics());
@@ -190,8 +193,7 @@ public class MainActivity extends AppCompatActivity{
 
                 //습관제목 텍스트뷰 각 속성들 설정
                 txtViewArr[i].setTypeface(typeface);
-                txtViewArr[i].setPadding(txt_paddingHor, 0, txt_paddingHor, 0);
-                txtViewArr[i].setTextSize(20);
+                txtViewArr[i].setPadding(txt_paddingLeft, 0, txt_paddingRight, 0);
                 txtViewArr[i].setGravity(Gravity.CENTER);
                 txtViewArr[i].setTextColor(Color.WHITE);
                 txtViewArr[i].setAutoSizeTextTypeUniformWithConfiguration(15, 24, 1, TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM);
@@ -340,9 +342,9 @@ public class MainActivity extends AppCompatActivity{
             for (int i = 0; i < totalHabit; i++) {
                 //DB에서 각 습관별 목표일수 뽑아옴
                 cursor = db.rawQuery("SELECT objDays FROM Habits", null);
-                while(cursor.moveToPosition(i))
+                while(cursor.moveToPosition(i)) {
                     objectDays[i] = Integer.parseInt(cursor.getString(0));
-
+                }
                     paint.setColor(Color.GREEN);
                     canvas.drawCircle(200, 200, 100, paint);
             }
