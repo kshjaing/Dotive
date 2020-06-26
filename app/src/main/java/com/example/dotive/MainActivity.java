@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity{
     Space space;
     TextView txtSettings, txtEdit;
     ScrollView sv;
-    public LinearLayout ll, ll2, ll3;
+    LinearLayout ll, ll2, ll3;
     FrameLayout fl;
     Button[] boxBtnArr;
     TextView[] txtViewArr;

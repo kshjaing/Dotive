@@ -40,8 +40,6 @@ public class DrawCircle extends View {
         super.onDraw(canvas);
         dbHelper.getWritableDatabase();
 
-
-
         //DB에서 각 습관별 목표일수 뽑아옴
         cursor = db.rawQuery("SELECT objDays FROM Habits", null);
         paint.setColor(Color.GREEN);
