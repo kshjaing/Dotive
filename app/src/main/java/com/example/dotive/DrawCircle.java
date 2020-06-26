@@ -114,7 +114,7 @@ public class DrawCircle extends View {
                     break;
             }
 
-            //습관개수 8~14개
+            //목표일수 8~14일
             if (8 <= objectDays[i] && objectDays[i] <= 14) {
                 for (int j = 0; j < objectDays[i]; j++) {
                     if (j < 7){
@@ -126,17 +126,18 @@ public class DrawCircle extends View {
                 }
             }
 
-            //습관개수 15~30개
+            //목표일수 15~30일
             else if (15 <= objectDays[i] && objectDays[i] <= 30) {
-                for (int j = 0; j < i; j++) {
-                    canvas.drawCircle(btn_x + radius * (j + 2), btn_y + btn_Height / 2, radius * 0.3f, paint);
-                }
-            }
-
-            //습관개수 31개 이상(스크롤)
-            else if (31 <= objectDays[i]) {
-                for (int j = 0; j < i; j++) {
-                    canvas.drawCircle(btn_x + radius * j, btn_y + btn_Height / 2, radius * 0.3f, paint);
+                for (int j = 0; j < objectDays[i]; j++) {
+                    if (j < 10) {
+                        canvas.drawCircle(btn_x + radius * (j + 1) * 0.905f, btn_y + radius * 1.7f, radius * 0.3f, paint);
+                    }
+                    else if (10 <= j && j < 20) {
+                        canvas.drawCircle(btn_x + radius * (j - 9) * 0.905f, btn_y + radius * 2.7f, radius * 0.3f, paint);
+                    }
+                    else if (20 <= j) {
+                        canvas.drawCircle(btn_x + radius * (j - 19) * 0.905f, btn_y + radius * 3.7f, radius * 0.3f, paint);
+                    }
                 }
             }
         }
