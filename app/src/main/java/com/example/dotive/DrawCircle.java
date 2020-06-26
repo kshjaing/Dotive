@@ -26,7 +26,6 @@ import static com.example.dotive.MainActivity.totalHabit;
 public class DrawCircle extends View {
     Paint paint;
     Cursor cursor;
-    Integer curObjDays;
     Integer[] objectDays = new Integer[totalHabit];
     float btn_x, btn_y;
 
@@ -66,7 +65,6 @@ public class DrawCircle extends View {
             cursor = db.rawQuery("SELECT objDays FROM Habits", null);
             cursor.moveToPosition(i);
             objectDays[i] = Integer.parseInt(cursor.getString(0));
-            curObjDays = Integer.parseInt(cursor.getString(0));
             btn_x = MainActivity.boxBtnArr[i].getX();
             btn_y = MainActivity.boxBtnArr[i].getY();
             if (isDarkmode == 0) {
@@ -76,31 +74,49 @@ public class DrawCircle extends View {
                 paint.setColor(Color.parseColor("#7b879b"));
             }
 
-            //-------------------------습관 개수에 따른 원 크기와 위치 로직---------------------------
+            //-------------------------목표일수에 따른 원 크기와 위치 로직---------------------------
 
-            //습관개수 1~3개
-            if (1 <= objectDays[i] && objectDays[i] <= 3) {
-                //버튼 중간값
-                if (objectDays[i] == 1) {
+            //목표일수 1~7일
+            switch (objectDays[i]) {
+                case 1:
                     canvas.drawCircle(btn_x + btn_Width / 2, btn_y + btn_Height / 2, radius, paint);
-                }
-
-                //버튼 중간값에서 반지름의 1.5배만큼 빼고 더함
-                if (objectDays[i] == 2) {
+                    break;
+                case 2:
                     canvas.drawCircle(btn_x + (btn_Width / 2) - radius * 1.5f, btn_y + btn_Height / 2, radius, paint);
                     canvas.drawCircle(btn_x + (btn_Width / 2) + radius * 1.5f, btn_y + btn_Height / 2, radius, paint);
-                }
-
-                if (objectDays[i] == 3) {
+                    break;
+                case 3:
                     canvas.drawCircle(btn_x + (btn_Width / 2) - radius * 2.5f, btn_y + btn_Height / 2, radius, paint);
                     canvas.drawCircle(btn_x + btn_Width / 2, btn_y + btn_Height / 2, radius, paint);
                     canvas.drawCircle(btn_x + (btn_Width / 2) + radius * 2.5f, btn_y + btn_Height / 2, radius, paint);
-                }
+                    break;
+                case 4:
+                    for (int j = 0; j < 4; j++) {
+                        canvas.drawCircle(btn_x + btn_Width - radius * (j + 1) * 2, btn_y + btn_Height / 2, radius * 0.75f, paint);
+                    }
+                    break;
+                case 5:
+                    for (int j = 0; j < 5; j++) {
+                        canvas.drawCircle(btn_x + btn_Width - radius * (j + 1) * 1.68f, btn_y + btn_Height / 2, radius * 0.65f, paint);
+                    }
+                    break;
+                case 6:
+                    for (int j = 0; j < 6; j++) {
+                        canvas.drawCircle(btn_x + btn_Width - radius * (j + 1) * 1.43f, btn_y + btn_Height / 2, radius * 0.55f, paint);
+
+                    }
+                    break;
+                case 7:
+                    for (int j = 0; j < 7; j++) {
+                        canvas.drawCircle(btn_x + btn_Width - radius * (j + 1) * 1.26f, btn_y + btn_Height / 2, radius * 0.45f, paint);
+
+                    }
+                    break;
             }
 
-            //습관개수 4~14개
-            if (4 <= objectDays[i] && objectDays[i] <= 14) {
-                for (int j = 0; j < i; j++) {
+            //습관개수 8~14개
+            if (8 <= objectDays[i] && objectDays[i] <= 14) {
+                for (int j = 0; j < objectDays[i]; j++) {
                     if (j < 7){
                         canvas.drawCircle(btn_x + radius * (j + 1) * 1.2f, btn_y + btn_Height / 2 - radius, radius * 0.45f, paint);
                     }
@@ -111,14 +127,14 @@ public class DrawCircle extends View {
             }
 
             //습관개수 15~30개
-            if (15 <= objectDays[i] && objectDays[i] <= 30) {
+            else if (15 <= objectDays[i] && objectDays[i] <= 30) {
                 for (int j = 0; j < i; j++) {
                     canvas.drawCircle(btn_x + radius * (j + 2), btn_y + btn_Height / 2, radius * 0.3f, paint);
                 }
             }
 
             //습관개수 31개 이상(스크롤)
-            if (31 <= objectDays[i]) {
+            else if (31 <= objectDays[i]) {
                 for (int j = 0; j < i; j++) {
                     canvas.drawCircle(btn_x + radius * j, btn_y + btn_Height / 2, radius * 0.3f, paint);
                 }
