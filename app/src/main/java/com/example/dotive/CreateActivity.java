@@ -29,7 +29,6 @@ import org.w3c.dom.Text;
 import java.util.zip.DataFormatException;
 
 import static com.example.dotive.MainActivity.context_main;
-import static com.example.dotive.MainActivity.currentDate;
 import static com.example.dotive.MainActivity.db;
 import static com.example.dotive.MainActivity.isDarkmode;
 
