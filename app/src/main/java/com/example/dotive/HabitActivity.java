@@ -51,7 +51,7 @@ public class HabitActivity extends Activity {
         LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, btn_Height, 1);
 
-        linearParams.setMargins(0,btn_Height / 2, 0, 0);
+        linearParams.setMargins(0,btn_Height / 2, 0, btn_Height / 8);
 
 
         //다크모드에 따른 배경색 변화
@@ -63,10 +63,10 @@ public class HabitActivity extends Activity {
             sv.setBackgroundColor(Color.parseColor("#272B36"));
         }
 
+        int obj = objectDays[Integer.parseInt(boxnum)];
 
-
-            for (int j = 0; j < objectDays[Integer.parseInt(boxnum)]; j++) {
-                boxHabitArr = new Button[totalHabit];
+            for (int j = 0; j < obj; j++) {
+                boxHabitArr = new Button[j + 1];
                 boxHabitArr[j] = new Button(this);
                 boxHabitArr[j].setLayoutParams(linearParams);
                 boxHabitArr[j].setBackgroundResource(R.drawable.habitbtn_border_round);
