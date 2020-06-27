@@ -280,7 +280,7 @@ public class MainActivity extends AppCompatActivity{
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(MainActivity.this, HabitActivity.class);
-                        Toast.makeText(MainActivity.this, String.valueOf(v.getTag()), Toast.LENGTH_SHORT).show();
+                        intent.putExtra("tag", String.valueOf(v.getTag()));
                         startActivity(intent);
                     }
                 });

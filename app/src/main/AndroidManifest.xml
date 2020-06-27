@@ -18,6 +18,7 @@
         </activity>
         <activity android:name=".CreateActivity"></activity>
         <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".HabitActivity"></activity>
     </application>
 
 </manifest>
