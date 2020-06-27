@@ -496,59 +496,68 @@ public class MainActivity extends AppCompatActivity {
                 /////////////////////////
                 if(Object_Days < 5) {
                     if(Object_Days == 1) {
-                        canvas.drawCircle(X + W/2, Y + H/2 , 100, paint);
-                        if(count == 0) canvas.drawCircle(X + W/2, Y + H/2 , 100, stroke);
+
+                        for(int q = 0; q < Arr_Btn_Paint_Progress.length; q++) {
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Color.YELLOW);
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) paint.setColor(Color.GRAY);
+                            if(q == 0) canvas.drawCircle(X + W/2, Y + H/2 , 100, paint);
+                            if(count == 0) canvas.drawCircle(X + W/2, Y + H/2 , 100, stroke);
+                        }
+
                     }
                     else if(Object_Days == 2) {
-                        canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, paint);
-                        canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, paint);
-                        if(count == 0) canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, stroke);
-                        if(count == 1) canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, stroke);
+                        for(int q = 0; q<Arr_Btn_Paint_Progress.length; q++) {
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Color.YELLOW);
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) paint.setColor(Color.GRAY);
+                            if(q == 0) canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, paint);
+                            if(q == 1) canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, paint);
+                            if(count == 0) canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, stroke);
+                            if(count == 1) canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, stroke);
+                        }
                     }
                     else if(Object_Days == 3) {
-                        canvas.drawCircle(X + W/2 - 300, Y + H/2, 100, paint);
-                        canvas.drawCircle(X + W/2, Y + H/2, 100, paint);
-                        canvas.drawCircle(X + W/2 + 300, Y + H/2, 100, paint);
-                        if(count == 0) canvas.drawCircle(X + W/2 - 300, Y + H/2, 100, stroke);
-                        if(count == 1) canvas.drawCircle(X + W/2, Y + H/2, 100, stroke);
-                        if(count == 2) canvas.drawCircle(X + W/2 + 300, Y + H/2, 100, stroke);
+                        for(int q = 0; q<Arr_Btn_Paint_Progress.length; q++){
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Color.YELLOW);
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) paint.setColor(Color.GRAY);
+                            if(q == 0) canvas.drawCircle(X + W/2 - 300, Y + H/2, 100, paint);
+                            if(q == 1) canvas.drawCircle(X + W/2, Y + H/2, 100, paint);
+                            if(q == 2) canvas.drawCircle(X + W/2 + 300, Y + H/2, 100, paint);
+                            if(count == 0) canvas.drawCircle(X + W/2 - 300, Y + H/2, 100, stroke);
+                            if(count == 1) canvas.drawCircle(X + W/2, Y + H/2, 100, stroke);
+                            if(count == 2) canvas.drawCircle(X + W/2 + 300, Y + H/2, 100, stroke);
+                        }
                     }
                     else if(Object_Days == 4) {
-                        canvas.drawCircle(X + W/2 - 400, Y + H/2, 100, paint);
-                        canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, paint);
-                        canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, paint);
-                        canvas.drawCircle(X + W/2 + 400, Y + H/2, 100, paint);
-                        if(count == 0) canvas.drawCircle(X + W/2 - 400, Y + H/2, 100, stroke);
-                        if(count == 1) canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, stroke);
-                        if(count == 2) canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, stroke);
-                        if(count == 3) canvas.drawCircle(X + W/2 + 400, Y + H/2, 100, stroke);
+                        for(int q = 0; q<Arr_Btn_Paint_Progress.length; q++) {
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Color.YELLOW);
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) paint.setColor(Color.GRAY);
+                            if(q == 0) canvas.drawCircle(X + W/2 - 400, Y + H/2, 100, paint);
+                            if(q == 1) canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, paint);
+                            if(q == 2) canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, paint);
+                            if(q == 3) canvas.drawCircle(X + W/2 + 400, Y + H/2, 100, paint);
+                            if(count == 0) canvas.drawCircle(X + W/2 - 400, Y + H/2, 100, stroke);
+                            if(count == 1) canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, stroke);
+                            if(count == 2) canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, stroke);
+                            if(count == 3) canvas.drawCircle(X + W/2 + 400, Y + H/2, 100, stroke);
+                        }
                     }
                 }
 
                 index_X = -450;
-
                 if(Object_Days > 4 && Object_Days <15) { //목표일수 15일 이하
                     for(int b = 0; b<Object_Days; b++) { //목표일 수만큼 동그라미 반복해서 그림
-                        if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 1) {
-                            paint.setStyle(Paint.Style.FILL);
-                            paint.setColor(Color.YELLOW);
-                        }
-                        if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 0) {
-                            paint.setStyle(Paint.Style.FILL);
-                            paint.setColor(Color.GRAY);
-                        }
-
-
+                        if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 1) paint.setColor(Color.YELLOW);
+                        if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 0) paint.setColor(Color.GRAY);
                         canvas.drawCircle(X + W/2 + index_X, Y + H/2 - 140 + index_Y , 55, paint);
-                        //현재 날짜에 테두리
                         if(count == b) canvas.drawCircle(X + W/2 + index_X, Y + H/2 - 140 + index_Y , 55, stroke);
                         index_X +=150;
                         if(b == 6) {index_X = -450; index_Y = 180;} //7개 이상부터 즉 8개부터 위치 변경
                     }
                 }
-
                 if(Object_Days >14) {
                     for(int b = 0; b<Object_Days; b++) {
+                        if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 1) paint.setColor(Color.YELLOW);
+                        if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 0) paint.setColor(Color.GRAY);
 
                         canvas.drawCircle(X + W/2 + index_X, Y + H/2 - 140 + index_Y , 35, paint);
                         if(count == b) canvas.drawCircle(X + W/2 + index_X, Y + H/2 - 140 + index_Y , 35, stroke);

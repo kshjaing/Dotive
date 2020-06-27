@@ -93,6 +93,7 @@ public class HabitActivity extends AppCompatActivity {
                 New_Progress = New_Progress.substring(0, New_Progress.length() - 1); //마지막 쉼표 제거
 
                 UPDATE_Habits();
+                Log.e("HabitActivity.java", "변경된 진행도 값 : " + New_Progress);
                 Intent intent1 = new Intent(HabitActivity.this, MainActivity.class);
                 startActivity(intent1);
             }
