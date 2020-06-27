@@ -25,7 +25,7 @@
                 android:layout_marginTop="20dp"
                 android:src="@drawable/arrow_back_dark"
                 android:scaleType="centerInside"
-                android:background="transparent"/>
+                android:background="@android:color/transparent"/>
 
             <ImageButton
                 android:id="@+id/txtSettings"
@@ -38,7 +38,7 @@
                 android:layout_marginRight="10dp"
                 android:src="@drawable/actionbar_dark"
                 android:scaleType="centerInside"
-                android:background="transparent"/>
+                android:background="@android:color/transparent"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/rlDays"

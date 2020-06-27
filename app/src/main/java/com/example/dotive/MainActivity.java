@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity{
     public static Button[] boxBtnArr;       //습관전체 박스
     public static TextView[] txtViewArr;    //습관명 텍스트뷰
     public static String habitProgress;     //습관 진행도 표현 문자열
+    public static Typeface typeface;
+    public static int[] objectDays;         //각 습관의 목표일수를 담는 변수
     Cursor cursor;
     TextView txtSettings, txtEdit;
     ScrollView sv;
@@ -78,22 +80,30 @@ public class MainActivity extends AppCompatActivity{
         db = dbHelper.getWritableDatabase();
 
 
-        //DB에서 '다크모드' 인수 가져와서 변수 초기화
+        //DB에서 '다크모드' 인수 가져와서 isDarkmode 변수에 삽입
         cursor = db.rawQuery("SELECT darkmode FROM Settings", null);
         while(cursor.moveToNext()) {
             isDarkmode = Integer.parseInt(cursor.getString(0));
         }
 
-        //DB에서 '총 습관 개수' 가져와서 변수 초기화
+        //DB에서 '총 습관 개수' 가져와서 totalHabit 변수에 삽입
         cursor = db.rawQuery("SELECT COUNT(id) FROM Habits", null);
         while(cursor.moveToNext()) {
             totalHabit = Integer.parseInt(cursor.getString(0));
         }
 
-        //DB에서 '습관 진행도' 문자열 가져와서 변수 초기화
+        //DB에서 '습관 진행도' 문자열 가져와서 habitProgress 변수에 삽입
         cursor = db.rawQuery("SELECT habitProgress FROM Habits", null);
         while(cursor.moveToNext()) {
             habitProgress = cursor.getString(0);
+        }
+
+        //DB에서 '각 습관의 목표일수' 가져와서 objectDays 변수에 삽입
+        objectDays = new int[totalHabit];
+        cursor = db.rawQuery("SELECT objDays FROM Habits", null);
+        for (int i = 0; i < totalHabit; i++) {
+            cursor.moveToPosition(i);
+            objectDays[i] = Integer.parseInt(cursor.getString(0));
         }
 
 
@@ -184,8 +194,7 @@ public class MainActivity extends AppCompatActivity{
                     getResources().getDisplayMetrics());
 
 
-
-            Typeface typeface = Typeface.createFromAsset(getAssets(), "font/katuri.ttf");
+            typeface = Typeface.createFromAsset(getAssets(), "font/katuri.ttf");
 
 
 
@@ -270,7 +279,9 @@ public class MainActivity extends AppCompatActivity{
                 boxBtnArr[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Intent intent = new Intent(MainActivity.this, HabitActivity.class);
                         Toast.makeText(MainActivity.this, String.valueOf(v.getTag()), Toast.LENGTH_SHORT).show();
+                        startActivity(intent);
                     }
                 });
             }
