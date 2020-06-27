@@ -56,15 +56,11 @@ public class MainActivity extends AppCompatActivity{
     FrameLayout fl;
 
     public static String curDateString;
-    Date curDate;
-    String[] createDateString;
-    Date[] createDate;
-    long todayTimestamp;
-    long[] createDateTimestamp;
-    Date date1 = new Date();
-    Date date2 = new Date();
-    public static long[] calDate;
-    public static String[] dateDiff;
+    Date curDate;                      //현재날짜 Date변수
+    long todayTimestamp;               //현재날짜 시간량
+    long[] createDateTimestamp;        //습관생성날짜 시간량
+    public static long[] calDate;      //현재날짜 시간량 - 습관생성날짜 시간량
+    public static String[] dateDiff;   //calDate의 시간량을 숫자로 변환
 
 
 
@@ -100,7 +96,13 @@ public class MainActivity extends AppCompatActivity{
             habitProgress = cursor.getString(0);
         }
 
+
+
+        //현재날짜와 습관생성날짜의 차를 구하는 메서드
         calDateDiff();
+
+
+
 
         //설정버튼 클릭이벤트 부여
         txtSettings = new TextView(this);
@@ -337,7 +339,7 @@ public class MainActivity extends AppCompatActivity{
         startActivity(intent);
     }
 
-    //습관 생성날짜와 현재시간 차이 계산 메서드
+    //현재날짜와 습관 생성날짜 차이 계산 메서드
     public void calDateDiff() {
         createDateTimestamp = new long[totalHabit];
         calDate = new long[totalHabit];
@@ -361,6 +363,7 @@ public class MainActivity extends AppCompatActivity{
                     cursor.moveToPosition(i);
                     createDateTimestamp[i] = dateFormat.parse(cursor.getString(0)).getTime();
 
+                    //현재날짜와 습관생성날짜 두 시간량을 뺀 시간량을 calDate에 저장
                     calDate[i] = todayTimestamp - createDateTimestamp[i];
                     dateDiff[i] = String.valueOf(calDate[i] / (24*60*60*1000));
                 }
@@ -370,25 +373,6 @@ public class MainActivity extends AppCompatActivity{
 
             }
         }
-
-
-
-            /*
-            for (int i = 0; i < totalHabit; i++) {
-                cursor.moveToPosition(i);
-                createDate[i] = format.parse(cursor.getString(0));
-
-                date1[i] = createDate[i];
-                date2 = format.parse(curDate);
-
-                calDate[i] = date2.getTime() - date1[i].getTime();
-
-
-                calDateDays[i] = calDate[i] / (24*60*60*1000);
-                calDateDays[i] = Math.abs(calDateDays[i]);
-*/
-                //dateDiff[i] = String.valueOf(calDateDays[i]);
-
     }
 }
 

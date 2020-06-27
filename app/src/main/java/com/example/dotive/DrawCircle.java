@@ -97,7 +97,7 @@ public class DrawCircle extends View {
                 case 4:
                     for (int j = 0; j < 4; j++) {
                         //현재날짜 테두리 테스트
-                        if (j == (Integer.parseInt(dateDiff[i]) - 1)){
+                        if (j == (Integer.parseInt(dateDiff[i]))){
                             strokePaint.setStrokeWidth(30);
                             strokePaint.setStyle(Paint.Style.STROKE);
                             strokePaint.setColor(Color.parseColor("#ffb313"));
