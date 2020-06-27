@@ -198,6 +198,7 @@ public class CreateActivity extends Activity {
                     progressString = progressString + "0";
                 }
                 Intent intent = new Intent(CreateActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
                 MainActivity.isCreatePressed = true;
                 dbInsertHabits(edtHabitName.getText().toString(), curColor, objectDays, progressString);
                 db.close();

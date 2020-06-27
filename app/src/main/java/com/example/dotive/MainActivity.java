@@ -328,6 +328,8 @@ public class MainActivity extends AppCompatActivity{
         builder.setNegativeButton("종료", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                //모든 액티비티 종료
+                finishAffinity();
                 android.os.Process.killProcess(android.os.Process.myPid());
             }
         });
@@ -336,6 +338,7 @@ public class MainActivity extends AppCompatActivity{
 
     public void ibtnPlus_onClick(View view) {
         Intent intent = new Intent(MainActivity.this, CreateActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 
@@ -363,7 +366,7 @@ public class MainActivity extends AppCompatActivity{
                     cursor.moveToPosition(i);
                     createDateTimestamp[i] = dateFormat.parse(cursor.getString(0)).getTime();
 
-                    //현재날짜와 습관생성날짜 두 시간량을 뺀 시간량을 calDate에 저장
+                    //현재날짜와 습관생성날짜 두 시간량을 뺀 시간량을 calDate 에 저장
                     calDate[i] = todayTimestamp - createDateTimestamp[i];
                     if (calDate[i] >= 0) {
                         dateDiff[i] = String.valueOf(calDate[i] / (24*60*60*1000));
@@ -372,7 +375,7 @@ public class MainActivity extends AppCompatActivity{
             }
 
             catch (ParseException e) {
-
+                //string 에서 date format 으로 parse 하는것 때문에 예외처리 해줘야함
             }
         }
     }
