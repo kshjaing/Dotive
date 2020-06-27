@@ -71,11 +71,17 @@ public class DrawCircle extends View {
             objectDays[i] = Integer.parseInt(cursor.getString(0));
             btn_x = MainActivity.boxBtnArr[i].getX();
             btn_y = MainActivity.boxBtnArr[i].getY();
+            strokePaint.setStrokeWidth(30);
+            strokePaint.setStyle(Paint.Style.STROKE);
+            strokePaint.setAntiAlias(true);
+
             if (isDarkmode == 0) {
                 paint.setColor(Color.parseColor("#d9d9d9"));
+                strokePaint.setColor(Color.parseColor("#ffb313"));
             }
             else {
                 paint.setColor(Color.parseColor("#7b879b"));
+                strokePaint.setColor(Color.parseColor("#ffffff"));
             }
 
             //-------------------------목표일수에 따른 원 크기와 위치 로직---------------------------
@@ -83,45 +89,82 @@ public class DrawCircle extends View {
             //목표일수 1~7일
             switch (objectDays[i]) {
                 case 1:
+                    //현재날짜 테두리
+                    if (Integer.parseInt(dateDiff[i]) == 0){
+                        canvas.drawCircle(btn_x + btn_Width / 2, btn_y + btn_Height / 2, radius, strokePaint);
+                    }
+
+                    //원 1개
                     canvas.drawCircle(btn_x + btn_Width / 2, btn_y + btn_Height / 2, radius, paint);
                     break;
+
                 case 2:
+                    //현재날짜 테두리
+                        if (Integer.parseInt(dateDiff[i]) == 0) {
+                            canvas.drawCircle(btn_x + (btn_Width / 2) - radius * 1.5f, btn_y + btn_Height / 2, radius, strokePaint);
+                        }
+                        else if (Integer.parseInt(dateDiff[i]) == 1){
+                            canvas.drawCircle(btn_x + (btn_Width / 2) + radius * 1.5f, btn_y + btn_Height / 2, radius, strokePaint);
+                        }
+
+                    //원 2개
                     canvas.drawCircle(btn_x + (btn_Width / 2) - radius * 1.5f, btn_y + btn_Height / 2, radius, paint);
                     canvas.drawCircle(btn_x + (btn_Width / 2) + radius * 1.5f, btn_y + btn_Height / 2, radius, paint);
                     break;
+
                 case 3:
+                    //현재날짜 테두리
+                        if (Integer.parseInt(dateDiff[i]) == 0) {
+                            canvas.drawCircle(btn_x + (btn_Width / 2) - radius * 2.5f, btn_y + btn_Height / 2, radius, strokePaint);
+                        }
+                        else if (Integer.parseInt(dateDiff[i]) == 1){
+                            canvas.drawCircle(btn_x + (btn_Width / 2), btn_y + btn_Height / 2, radius, strokePaint);
+                        }
+                        else if (Integer.parseInt(dateDiff[i]) == 2){
+                            canvas.drawCircle(btn_x + (btn_Width / 2) + radius * 2.5f, btn_y + btn_Height / 2, radius, strokePaint);
+                        }
+
+                    //원 3개
                     canvas.drawCircle(btn_x + (btn_Width / 2) - radius * 2.5f, btn_y + btn_Height / 2, radius, paint);
                     canvas.drawCircle(btn_x + btn_Width / 2, btn_y + btn_Height / 2, radius, paint);
                     canvas.drawCircle(btn_x + (btn_Width / 2) + radius * 2.5f, btn_y + btn_Height / 2, radius, paint);
                     break;
+
                 case 4:
                     for (int j = 0; j < 4; j++) {
-                        //현재날짜 테두리 테스트
+                        //현재날짜 테두리
                         if (j == (Integer.parseInt(dateDiff[i]))){
-                            strokePaint.setStrokeWidth(30);
-                            strokePaint.setStyle(Paint.Style.STROKE);
-                            strokePaint.setColor(Color.parseColor("#ffb313"));
-                            strokePaint.setAntiAlias(true);
                             canvas.drawCircle(btn_x + radius * (j + 1) * 2, btn_y + btn_Height / 2, radius * 0.75f, strokePaint);
                         }
                         canvas.drawCircle(btn_x + radius * (j + 1) * 2, btn_y + btn_Height / 2, radius * 0.75f, paint);
                     }
                     break;
+
                 case 5:
                     for (int j = 0; j < 5; j++) {
+                        //현재날짜 테두리
+                        if (j == (Integer.parseInt(dateDiff[i]))){
+                            canvas.drawCircle(btn_x + radius * (j + 1) * 1.68f, btn_y + btn_Height / 2, radius * 0.65f, strokePaint);
+                        }
                         canvas.drawCircle(btn_x + radius * (j + 1) * 1.68f, btn_y + btn_Height / 2, radius * 0.65f, paint);
                     }
                     break;
                 case 6:
                     for (int j = 0; j < 6; j++) {
+                        //현재날짜 테두리
+                        if (j == (Integer.parseInt(dateDiff[i]))){
+                            canvas.drawCircle(btn_x + radius * (j + 1) * 1.43f, btn_y + btn_Height / 2, radius * 0.55f, strokePaint);
+                        }
                         canvas.drawCircle(btn_x + radius * (j + 1) * 1.43f, btn_y + btn_Height / 2, radius * 0.55f, paint);
-
                     }
                     break;
                 case 7:
                     for (int j = 0; j < 7; j++) {
+                        //현재날짜 테두리
+                        if (j == (Integer.parseInt(dateDiff[i]))){
+                            canvas.drawCircle(btn_x + radius * (j + 1) * 1.26f, btn_y + btn_Height / 2, radius * 0.45f, strokePaint);
+                        }
                         canvas.drawCircle(btn_x + radius * (j + 1) * 1.26f, btn_y + btn_Height / 2, radius * 0.45f, paint);
-
                     }
                     break;
             }
@@ -130,9 +173,17 @@ public class DrawCircle extends View {
             if (8 <= objectDays[i] && objectDays[i] <= 14) {
                 for (int j = 0; j < objectDays[i]; j++) {
                     if (j < 7){
+                        //현재날짜 테두리
+                        if (j == (Integer.parseInt(dateDiff[i]))){
+                            canvas.drawCircle(btn_x + radius * (j + 1) * 1.25f, btn_y + btn_Height / 2 - radius, radius * 0.45f, strokePaint);
+                        }
                         canvas.drawCircle(btn_x + radius * (j + 1) * 1.25f, btn_y + btn_Height / 2 - radius, radius * 0.45f, paint);
                     }
                     else {
+                        //현재날짜 테두리
+                        if (j == (Integer.parseInt(dateDiff[i]))){
+                            canvas.drawCircle(btn_x + radius * (j - 6) * 1.25f, btn_y + btn_Height / 2 + radius * 0.7f, radius * 0.45f, strokePaint);
+                        }
                         canvas.drawCircle(btn_x + radius * (j - 6) * 1.25f, btn_y + btn_Height / 2 + radius * 0.7f, radius * 0.45f, paint);
                     }
                 }
@@ -142,9 +193,17 @@ public class DrawCircle extends View {
             else if (15 <= objectDays[i] && objectDays[i] <= 20) {
                 for (int j = 0; j < objectDays[i]; j++) {
                     if (j < 10){
+                        //현재날짜 테두리
+                        if (j == (Integer.parseInt(dateDiff[i]))){
+                            canvas.drawCircle(btn_x + radius * (j + 1) * 0.905f, btn_y + btn_Height / 2 - radius, radius * 0.3f, strokePaint);
+                        }
                         canvas.drawCircle(btn_x + radius * (j + 1) * 0.905f, btn_y + btn_Height / 2 - radius, radius * 0.3f, paint);
                     }
                     else {
+                        //현재날짜 테두리
+                        if (j == (Integer.parseInt(dateDiff[i]))){
+                            canvas.drawCircle(btn_x + radius * (j - 9) * 0.905f, btn_y + btn_Height / 2 + radius * 0.35f, radius * 0.3f, strokePaint);
+                        }
                         canvas.drawCircle(btn_x + radius * (j - 9) * 0.905f, btn_y + btn_Height / 2 + radius * 0.35f, radius * 0.3f, paint);
                     }
                 }
@@ -154,12 +213,24 @@ public class DrawCircle extends View {
             else if (21 <= objectDays[i] && objectDays[i] <= 30) {
                 for (int j = 0; j < objectDays[i]; j++) {
                     if (j < 10) {
+                        //현재날짜 테두리
+                        if (j == (Integer.parseInt(dateDiff[i]))){
+                            canvas.drawCircle(btn_x + radius * (j + 1) * 0.905f, btn_y + radius * 1.7f, radius * 0.3f, strokePaint);
+                        }
                         canvas.drawCircle(btn_x + radius * (j + 1) * 0.905f, btn_y + radius * 1.7f, radius * 0.3f, paint);
                     }
                     else if (10 <= j && j < 20) {
+                        //현재날짜 테두리
+                        if (j == (Integer.parseInt(dateDiff[i]))){
+                            canvas.drawCircle(btn_x + radius * (j - 9) * 0.905f, btn_y + radius * 2.7f, radius * 0.3f, strokePaint);
+                        }
                         canvas.drawCircle(btn_x + radius * (j - 9) * 0.905f, btn_y + radius * 2.7f, radius * 0.3f, paint);
                     }
                     else if (20 <= j) {
+                        //현재날짜 테두리
+                        if (j == (Integer.parseInt(dateDiff[i]))){
+                            canvas.drawCircle(btn_x + radius * (j - 19) * 0.905f, btn_y + radius * 3.7f, radius * 0.3f, strokePaint);
+                        }
                         canvas.drawCircle(btn_x + radius * (j - 19) * 0.905f, btn_y + radius * 3.7f, radius * 0.3f, paint);
                     }
                 }

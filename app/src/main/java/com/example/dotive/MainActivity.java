@@ -365,7 +365,9 @@ public class MainActivity extends AppCompatActivity{
 
                     //현재날짜와 습관생성날짜 두 시간량을 뺀 시간량을 calDate에 저장
                     calDate[i] = todayTimestamp - createDateTimestamp[i];
-                    dateDiff[i] = String.valueOf(calDate[i] / (24*60*60*1000));
+                    if (calDate[i] >= 0) {
+                        dateDiff[i] = String.valueOf(calDate[i] / (24*60*60*1000));
+                    }
                 }
             }
 
