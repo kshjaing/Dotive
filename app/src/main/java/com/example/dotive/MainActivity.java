@@ -85,17 +85,23 @@ public class MainActivity extends AppCompatActivity {
     String Habit_Color = ""; //습관 색깔
     //int edit_Habit_Day_Num = 0; //습관 목표일 수
     String edit_Habit_Day_Num = ""; //습관 목표일 수
-    String Habit_Progress = "";
+    String Habit_Progress = ""; //습관 진행도
     String Habit_Create_Day = "";// 습관 생성 날짜
 
     //DB에서 받아온 값
-    String[] Arr_Habit_Name = {};//습관명
-    String[] Arr_Habit_Color = {};//습관 색깔
-    String[] Arr_edit_Habit_Day_Num = {}; //습관 목표일 수
-    String[] Arr_Habit_Progress = {}; //습관 진행도
-    String[] Arr_Habit_Create_Day = {}; //습관 생성 날짜
+    public static String[] Arr_Habit_Name = {};//습관명
+    public static String[] Arr_Habit_Color = {};//습관 색깔
+    public static String[] Arr_edit_Habit_Day_Num = {}; //습관 목표일 수
+    public static String[] Arr_Habit_Progress = {}; //습관 진행도
+    public static String[] Arr_Habit_Create_Day = {}; //습관 생성 날짜
 
-    long count; //생성날짜 오늘날짜 차이
+    public static long count; //생성날짜 오늘날짜 차이
+    public static long[] COUNT; //생성날짜 오늘 날짜 차이 배열 저장
+
+
+    //페인트 할때 습관 진행도 값 배열 (1,0,0,0,0)
+    String Arr_Btn_Paint_Progress[] = {};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         //습관 하나 이상 존재함
         //존재하면 DB 에서 값을 받아온다.
         if (Habits_Table_Count > 1) { //2부터 값이 1개 존재
-
+            COUNT = new long[Habits_Table_Count - 1];
             /*Intent intent = getIntent();
             Habit_Name = intent.getStringExtra("Habit_Name"); //습관명
             Habit_Color = Integer.parseInt(intent.getStringExtra("Habit_Color")); //습관 색깔
@@ -139,11 +145,11 @@ public class MainActivity extends AppCompatActivity {
             Arr_edit_Habit_Day_Num = edit_Habit_Day_Num.split("_");
             Arr_Habit_Progress = Habit_Progress.split("_");
             Arr_Habit_Create_Day = Habit_Create_Day.split("_");
+
         } else {
             Intent intent2 = new Intent(MainActivity.this, CreateActivity.class);
             startActivity(intent2);
         }
-
 
         //객체 인스턴스 초기화.
 
@@ -160,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
         //버튼위에 제목 (물 1L 마시기 등)
         linearLayout2 = (LinearLayout) view_main.findViewById(R.id.linearLayout2);
 
-
+        Day();
         Painting_Circle1 painting_circle = new Painting_Circle1(this); //CustomView.java 파일을 불러와 실행
 
         //동적 view 생성
@@ -283,7 +289,12 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(MainActivity.this, HabitActivity.class);
-                    intent.putExtra("Final_Target", Arr_TextView_Habit_Name[a].getText()); //버튼의 이름을 HabitActivity에 전달.
+                    intent.putExtra("Habit_Name", Arr_TextView_Habit_Name[a].getText()); //버튼의 이름을 HabitActivity에 전달.
+                    intent.putExtra("Habit_ObjDays",Arr_edit_Habit_Day_Num[a]);//습관 목표일 수
+                    intent.putExtra("Habit_Progress", Arr_Habit_Progress[a]); //습관 진행도
+                    intent.putExtra("Habit_Create_Day", Arr_Habit_Create_Day[a]); //습관 생성 날짜
+                    intent.putExtra("Get_i",Integer.toString(a)); //현재 무슨 버튼인지 알아야함. (0부터 시작)
+                    intent.putExtra("Count", COUNT[a]);
                     startActivity(intent);
                 }
             });
@@ -372,6 +383,40 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void Day() {
+        //습관 생성날짜 계산
+        for(int s = 0; s<Habits_Table_Count - 1; s++) {
+
+            final int ONE_DAY = 24 * 60 * 60 * 1000;
+
+            //날짜 배열로 저장
+            String[] Y_M_D =  Arr_Habit_Create_Day[s].split("-");
+
+            //DB에 저장된 날짜들 (습관 생성한 날)
+            int year = Integer.parseInt(Y_M_D[0]);
+            int month = Integer.parseInt(Y_M_D[1]);
+            int day = Integer.parseInt(Y_M_D[2]);;
+
+            //포맷
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+            Calendar Create_dayCal = Calendar.getInstance(); //생성 날짜
+            //String a = simpleDateFormat.format(Create_dayCal.getTime()); //db에 생성 날짜 저장 이렇게
+            Calendar dDayCal = Calendar.getInstance(); //오늘 날짜
+
+            month -= 1; //달력
+
+            Create_dayCal.set(year,month,day); //생성 날짜 입력
+            Log.e("테스트",simpleDateFormat.format(Create_dayCal.getTime()) +"");
+            Log.e("테스트", simpleDateFormat.format(dDayCal.getTime()) + "");
+
+            long today = Create_dayCal.getTimeInMillis()/ONE_DAY;
+            long dday = dDayCal.getTimeInMillis()/ONE_DAY;
+            COUNT[s] = dday - today; //배열로 각각의 날마다 차이 저장해둠.
+            //count = dday - today;
+        }
+    }
+
     //버튼 위에 습관일수 배열로 그리기
     //CustomView 에 버튼 좌표를 구할 수 없어 여기서 그린다.
 
@@ -391,13 +436,13 @@ public class MainActivity extends AppCompatActivity {
             init(context);
         }
 
-        @Override
+        /*@Override
         public boolean onTouchEvent(MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 Toast.makeText(super.getContext(), "모션 이벤트 다운" + event.getX() + "," + event.getY(), Toast.LENGTH_LONG).show();
             }
             return super.onTouchEvent(event);
-        }
+        }*/
 
         @Override
         protected void onDraw(Canvas canvas) {
@@ -415,35 +460,10 @@ public class MainActivity extends AppCompatActivity {
                 //목표일
                 int Object_Days = Integer.parseInt(Arr_edit_Habit_Day_Num[i]);
 
-                //습관 생성날짜 계산
+                //////////////////////////////////
+                count = COUNT[i];
 
-                final int ONE_DAY = 24 * 60 * 60 * 1000;
-
-                //날짜 배열로 저장
-                String[] Y_M_D =  Arr_Habit_Create_Day[i].split("-");
-
-                //DB에 저장된 날짜들 (습관 생성한 날)
-                int year = Integer.parseInt(Y_M_D[0]);
-                int month = Integer.parseInt(Y_M_D[1]);
-                int day = Integer.parseInt(Y_M_D[2]);;
-
-                //포맷
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-                Calendar Create_dayCal = Calendar.getInstance(); //생성 날짜
-                //String a = simpleDateFormat.format(Create_dayCal.getTime()); //db에 생성 날짜 저장 이렇게
-                Calendar dDayCal = Calendar.getInstance(); //오늘 날짜
-
-                month -= 1; //달력
-
-                Create_dayCal.set(year,month,day); //생성 날짜 입력
-                Log.e("테스트",simpleDateFormat.format(Create_dayCal.getTime()) +"");
-                Log.e("테스트", simpleDateFormat.format(dDayCal.getTime()) + "");
-
-                long today = Create_dayCal.getTimeInMillis()/ONE_DAY;
-                long dday = dDayCal.getTimeInMillis()/ONE_DAY;
-                count = dday - today;
-                Log.e("테스트 마지막",count + "");
+                Log.e("테스트 마지막",COUNT[i] + "");
 
                 //원을 그린다.
 
@@ -457,6 +477,23 @@ public class MainActivity extends AppCompatActivity {
                 stroke.setColor(Color.GREEN);
                 stroke.setStrokeWidth(10);
 
+                //습관 진행도 값을 i를 통해 배열로 가져온다.
+                //그 배열엔 레코드 1 : 1,0,0,0,0  , 레코드 2: 0 , 레코드 3 : 0,0,0  이런식으로 저장된 값
+                //
+                //Arr_Habit_Progress[0]; //습관 진행도 배열에 저장된 것.
+                String Btn_Paint_Progress = Arr_Habit_Progress[i];
+
+                Arr_Btn_Paint_Progress = Btn_Paint_Progress.split(","); //Ex : [0] : 1, [1] : 0, [2] : 0 이렇게 잘라 저장.
+                /*for(int k = 0; k < Arr_Btn_Paint_Progress.length; k++) {
+                    if(Arr_Btn_Paint_Progress[k] == "1") {
+                        paint.setColor(Color.GREEN);
+                    }
+                    else if(Arr_Btn_Paint_Progress[k] == "0") {
+                        paint.setColor(Color.GRAY);
+                    }
+                }*/
+
+                /////////////////////////
                 if(Object_Days < 5) {
                     if(Object_Days == 1) {
                         canvas.drawCircle(X + W/2, Y + H/2 , 100, paint);
@@ -489,8 +526,18 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 index_X = -450;
-                if(Object_Days > 4 && Object_Days <15) {
-                    for(int b = 0; b<Object_Days; b++) {
+
+                if(Object_Days > 4 && Object_Days <15) { //목표일수 15일 이하
+                    for(int b = 0; b<Object_Days; b++) { //목표일 수만큼 동그라미 반복해서 그림
+                        if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 1) {
+                            paint.setStyle(Paint.Style.FILL);
+                            paint.setColor(Color.YELLOW);
+                        }
+                        if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 0) {
+                            paint.setStyle(Paint.Style.FILL);
+                            paint.setColor(Color.GRAY);
+                        }
+
 
                         canvas.drawCircle(X + W/2 + index_X, Y + H/2 - 140 + index_Y , 55, paint);
                         //현재 날짜에 테두리
@@ -499,7 +546,8 @@ public class MainActivity extends AppCompatActivity {
                         if(b == 6) {index_X = -450; index_Y = 180;} //7개 이상부터 즉 8개부터 위치 변경
                     }
                 }
-                else if(Object_Days >14) {
+
+                if(Object_Days >14) {
                     for(int b = 0; b<Object_Days; b++) {
 
                         canvas.drawCircle(X + W/2 + index_X, Y + H/2 - 140 + index_Y , 35, paint);
