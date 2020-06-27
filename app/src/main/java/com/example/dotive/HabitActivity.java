@@ -1,4 +1,6 @@
 package com.example.dotive;
 
-public class HabitActivity {
+import android.app.Activity;
+
+public class HabitActivity extends Activity {
 }
