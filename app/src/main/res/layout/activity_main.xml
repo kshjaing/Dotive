@@ -24,9 +24,9 @@
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="20dp"
-                    android:fontFamily="@font/utoimagegothic"
+                    android:fontFamily="@font/katuri"
                     android:text="설정"
-                    android:textColor="#232323"
+                    android:textColor="#0a0d09"
                     android:textSize="20sp"></TextView>
 
                 <TextView
@@ -36,9 +36,9 @@
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="20dp"
-                    android:fontFamily="@font/utoimagegothic"
+                    android:fontFamily="@font/katuri"
                     android:text="편집"
-                    android:textColor="#232323"
+                    android:textColor="#0a0d09"
                     android:textSize="20sp"></TextView>
             </RelativeLayout>
             <RelativeLayout

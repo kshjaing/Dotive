@@ -32,6 +32,13 @@ import android.widget.Space;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+
 public class MainActivity extends AppCompatActivity{
     public static Context context_main;
     public static int totalHabit = 0;  //총 습관 개수
@@ -47,6 +54,18 @@ public class MainActivity extends AppCompatActivity{
     ScrollView sv;
     LinearLayout ll, ll2;
     FrameLayout fl;
+
+    public static String curDateString;
+    Date curDate;
+    String[] createDateString;
+    Date[] createDate;
+    long todayTimestamp;
+    long[] createDateTimestamp;
+    Date date1 = new Date();
+    Date date2 = new Date();
+    public static long[] calDate;
+    public static String[] dateDiff;
+
 
 
 
@@ -81,6 +100,7 @@ public class MainActivity extends AppCompatActivity{
             habitProgress = cursor.getString(0);
         }
 
+        calDateDiff();
 
         //설정버튼 클릭이벤트 부여
         txtSettings = new TextView(this);
@@ -163,7 +183,7 @@ public class MainActivity extends AppCompatActivity{
 
 
 
-            Typeface typeface = Typeface.createFromAsset(getAssets(), "font/utoimagegothic.ttf");
+            Typeface typeface = Typeface.createFromAsset(getAssets(), "font/katuri.ttf");
 
 
 
@@ -194,7 +214,7 @@ public class MainActivity extends AppCompatActivity{
                 txtViewArr[i].setPadding(txt_paddingLeft, 0, txt_paddingRight, 0);
                 txtViewArr[i].setGravity(Gravity.CENTER);
                 txtViewArr[i].setTextColor(Color.WHITE);
-                txtViewArr[i].setAutoSizeTextTypeUniformWithConfiguration(14, 22, 1, TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM);
+                txtViewArr[i].setAutoSizeTextTypeUniformWithConfiguration(12, 22, 1, TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM);
                 txtViewArr[i].setMaxLines(1);
                 //txtViewArr[i].setEllipsize(TextUtils.TruncateAt.END);
 
@@ -268,8 +288,8 @@ public class MainActivity extends AppCompatActivity{
         //메인액티비티로 돌아왔을 때 다크모드 체크
         if (isDarkmode == 0) {
             sv.setBackgroundColor(Color.parseColor("#FFEBD3"));
-            txtSettings.setTextColor(Color.parseColor("#232323"));
-            txtEdit.setTextColor(Color.parseColor("#232323"));
+            txtSettings.setTextColor(Color.parseColor("#0a0d09"));
+            txtEdit.setTextColor(Color.parseColor("#0a0d09"));
 
             for (int i = 0; i < totalHabit; i++) {
                 boxBtnArr[i].setBackgroundResource(R.drawable.custom_mainbox);
@@ -315,6 +335,60 @@ public class MainActivity extends AppCompatActivity{
     public void ibtnPlus_onClick(View view) {
         Intent intent = new Intent(MainActivity.this, CreateActivity.class);
         startActivity(intent);
+    }
+
+    //습관 생성날짜와 현재시간 차이 계산 메서드
+    public void calDateDiff() {
+        createDateTimestamp = new long[totalHabit];
+        calDate = new long[totalHabit];
+        dateDiff = new String[totalHabit];
+
+        if (totalHabit > 0) {
+            //날짜 형식 지정
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+            dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+
+            try {
+                //날짜 객체 생성해서 현재날짜 입력
+                Calendar calendar = Calendar.getInstance();
+                curDate = new Date(calendar.getTimeInMillis());
+                curDateString = dateFormat.format(curDate);
+                todayTimestamp = dateFormat.parse(curDateString).getTime();
+
+                cursor = db.rawQuery("SELECT createDate FROM Habits", null);
+
+                for (int i = 0; i < totalHabit; i++) {
+                    cursor.moveToPosition(i);
+                    createDateTimestamp[i] = dateFormat.parse(cursor.getString(0)).getTime();
+
+                    calDate[i] = todayTimestamp - createDateTimestamp[i];
+                    dateDiff[i] = String.valueOf(calDate[i] / (24*60*60*1000));
+                }
+            }
+
+            catch (ParseException e) {
+
+            }
+        }
+
+
+
+            /*
+            for (int i = 0; i < totalHabit; i++) {
+                cursor.moveToPosition(i);
+                createDate[i] = format.parse(cursor.getString(0));
+
+                date1[i] = createDate[i];
+                date2 = format.parse(curDate);
+
+                calDate[i] = date2.getTime() - date1[i].getTime();
+
+
+                calDateDays[i] = calDate[i] / (24*60*60*1000);
+                calDateDays[i] = Math.abs(calDateDays[i]);
+*/
+                //dateDiff[i] = String.valueOf(calDateDays[i]);
+
     }
 }
 

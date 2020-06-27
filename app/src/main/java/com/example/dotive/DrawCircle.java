@@ -17,11 +17,13 @@ import java.math.BigDecimal;
 import java.sql.Struct;
 import java.util.Arrays;
 
+import static com.example.dotive.MainActivity.calDate;
 import static com.example.dotive.MainActivity.context_main;
 import static com.example.dotive.MainActivity.db;
 import static com.example.dotive.MainActivity.dbHelper;
 import static com.example.dotive.MainActivity.isDarkmode;
 import static com.example.dotive.MainActivity.totalHabit;
+import static com.example.dotive.MainActivity.dateDiff;
 
 public class DrawCircle extends View {
     Paint paint, strokePaint;
@@ -95,7 +97,7 @@ public class DrawCircle extends View {
                 case 4:
                     for (int j = 0; j < 4; j++) {
                         //현재날짜 테두리 테스트
-                        if (j == 1){
+                        if (j == (Integer.parseInt(dateDiff[i]) - 1)){
                             strokePaint.setStrokeWidth(30);
                             strokePaint.setStyle(Paint.Style.STROKE);
                             strokePaint.setColor(Color.parseColor("#ffb313"));
@@ -136,8 +138,20 @@ public class DrawCircle extends View {
                 }
             }
 
-            //목표일수 15~30일
-            else if (15 <= objectDays[i] && objectDays[i] <= 30) {
+            //목표일수 15~20일
+            else if (15 <= objectDays[i] && objectDays[i] <= 20) {
+                for (int j = 0; j < objectDays[i]; j++) {
+                    if (j < 10){
+                        canvas.drawCircle(btn_x + radius * (j + 1) * 0.905f, btn_y + btn_Height / 2 - radius, radius * 0.3f, paint);
+                    }
+                    else {
+                        canvas.drawCircle(btn_x + radius * (j - 9) * 0.905f, btn_y + btn_Height / 2 + radius * 0.35f, radius * 0.3f, paint);
+                    }
+                }
+            }
+
+            //목표일수 21~30일
+            else if (21 <= objectDays[i] && objectDays[i] <= 30) {
                 for (int j = 0; j < objectDays[i]; j++) {
                     if (j < 10) {
                         canvas.drawCircle(btn_x + radius * (j + 1) * 0.905f, btn_y + radius * 1.7f, radius * 0.3f, paint);
