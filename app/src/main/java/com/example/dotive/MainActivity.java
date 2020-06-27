@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity{
 
 
 
-            Typeface typeface = Typeface.createFromAsset(getAssets(), "font/katuri.ttf");
+            Typeface typeface = Typeface.createFromAsset(getAssets(), "font/utoimagegothic.ttf");
 
 
 
