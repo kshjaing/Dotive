@@ -71,7 +71,7 @@ public class DrawCircle extends View {
             objectDays[i] = Integer.parseInt(cursor.getString(0));
             btn_x = MainActivity.boxBtnArr[i].getX();
             btn_y = MainActivity.boxBtnArr[i].getY();
-            strokePaint.setStrokeWidth(30);
+            strokePaint.setStrokeWidth(25);
             strokePaint.setStyle(Paint.Style.STROKE);
             strokePaint.setAntiAlias(true);
 

@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity{
     LinearLayout ll, ll2;
     FrameLayout fl;
 
-    String curDateString, createDateString;
+    public static String curDateString, createDateString;
     Date curDate;                      //현재날짜 Date변수
     long todayTimestamp;               //현재날짜 시간량
     long[] createDateTimestamp;        //습관생성날짜 시간량
