@@ -3,6 +3,7 @@ package com.example.dotive;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -24,6 +25,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import static com.example.dotive.MainActivity.curDateString;
+import static com.example.dotive.MainActivity.db;
 import static com.example.dotive.MainActivity.dbHelper;
 import static com.example.dotive.MainActivity.isDarkmode;
 import static com.example.dotive.MainActivity.objectDays;
@@ -38,6 +40,9 @@ public class HabitActivity extends Activity {
     SimpleDateFormat dateFormat;
     Calendar calendar;
     Date curDate;
+    String habitName;
+
+    Cursor cursor;
 
     LinearLayout ll;
     ScrollView sv;
@@ -48,6 +53,7 @@ public class HabitActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_habit);
         txtDate = new TextView(this);
+        txtHabitName = new TextView(this);
         dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일 (E)", Locale.KOREAN);
 
         ibtnBack = findViewById(R.id.ibtnBack);
@@ -59,20 +65,35 @@ public class HabitActivity extends Activity {
         int boxIndex = boxTag.lastIndexOf("_");
         String boxNum = boxTag.substring(boxIndex + 1);
 
-        dbHelper.getWritableDatabase();
+        db = dbHelper.getWritableDatabase();
+        cursor = db.rawQuery("SELECT habitName FROM Habits", null);
+        cursor.moveToPosition(Integer.parseInt(boxNum));
+        habitName = cursor.getString(0);
+        txtHabitName.setText(habitName);
+
+
         ll = findViewById(R.id.ll_habit);
         sv = findViewById(R.id.sv_habit);
         fl = findViewById(R.id.fl_habit);
 
+
+
         int btn_Height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,80,
                 getResources().getDisplayMetrics());
 
-        LinearLayout.LayoutParams linearParams = new LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams btn_linearParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, btn_Height, 1);
+        LinearLayout.LayoutParams txt_linearParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-        linearParams.setMargins(0,btn_Height / 2, 0, btn_Height / 8);
+        btn_linearParams.setMargins(0,btn_Height / 2, 0, btn_Height / 8);
 
+        txtHabitName.setTextSize(30);
+        txtHabitName.setTypeface(typeface);
+        txtHabitName.setTextColor(Color.WHITE);
+        txtHabitName.setGravity(Gravity.CENTER);
 
+        ll.addView(txtHabitName);
 
         //다크모드에 따른 배경색 변화
         if (isDarkmode == 0) {
@@ -95,7 +116,7 @@ public class HabitActivity extends Activity {
 
                 boxHabitArr = new Button[i + 1];
                 boxHabitArr[i] = new Button(this);
-                boxHabitArr[i].setLayoutParams(linearParams);
+                boxHabitArr[i].setLayoutParams(btn_linearParams);
                 boxHabitArr[i].setBackgroundResource(R.drawable.habitbtn_border_round);
                 boxHabitArr[i].setTag("dateBox_" + i);
                 boxHabitArr[i].setOnClickListener(new View.OnClickListener() {

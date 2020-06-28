@@ -41,16 +41,17 @@ import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity{
     public static Context context_main;
-    public static int totalHabit = 0;  //총 습관 개수
+    public static int totalHabit = 0;               //총 습관 개수
     public static Boolean isCreatePressed = false;  //습관생성 버튼클릭여부
-    public static Integer isDarkmode = 0;   //다크모드 여부, 0이 false, 1이 true
+    public static Integer isDarkmode = 0;           //다크모드 여부, 0이 false, 1이 true
     public static SQLiteDatabase db = null;
     public static DBHelper dbHelper;
-    public static Button[] boxBtnArr;       //습관전체 박스
-    public static TextView[] txtViewArr;    //습관명 텍스트뷰
-    public static String habitProgress;     //습관 진행도 표현 문자열
+    public static Button[] boxBtnArr;               //습관전체 박스
+    public static TextView[] txtViewArr;            //습관명 텍스트뷰
+    public static String habitProgress;             //습관 진행도 표현 문자열
+    public static String[] habitProgressArr;        //habitProgress 문자열을 한글자씩 담는 배열
     public static Typeface typeface;
-    public static int[] objectDays;         //각 습관의 목표일수를 담는 변수
+    public static int[] objectDays;                 //각 습관의 목표일수를 담는 변수
     Cursor cursor;
     TextView txtSettings, txtEdit;
     ScrollView sv;
@@ -233,8 +234,8 @@ public class MainActivity extends AppCompatActivity{
                 //DB에서 각 습관의 색깔값을 가져와서 적용
                 cursor = db.rawQuery("SELECT habitColor FROM Habits", null);
                 cursor.moveToPosition(i);
-                String strng = cursor.getString(0);
-                switch (cursor.getString(0)) {
+                String color = cursor.getString(0);
+                switch (color) {
                     case "red" : txtViewArr[i].setBackgroundResource(R.drawable.txtview_round_red);
                     break;
                     case "orange" : txtViewArr[i].setBackgroundResource(R.drawable.txtview_round_orange);
@@ -258,7 +259,7 @@ public class MainActivity extends AppCompatActivity{
                     boxBtnArr[i].setBackgroundResource(R.drawable.custom_mainbox_dark);
                 }
 
-                //각 박스 마다 태그설정
+                //각 박스,습관명 마다 태그설정
                 boxBtnArr[i].setTag("box_" + i);
                 cursor = db.rawQuery("SELECT habitName FROM Habits", null);
 
