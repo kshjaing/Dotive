@@ -158,7 +158,7 @@ public class DrawCircle extends View {
                     break;
 
                 case 3:
-                    progressWord = new String[3];
+                    progressWord = new String[objectDays[i]];
                     for (int j = 0; j < 3; j++) {
                         //현재날짜 테두리
                         if (j == (Integer.parseInt(dateDiff[i]))){
