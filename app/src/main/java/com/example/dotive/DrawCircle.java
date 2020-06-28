@@ -21,12 +21,15 @@ import static com.example.dotive.MainActivity.calDate;
 import static com.example.dotive.MainActivity.context_main;
 import static com.example.dotive.MainActivity.db;
 import static com.example.dotive.MainActivity.dbHelper;
+import static com.example.dotive.MainActivity.habitProgressArr;
 import static com.example.dotive.MainActivity.isDarkmode;
+import static com.example.dotive.MainActivity.oneCount;
 import static com.example.dotive.MainActivity.totalHabit;
 import static com.example.dotive.MainActivity.dateDiff;
 
 public class DrawCircle extends View {
-    Paint paint, strokePaint;
+    public static int[] oneIndex;                   //진행도 문자열에서 1이 어느 인덱스에 있는지 담는 배열
+    Paint paint, strokePaint, completePaint, completeStrokePaint;
     Cursor cursor;
     Integer[] objectDays = new Integer[totalHabit];
     float btn_x, btn_y;
@@ -52,6 +55,7 @@ public class DrawCircle extends View {
     private void init(Context context) {
         paint = new Paint();
         strokePaint = new Paint();
+        completePaint = new Paint();
         dbHelper = new DBHelper(context_main, 4);
     }
 
@@ -84,6 +88,25 @@ public class DrawCircle extends View {
                 strokePaint.setColor(Color.parseColor("#ffffff"));
             }
 
+            //DB에서 각 습관의 색깔값을 가져와서 적용
+            cursor = db.rawQuery("SELECT habitColor FROM Habits", null);
+            cursor.moveToPosition(i);
+            String color = cursor.getString(0);
+            switch (color) {
+                case "red" : completePaint.setColor(Color.parseColor("#e14f50"));
+                    break;
+                case "orange" : completePaint.setColor(Color.parseColor("#FF5722"));
+                    break;
+                case "green" :  completePaint.setColor(Color.parseColor("#74d78d"));
+                    break;
+                case "blue" : completePaint.setColor(Color.parseColor("#347ec7"));
+                    break;
+                case "purple" : completePaint.setColor(Color.parseColor("#c3a0dc"));
+                    break;
+                case "gray" : completePaint.setColor(Color.parseColor("#607d8b"));
+                    break;
+            }
+
             //-------------------------목표일수에 따른 원 크기와 위치 로직---------------------------
 
             //목표일수 1~7일
@@ -95,39 +118,51 @@ public class DrawCircle extends View {
                     }
 
                     //원 1개
-                    canvas.drawCircle(btn_x + btn_Width / 2, btn_y + btn_Height / 2, radius, paint);
+                    if (oneCount[i] == 0) {
+                        canvas.drawCircle(btn_x + btn_Width / 2, btn_y + btn_Height / 2, radius, paint);
+                    }
+                    else{
+                        canvas.drawCircle(btn_x + btn_Width / 2, btn_y + btn_Height / 2, radius, completePaint);
+                    }
                     break;
 
                 case 2:
                     //현재날짜 테두리
-                        if (Integer.parseInt(dateDiff[i]) == 0) {
-                            canvas.drawCircle(btn_x + (btn_Width / 2) - radius * 1.5f, btn_y + btn_Height / 2, radius, strokePaint);
-                        }
-                        else if (Integer.parseInt(dateDiff[i]) == 1){
-                            canvas.drawCircle(btn_x + (btn_Width / 2) + radius * 1.5f, btn_y + btn_Height / 2, radius, strokePaint);
-                        }
+                    if (Integer.parseInt(dateDiff[i]) == 0) {
+                        canvas.drawCircle(btn_x + (btn_Width / 2) - radius * 1.5f, btn_y + btn_Height / 2, radius, strokePaint);
+                    }
+                    else if (Integer.parseInt(dateDiff[i]) == 1){
+                        canvas.drawCircle(btn_x + (btn_Width / 2) + radius * 1.5f, btn_y + btn_Height / 2, radius, strokePaint);
+                    }
 
-                    //원 2개
-                    canvas.drawCircle(btn_x + (btn_Width / 2) - radius * 1.5f, btn_y + btn_Height / 2, radius, paint);
-                    canvas.drawCircle(btn_x + (btn_Width / 2) + radius * 1.5f, btn_y + btn_Height / 2, radius, paint);
+                    switch(habitProgressArr[i]){
+                        case "10":
+                            canvas.drawCircle(btn_x + (btn_Width / 2) - radius * 1.5f, btn_y + btn_Height / 2, radius, completePaint);
+                            canvas.drawCircle(btn_x + (btn_Width / 2) + radius * 1.5f, btn_y + btn_Height / 2, radius, paint);
+                            break;
+                        case "01":
+                            canvas.drawCircle(btn_x + (btn_Width / 2) - radius * 1.5f, btn_y + btn_Height / 2, radius, paint);
+                            canvas.drawCircle(btn_x + (btn_Width / 2) + radius * 1.5f, btn_y + btn_Height / 2, radius, completePaint);
+                            break;
+                        case "11":
+                            canvas.drawCircle(btn_x + (btn_Width / 2) - radius * 1.5f, btn_y + btn_Height / 2, radius, completePaint);
+                            canvas.drawCircle(btn_x + (btn_Width / 2) + radius * 1.5f, btn_y + btn_Height / 2, radius, completePaint);
+                            break;
+                        case "00":
+                            canvas.drawCircle(btn_x + (btn_Width / 2) - radius * 1.5f, btn_y + btn_Height / 2, radius, paint);
+                            canvas.drawCircle(btn_x + (btn_Width / 2) + radius * 1.5f, btn_y + btn_Height / 2, radius, paint);
+                            break;
+                    }
                     break;
 
                 case 3:
-                    //현재날짜 테두리
-                        if (Integer.parseInt(dateDiff[i]) == 0) {
-                            canvas.drawCircle(btn_x + (btn_Width / 2) - radius * 2.5f, btn_y + btn_Height / 2, radius, strokePaint);
+                    for (int j = 0; j < 3; j++) {
+                        //현재날짜 테두리
+                        if (j == (Integer.parseInt(dateDiff[i]))){
+                            canvas.drawCircle(btn_x + radius * (j + 1) * 2.5f, btn_y + btn_Height / 2, radius, strokePaint);
                         }
-                        else if (Integer.parseInt(dateDiff[i]) == 1){
-                            canvas.drawCircle(btn_x + (btn_Width / 2), btn_y + btn_Height / 2, radius, strokePaint);
-                        }
-                        else if (Integer.parseInt(dateDiff[i]) == 2){
-                            canvas.drawCircle(btn_x + (btn_Width / 2) + radius * 2.5f, btn_y + btn_Height / 2, radius, strokePaint);
-                        }
-
-                    //원 3개
-                    canvas.drawCircle(btn_x + (btn_Width / 2) - radius * 2.5f, btn_y + btn_Height / 2, radius, paint);
-                    canvas.drawCircle(btn_x + btn_Width / 2, btn_y + btn_Height / 2, radius, paint);
-                    canvas.drawCircle(btn_x + (btn_Width / 2) + radius * 2.5f, btn_y + btn_Height / 2, radius, paint);
+                        canvas.drawCircle(btn_x + radius * (j + 1) * 2.5f, btn_y + btn_Height / 2, radius, paint);
+                    }
                     break;
 
                 case 4:

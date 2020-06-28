@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity{
     public static String[] dateDiff;   //calDate의 시간량을 숫자로 변환
     public static Date[] createDateArr, objectDateArr;
     public static int[] oneCount;                           //진행도 문자열에서 1이 몇개 있는지 담는 배열
-    public static int[] oneIndex;                         //진행도 문자열에서 1이 어느 인덱스에 있는지 담는 배열
     String[] boxTags;
 
 
@@ -308,7 +307,6 @@ public class MainActivity extends AppCompatActivity{
         for (int j = 0; j < totalHabit; j++) {
             //진행도 문자열에서 1의 개수를 계산해서 oneCount 에 삽입
             oneCount[j] = getCharNumber(habitProgressArr[j], '1');
-
         }
     }
 

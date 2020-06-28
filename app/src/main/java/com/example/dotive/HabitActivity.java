@@ -24,6 +24,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import static com.example.dotive.DrawCircle.oneIndex;
 import static com.example.dotive.MainActivity.calDate;
 import static com.example.dotive.MainActivity.createDateArr;
 import static com.example.dotive.MainActivity.curDateString;
@@ -34,13 +35,13 @@ import static com.example.dotive.MainActivity.habitProgressArr;
 import static com.example.dotive.MainActivity.isDarkmode;
 import static com.example.dotive.MainActivity.objectDays;
 import static com.example.dotive.MainActivity.oneCount;
-import static com.example.dotive.MainActivity.oneIndex;
 import static com.example.dotive.MainActivity.progressBuilderArr;
 import static com.example.dotive.MainActivity.totalHabit;
 import static com.example.dotive.MainActivity.typeface;
 
 public class HabitActivity extends Activity {
     public static int dayIndex = 0;
+    public static int[] oneIndex;                         //진행도 문자열에서 1이 어느 인덱스에 있는지 담는 배열
     Button[] boxHabitArr;                   //목표일수만큼 버튼 생성
     ImageButton ibtnBack, ibtnBar;          //뒤로가기 버튼, 액션바 버튼
     TextView txtHabitName, txtObjectDays, txtDate;         //습관명, 버튼 속 날짜 텍스트
@@ -138,20 +139,14 @@ public class HabitActivity extends Activity {
 
 
 
-
-
-
-
-
         if (Integer.parseInt(dateDiff[boxNum]) < obj) {
+            curDate = new Date();
+            calendar = Calendar.getInstance();
+            calendar.setTime(curDate);
+
             for (int i = 0; i < (Integer.parseInt(dateDiff[boxNum]) + 1); i++) {
-                curDate = new Date();
-                calendar = Calendar.getInstance();
-                calendar.setTime(curDate);
-
-
                 curDateString = dateFormat.format(calendar.getTime());
-                calendar.add(Calendar.DATE, -1 * i);
+                calendar.add(Calendar.DATE, -1);
 
                 boxHabitArr = new Button[i + 1];
                 boxHabitArr[i] = new Button(this);
@@ -296,12 +291,16 @@ public class HabitActivity extends Activity {
         }
 
             if (oneCount[boxNum] > 0) {
+                //습관 진행도 문자열의 1의 개수만큼 oneIndex 배열 크기 지정
                 oneIndex = new int[oneCount[boxNum]];
+
+                //습관 진행도 문자열에서 1이 있는 인덱스를 연속으로 뽑아서 oneIndex 배열에 삽입
                 oneIndex[0] = habitProgressArr[boxNum].indexOf('1', 0);
                 for (int i = 1; i < oneCount[boxNum]; i++) {
                     oneIndex[i] = habitProgressArr[boxNum].indexOf('1', oneIndex[i - 1] + 1);
                 }
 
+                //1이 있는 개수만큼 각 인덱스마다 완료표시로 지정 반복
                 for (int j = 0; j < oneCount[boxNum]; j++) {
                     if (isDarkmode == 0) {
                         ll.findViewWithTag("dateBox_" + oneIndex[j]).setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
