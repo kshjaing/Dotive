@@ -33,6 +33,8 @@ public class DrawCircle extends View {
     Cursor cursor;
     Integer[] objectDays = new Integer[totalHabit];
     float btn_x, btn_y;
+    String[] progressWord;
+    int[] progressLength;
 
 
     int btn_Width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,360,
@@ -64,10 +66,10 @@ public class DrawCircle extends View {
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+
         db = dbHelper.getWritableDatabase();
 
         for (int i = 0; i < totalHabit; i++) {
-
             //paint[i].setAntiAlias(true);
             //DB에서 각 습관별 목표일수 뽑아옴
             cursor = db.rawQuery("SELECT objDays FROM Habits", null);
@@ -157,11 +159,22 @@ public class DrawCircle extends View {
 
                 case 3:
                     for (int j = 0; j < 3; j++) {
+                        progressWord = new String[3];
                         //현재날짜 테두리
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j + 1) * 2.5f, btn_y + btn_Height / 2, radius, strokePaint);
                         }
-                        canvas.drawCircle(btn_x + radius * (j + 1) * 2.5f, btn_y + btn_Height / 2, radius, paint);
+                        for (int k = 0; k < habitProgressArr[i].length(); k++) {
+                            progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
+                        }
+
+                        if (progressWord[j].equals("1"))  {
+                            canvas.drawCircle(btn_x + radius * (j + 1) * 2.5f, btn_y + btn_Height / 2, radius, completePaint);
+                        }
+                        else {
+                            canvas.drawCircle(btn_x + radius * (j + 1) * 2.5f, btn_y + btn_Height / 2, radius, paint);
+                        }
+
                     }
                     break;
 
