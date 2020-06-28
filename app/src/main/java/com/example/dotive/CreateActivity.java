@@ -216,7 +216,7 @@ public class CreateActivity extends Activity {
     //Habits 테이블에 습관 추가
     public void dbInsertHabits(String habitName, String habitColor, Integer objDays, String habitProgress) {
         MainActivity.dbHelper.getWritableDatabase();
-        db.execSQL("INSERT INTO Habits (habitName, habitColor, objDays, habitProgress, createDate) Values ('" + habitName + "', '" + habitColor + "', '" + objDays + "', '" + habitProgress + "', CURRENT_TIMESTAMP);");
+        db.execSQL("INSERT INTO Habits (habitName, habitColor, objDays, habitProgress, createDate) Values ('" + habitName + "', '" + habitColor + "', '" + objDays + "', '" + habitProgress + "', datetime('now', 'localtime'));");
     }
 }
 

@@ -17,7 +17,6 @@ import static com.example.dotive.MainActivity.dbHelper;
 import static com.example.dotive.MainActivity.isDarkmode;
 import static com.example.dotive.MainActivity.objectDays;
 import static com.example.dotive.MainActivity.totalHabit;
-import static com.example.dotive.MainActivity.curDateString;
 import static com.example.dotive.MainActivity.typeface;
 
 public class HabitActivity extends Activity {

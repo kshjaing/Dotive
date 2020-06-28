@@ -136,7 +136,7 @@ public class SettingsActivity extends Activity {
         MainActivity.dbHelper.getWritableDatabase();
         db.execSQL("DROP TABLE Habits");
         db.execSQL("CREATE TABLE Habits (id INTEGER PRIMARY KEY AUTOINCREMENT, habitName TEXT, habitColor TEXT," +
-                "objDays INTEGER, habitProgress TEXT)");
+                "objDays INTEGER, habitProgress TEXT, createDate TEXT)");
     }
 
     public void insertSettings() {
