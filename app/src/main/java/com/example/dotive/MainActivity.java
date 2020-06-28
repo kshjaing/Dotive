@@ -48,8 +48,7 @@ public class MainActivity extends AppCompatActivity{
     public static DBHelper dbHelper;
     public static Button[] boxBtnArr;               //습관전체 박스
     public static TextView[] txtViewArr;            //습관명 텍스트뷰
-    public static String habitProgress;             //습관 진행도 표현 문자열
-    public static String[] habitProgressArr;        //habitProgress 문자열을 한글자씩 담는 배열
+    public static String[] habitProgressArr;        //각 습관의 진행도 문자열을 담는 배열
     public static Typeface typeface;
     public static int[] objectDays;                 //각 습관의 목표일수를 담는 변수
     Cursor cursor;
@@ -93,10 +92,12 @@ public class MainActivity extends AppCompatActivity{
             totalHabit = Integer.parseInt(cursor.getString(0));
         }
 
-        //DB에서 '습관 진행도' 문자열 가져와서 habitProgress 변수에 삽입
+        //DB에서 '습관 진행도' 문자열 가져와서 habitProgressArr 배열에 삽입
         cursor = db.rawQuery("SELECT habitProgress FROM Habits", null);
-        while(cursor.moveToNext()) {
-            habitProgress = cursor.getString(0);
+        habitProgressArr = new String[totalHabit];
+        for (int i = 0; i < totalHabit; i++) {
+            cursor.moveToPosition(i);
+            habitProgressArr[i] = cursor.getString(0);
         }
 
         //DB에서 '각 습관의 목표일수' 가져와서 objectDays 변수에 삽입
@@ -109,7 +110,7 @@ public class MainActivity extends AppCompatActivity{
 
 
 
-        //현재날짜와 습관생성날짜의 차를 구하는 메서드
+        //현재날짜와 습관생성날짜의 차를 구하는 메서드(원들 중에 현재날짜를 표현하기 위함)
         calDateDiff();
 
 

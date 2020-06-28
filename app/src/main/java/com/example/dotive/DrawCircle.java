@@ -90,7 +90,7 @@ public class DrawCircle extends View {
             switch (objectDays[i]) {
                 case 1:
                     //현재날짜 테두리
-                    if (Integer.parseInt(dateDiff[i]) == 0){
+                    if (Integer.parseInt(dateDiff[i]) == 0) {
                         canvas.drawCircle(btn_x + btn_Width / 2, btn_y + btn_Height / 2, radius, strokePaint);
                     }
 

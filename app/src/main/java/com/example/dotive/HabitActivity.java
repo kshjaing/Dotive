@@ -36,7 +36,7 @@ public class HabitActivity extends Activity {
     int whichBox;
     Button[] boxHabitArr;                   //목표일수만큼 버튼 생성
     ImageButton ibtnBack, ibtnBar;          //뒤로가기 버튼, 액션바 버튼
-    TextView txtHabitName, txtDate;         //습관명, 버튼 속 날짜 텍스트
+    TextView txtHabitName, txtObjectDays, txtDate;         //습관명, 버튼 속 날짜 텍스트
     SimpleDateFormat dateFormat;
     Calendar calendar;
     Date curDate;
@@ -54,6 +54,7 @@ public class HabitActivity extends Activity {
         setContentView(R.layout.activity_habit);
         txtDate = new TextView(this);
         txtHabitName = new TextView(this);
+        txtObjectDays = new TextView(this);
         dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일 (E)", Locale.KOREAN);
 
         ibtnBack = findViewById(R.id.ibtnBack);
@@ -70,6 +71,7 @@ public class HabitActivity extends Activity {
         cursor.moveToPosition(Integer.parseInt(boxNum));
         habitName = cursor.getString(0);
         txtHabitName.setText(habitName);
+        txtObjectDays.setText("\n\n(총 " + objectDays[Integer.parseInt(boxNum)] + "일)");
 
 
         ll = findViewById(R.id.ll_habit);
@@ -90,18 +92,25 @@ public class HabitActivity extends Activity {
 
         txtHabitName.setTextSize(30);
         txtHabitName.setTypeface(typeface);
-        txtHabitName.setTextColor(Color.WHITE);
         txtHabitName.setGravity(Gravity.CENTER);
+        txtObjectDays.setTextSize(20);
+        txtObjectDays.setTypeface(typeface);
+        txtObjectDays.setGravity(Gravity.CENTER);
 
         ll.addView(txtHabitName);
+        ll.addView(txtObjectDays);
 
         //다크모드에 따른 배경색 변화
         if (isDarkmode == 0) {
             sv.setBackgroundColor(Color.parseColor("#FFEBD3"));
+            txtHabitName.setTextColor(Color.BLACK);
+            txtObjectDays.setTextColor(Color.BLACK);
         }
 
         else {
             sv.setBackgroundColor(Color.parseColor("#272B36"));
+            txtHabitName.setTextColor(Color.WHITE);
+            txtObjectDays.setTextColor(Color.WHITE);
         }
 
         int obj = objectDays[Integer.parseInt(boxNum)];
@@ -122,6 +131,25 @@ public class HabitActivity extends Activity {
                 boxHabitArr[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        //임시 테스트용
+                        if (isDarkmode == 0) {
+                            if (v.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.habitbtn_border_round_pressed).getConstantState())) {
+                                if (v.getTag() == "dateBox_0") {
+                                    v.setBackgroundResource(R.drawable.habitbtn_border_round_stroke);
+                                }
+                                else v.setBackgroundResource(R.drawable.habitbtn_border_round);
+                            }
+                            else v.setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
+                        }
+                        else {
+                            if (v.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.habitbtn_border_round_pressed_dark).getConstantState())) {
+                                if (v.getTag() == "dateBox_0") {
+                                    v.setBackgroundResource(R.drawable.habitbtn_border_round_stroke_dark);
+                                } else
+                                    v.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+                            } else v.setBackgroundResource(R.drawable.habitbtn_border_round_pressed_dark);
+                        }
+
                         Toast.makeText(HabitActivity.this, String.valueOf(v.getTag()), Toast.LENGTH_SHORT).show();
                     }
                 });
