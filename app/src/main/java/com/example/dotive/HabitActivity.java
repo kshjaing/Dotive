@@ -67,7 +67,6 @@ public class HabitActivity extends Activity {
         String boxTag = intent.getExtras().getString("tag");
         int boxIndex = boxTag.lastIndexOf("_");
         boxNum = Integer.parseInt(boxTag.substring(boxIndex + 1));
-        String test1 = progressBuilderArr[2].toString();
 
         db = dbHelper.getWritableDatabase();
         cursor = db.rawQuery("SELECT habitName FROM Habits", null);
