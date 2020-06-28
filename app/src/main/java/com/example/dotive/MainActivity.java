@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity{
     public static Button[] boxBtnArr;               //습관전체 박스
     public static TextView[] txtViewArr;            //습관명 텍스트뷰
     public static String[] habitProgressArr;        //각 습관의 진행도 문자열을 담는 배열
+    public static StringBuilder[] progressBuilderArr;
     public static Typeface typeface;
     public static int[] objectDays;                 //각 습관의 목표일수를 담는 변수
     Cursor cursor;
@@ -95,10 +96,14 @@ public class MainActivity extends AppCompatActivity{
         //DB에서 '습관 진행도' 문자열 가져와서 habitProgressArr 배열에 삽입
         cursor = db.rawQuery("SELECT habitProgress FROM Habits", null);
         habitProgressArr = new String[totalHabit];
+        progressBuilderArr = new StringBuilder[totalHabit];
+
         for (int i = 0; i < totalHabit; i++) {
             cursor.moveToPosition(i);
             habitProgressArr[i] = cursor.getString(0);
+            progressBuilderArr[i] = new StringBuilder(habitProgressArr[i]);
         }
+
 
         //DB에서 '각 습관의 목표일수' 가져와서 objectDays 변수에 삽입
         objectDays = new int[totalHabit];

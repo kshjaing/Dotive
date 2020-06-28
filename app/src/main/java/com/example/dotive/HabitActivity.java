@@ -29,11 +29,12 @@ import static com.example.dotive.MainActivity.db;
 import static com.example.dotive.MainActivity.dbHelper;
 import static com.example.dotive.MainActivity.isDarkmode;
 import static com.example.dotive.MainActivity.objectDays;
+import static com.example.dotive.MainActivity.progressBuilderArr;
 import static com.example.dotive.MainActivity.totalHabit;
 import static com.example.dotive.MainActivity.typeface;
 
 public class HabitActivity extends Activity {
-    int whichBox;
+    public static int dayIndex = 0;
     Button[] boxHabitArr;                   //목표일수만큼 버튼 생성
     ImageButton ibtnBack, ibtnBar;          //뒤로가기 버튼, 액션바 버튼
     TextView txtHabitName, txtObjectDays, txtDate;         //습관명, 버튼 속 날짜 텍스트
@@ -64,14 +65,14 @@ public class HabitActivity extends Activity {
         Intent intent = getIntent();
         String boxTag = intent.getExtras().getString("tag");
         int boxIndex = boxTag.lastIndexOf("_");
-        String boxNum = boxTag.substring(boxIndex + 1);
+        final String boxNum = boxTag.substring(boxIndex + 1);
 
         db = dbHelper.getWritableDatabase();
         cursor = db.rawQuery("SELECT habitName FROM Habits", null);
         cursor.moveToPosition(Integer.parseInt(boxNum));
         habitName = cursor.getString(0);
         txtHabitName.setText(habitName);
-        txtObjectDays.setText("\n\n(총 " + objectDays[Integer.parseInt(boxNum)] + "일)");
+        txtObjectDays.setText("\n\n(목표 " + objectDays[Integer.parseInt(boxNum)] + "일)");
 
 
         ll = findViewById(R.id.ll_habit);
@@ -123,6 +124,8 @@ public class HabitActivity extends Activity {
 
                 curDateString = dateFormat.format(calendar.getTime());
 
+
+
                 boxHabitArr = new Button[i + 1];
                 boxHabitArr[i] = new Button(this);
                 boxHabitArr[i].setLayoutParams(btn_linearParams);
@@ -131,26 +134,50 @@ public class HabitActivity extends Activity {
                 boxHabitArr[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        //몇번째 날짜 버튼을 눌렀는지 dayIndex에 담음
+                        int obj_index = v.getTag().toString().lastIndexOf("_");
+                        String dayNum = v.getTag().toString().substring(obj_index + 1);
+                        dayIndex = Integer.parseInt(dayNum);
+
                         //임시 테스트용
                         if (isDarkmode == 0) {
                             if (v.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.habitbtn_border_round_pressed).getConstantState())) {
-                                if (v.getTag() == "dateBox_0") {
-                                    v.setBackgroundResource(R.drawable.habitbtn_border_round_stroke);
-                                }
-                                else v.setBackgroundResource(R.drawable.habitbtn_border_round);
+                                progressBuilderArr[Integer.parseInt(boxNum)].setCharAt(dayIndex, '0');
+                                updateProgress(progressBuilderArr[Integer.parseInt(boxNum)].toString());
+                                v.setBackgroundResource(R.drawable.habitbtn_border_round);
+                                String btnText = ((Button) v).getText().toString();
+                                ((Button) v).setText(btnText.substring(0, btnText.length() - 5));
                             }
-                            else v.setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
+
+                            else {
+                                progressBuilderArr[Integer.parseInt(boxNum)].setCharAt(dayIndex, '1');
+                                updateProgress(progressBuilderArr[Integer.parseInt(boxNum)].toString());
+                                v.setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
+                                ((Button) v).append("  완료!");
+                            }
                         }
                         else {
                             if (v.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.habitbtn_border_round_pressed_dark).getConstantState())) {
-                                if (v.getTag() == "dateBox_0") {
-                                    v.setBackgroundResource(R.drawable.habitbtn_border_round_stroke_dark);
-                                } else
-                                    v.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
-                            } else v.setBackgroundResource(R.drawable.habitbtn_border_round_pressed_dark);
-                        }
+                                progressBuilderArr[Integer.parseInt(boxNum)].setCharAt(dayIndex, '0');
+                                updateProgress(progressBuilderArr[Integer.parseInt(boxNum)].toString());
+                                ((Button) v).setTextColor(Color.WHITE);
+                                v.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+                                String btnText = ((Button) v).getText().toString();
+                                ((Button) v).setText(btnText.substring(0, btnText.length() - 5));
+                            }
 
-                        Toast.makeText(HabitActivity.this, String.valueOf(v.getTag()), Toast.LENGTH_SHORT).show();
+                            else {
+                                progressBuilderArr[Integer.parseInt(boxNum)].setCharAt(dayIndex, '1');
+                                v.setBackgroundResource(R.drawable.habitbtn_border_round_pressed_dark);
+                                updateProgress(progressBuilderArr[Integer.parseInt(boxNum)].toString());
+                                ((Button) v).setTextColor(Color.BLACK);
+                                ((Button) v).append("  완료!");
+                            }
+                        }
+                        cursor = db.rawQuery("SELECT habitProgress FROM Habits", null);
+                        cursor.moveToPosition(Integer.parseInt(boxNum));
+
+                        Toast.makeText(HabitActivity.this, cursor.getString(0), Toast.LENGTH_SHORT).show();
                     }
                 });
                 boxHabitArr[i].setText(curDateString);
@@ -195,5 +222,11 @@ public class HabitActivity extends Activity {
     public void onBackPressed() {
         Intent intent = new Intent(HabitActivity.this, MainActivity.class);
         startActivity(intent);
+    }
+
+    //Habits 테이블 습관진행도 업데이트
+    public void updateProgress(String habitProgress) {
+        MainActivity.dbHelper.getWritableDatabase();
+        db.execSQL("UPDATE Habits SET habitProgress='" + habitProgress +"'");
     }
 }
