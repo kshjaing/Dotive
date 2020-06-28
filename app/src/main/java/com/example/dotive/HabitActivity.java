@@ -42,7 +42,10 @@ public class HabitActivity extends Activity {
     Calendar calendar;
     Date curDate;
     String habitName;
+    String progressString;
     int boxNum;
+    int oneCount;                           //진행도 문자열에서 1이 몇개 있는지 담는 변수
+    int[] oneIndex;                         //진행도 문자열에서 1이 어느 인덱스에 있는지 담는 배열
 
     Cursor cursor;
 
@@ -62,13 +65,19 @@ public class HabitActivity extends Activity {
         ibtnBack = findViewById(R.id.ibtnBack);
         ibtnBar = findViewById(R.id.ibtnBar);
 
+
+
         //메인액티비티에서 클릭한 박스의 태그를 받아옴
         Intent intent = getIntent();
         String boxTag = intent.getExtras().getString("tag");
         int boxIndex = boxTag.lastIndexOf("_");
-        boxNum = Integer.parseInt(boxTag.substring(boxIndex + 1));
+        boxNum = Integer.parseInt(boxTag.substring(boxIndex + 1));   //메인액티비티에서 몇번째 박스를 클릭했는지 인덱스
 
         db = dbHelper.getWritableDatabase();
+
+
+
+        //DB에서 습관명을 받아와 txtHabitName 에 삽입, 목표일수도 받아와 txtObjectDays 에 삽입
         cursor = db.rawQuery("SELECT habitName FROM Habits", null);
         cursor.moveToPosition(boxNum);
         habitName = cursor.getString(0);
@@ -102,7 +111,9 @@ public class HabitActivity extends Activity {
         ll.addView(txtHabitName);
         ll.addView(txtObjectDays);
 
-        //다크모드에 따른 배경색 변화
+
+
+        //다크모드에 따른 배경색, 텍스트색 변화
         if (isDarkmode == 0) {
             sv.setBackgroundColor(Color.parseColor("#FFEBD3"));
             txtHabitName.setTextColor(Color.BLACK);
@@ -115,7 +126,29 @@ public class HabitActivity extends Activity {
             txtObjectDays.setTextColor(Color.WHITE);
         }
 
+
+
+        //메인액티비티에서 클릭한 박스의 인덱스에 해당하는 목표일수를 obj 에 삽입
         int obj = objectDays[boxNum];
+
+
+
+        cursor = db.rawQuery("SELECT habitProgress FROM Habits", null);
+        cursor.moveToPosition(boxNum);
+        progressString = cursor.getString(0);
+
+
+
+        //진행도 문자열에서 1의 개수를 계산해서 oneCount 에 삽입
+        oneCount = getCharNumber(progressString, '1');
+        if (oneCount > 0){
+            oneIndex = new int[oneCount];
+            oneIndex[0] = progressString.indexOf('1', 0);
+            for (int i = 1; i < oneCount; i++) {
+                oneIndex[i] = progressString.indexOf('1', oneIndex[i - 1] + 1);
+            }
+        }
+
 
             for (int i = 0; i < obj; i++) {
                 curDate = new Date();
@@ -135,6 +168,7 @@ public class HabitActivity extends Activity {
                 boxHabitArr[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         //몇번째 날짜 버튼을 눌렀는지 dayIndex에 담음
                         int obj_index = v.getTag().toString().lastIndexOf("_");
                         String dayNum = v.getTag().toString().substring(obj_index + 1);
@@ -142,6 +176,7 @@ public class HabitActivity extends Activity {
 
                         //임시 테스트용
                         if (isDarkmode == 0) {
+                            //클릭한 뷰의 백그라운드와 drawable 파일과의 비교
                             if (v.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.habitbtn_border_round_pressed).getConstantState())) {
                                 progressBuilderArr[boxNum].setCharAt(dayIndex, '0');
                                 updateProgress(boxNum, progressBuilderArr[boxNum].toString());
@@ -175,10 +210,9 @@ public class HabitActivity extends Activity {
                                 ((Button) v).append("  완료!");
                             }
                         }
-                        cursor = db.rawQuery("SELECT habitProgress FROM Habits", null);
-                        cursor.moveToPosition(boxNum);
-                        String test = cursor.getString(0);
 
+
+                        //진행도 문자열 잘 변하는지 테스트용
                         Toast.makeText(HabitActivity.this, cursor.getString(0), Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -203,7 +237,21 @@ public class HabitActivity extends Activity {
                     boxHabitArr[i].setBackgroundResource(R.drawable.habitbtn_border_round_dark);
                 }
 
+
                 ll.addView(boxHabitArr[i]);
+            }
+            if (oneCount > 0) {
+                for (int j = 0; j < oneCount; j++) {
+                    if (isDarkmode == 0) {
+                        ll.findViewWithTag("dateBox_" + oneIndex[j]).setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
+                        ((Button)ll.findViewWithTag("dateBox_" + oneIndex[j])).append("  완료!");
+                    }
+                    else {
+                        ll.findViewWithTag("dateBox_" + oneIndex[j]).setBackgroundResource(R.drawable.habitbtn_border_round_pressed_dark);
+                        ((Button)ll.findViewWithTag("dateBox_" + oneIndex[j])).setTextColor(Color.BLACK);
+                        ((Button)ll.findViewWithTag("dateBox_" + oneIndex[j])).append("  완료!");
+                    }
+                }
             }
     }
 
@@ -231,4 +279,17 @@ public class HabitActivity extends Activity {
         MainActivity.dbHelper.getWritableDatabase();
         db.execSQL("UPDATE Habits SET habitProgress='" + habitProgress +"' WHERE id='" + (id + 1) +"'");
     }
+
+    //문자열에서 특정 문자의 개수를 구하는 메서드
+    public int getCharNumber(String str, char c)
+    {
+        int count = 0;
+        for(int i=0;i<str.length();i++)
+        {
+            if(str.charAt(i) == c)
+                count++;
+        }
+        return count;
+    }
+
 }
