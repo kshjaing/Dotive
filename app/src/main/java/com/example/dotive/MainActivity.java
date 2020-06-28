@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity{
         }
 
         //DB에서 '습관 진행도' 문자열 가져와서 habitProgressArr 배열에 삽입
+        //최종적으로는 StringBuilder 인 progressBuilderArr 에 각 진행도 문자열을 저장
         cursor = db.rawQuery("SELECT habitProgress FROM Habits", null);
         habitProgressArr = new String[totalHabit];
         progressBuilderArr = new StringBuilder[totalHabit];
@@ -116,6 +117,7 @@ public class MainActivity extends AppCompatActivity{
 
 
         //현재날짜와 습관생성날짜의 차를 구하는 메서드(원들 중에 현재날짜를 표현하기 위함)
+        //결과값은 DateDiff 에 저장됨
         calDateDiff();
 
 
