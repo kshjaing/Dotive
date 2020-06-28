@@ -158,8 +158,8 @@ public class DrawCircle extends View {
                     break;
 
                 case 3:
+                    progressWord = new String[3];
                     for (int j = 0; j < 3; j++) {
-                        progressWord = new String[3];
                         //현재날짜 테두리
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j + 1) * 2.5f, btn_y + btn_Height / 2, radius, strokePaint);
