@@ -64,6 +64,10 @@ public class MainActivity extends AppCompatActivity{
     long[] createDateTimestamp;        //습관생성날짜 시간량
     public static long[] calDate;      //현재날짜 시간량 - 습관생성날짜 시간량
     public static String[] dateDiff;   //calDate의 시간량을 숫자로 변환
+    public static Date[] createDateArr, objectDateArr;
+    public static int[] oneCount;                           //진행도 문자열에서 1이 몇개 있는지 담는 배열
+    public static int[] oneIndex;                         //진행도 문자열에서 1이 어느 인덱스에 있는지 담는 배열
+    String[] boxTags;
 
 
 
@@ -104,6 +108,8 @@ public class MainActivity extends AppCompatActivity{
             habitProgressArr[i] = cursor.getString(0);
             progressBuilderArr[i] = new StringBuilder(habitProgressArr[i]);
         }
+
+
 
 
         //DB에서 '각 습관의 목표일수' 가져와서 objectDays 변수에 삽입
@@ -221,6 +227,7 @@ public class MainActivity extends AppCompatActivity{
 
             //습관 수만큼 박스 및 습관제목 텍스트뷰 생성
             for (int i = 0; i < totalHabit; i++) {
+                boxTags = new String[totalHabit];
                 boxBtnArr[i] = new Button(this);
                 boxBtnArr[i].setHeight(btn_Height);
                 txtViewArr[i] = new TextView(this);
@@ -293,7 +300,15 @@ public class MainActivity extends AppCompatActivity{
                         startActivity(intent);
                     }
                 });
+
+                boxTags[i] = boxBtnArr[i].getTag().toString();
             }
+        }
+        oneCount = new int[totalHabit];
+        for (int j = 0; j < totalHabit; j++) {
+            //진행도 문자열에서 1의 개수를 계산해서 oneCount 에 삽입
+            oneCount[j] = getCharNumber(habitProgressArr[j], '1');
+
         }
     }
 
@@ -370,6 +385,7 @@ public class MainActivity extends AppCompatActivity{
     //현재날짜와 습관 생성날짜 차이 계산 메서드
     public void calDateDiff() {
         createDateTimestamp = new long[totalHabit];
+        createDateArr = new Date[totalHabit];
         calDate = new long[totalHabit];
         dateDiff = new String[totalHabit];
 
@@ -394,12 +410,15 @@ public class MainActivity extends AppCompatActivity{
                 for (int i = 0; i < totalHabit; i++) {
                     cursor.moveToPosition(i);
                     Date test = dateFormat2.parse(cursor.getString(0));
+                    createDateArr[i] = dateFormat2.parse(cursor.getString(0));
+
                     createDateString = dateFormat.format(test);
                     createDateTimestamp[i] = dateFormat.parse(createDateString).getTime();
 
                     //현재날짜와 습관생성날짜 두 시간량을 뺀 시간량을 calDate 에 저장
                     calDate[i] = todayTimestamp - createDateTimestamp[i];
                     if (calDate[i] >= 0) {
+                        dateDiff[i] = String.valueOf(calDate[i] / (24*60*60*1000));
                         dateDiff[i] = String.valueOf(calDate[i] / (24*60*60*1000));
                     }
                 }
@@ -409,6 +428,18 @@ public class MainActivity extends AppCompatActivity{
                 //string 에서 date format 으로 parse 하는것 때문에 예외처리 해줘야함
             }
         }
+    }
+
+    //문자열에서 특정 문자의 개수를 구하는 메서드
+    public int getCharNumber(String str, char c)
+    {
+        int count = 0;
+        for(int i=0;i<str.length();i++)
+        {
+            if(str.charAt(i) == c)
+                count++;
+        }
+        return count;
     }
 }
 
