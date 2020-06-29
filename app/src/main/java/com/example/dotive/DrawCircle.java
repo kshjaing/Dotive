@@ -61,7 +61,6 @@ public class DrawCircle extends View {
         dbHelper = new DBHelper(context_main, 4);
     }
 
-    @SuppressLint("CutPasteId")
     @Override
     public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
