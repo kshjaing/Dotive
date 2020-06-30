@@ -341,6 +341,8 @@ public class HabitActivity extends Activity {
                 startActivity(intent);
             }
         });
+
+
     }
 
     //뒤로가기 키 눌렀을 때 이벤트 설정

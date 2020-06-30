@@ -325,6 +325,8 @@ public class MainActivity extends AppCompatActivity{
         txtEdit = new TextView(this);
         txtEdit = findViewById(R.id.txtEdit);
 
+        calDateDiff();
+
         //메인액티비티로 돌아왔을 때 다크모드 체크
         if (isDarkmode == 0) {
             sv.setBackgroundColor(Color.parseColor("#FFEBD3"));
