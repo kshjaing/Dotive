@@ -163,22 +163,45 @@ public class HabitActivity extends Activity {
                         String dayNum = v.getTag().toString().substring(obj_index + 1);
                         dayIndex = Integer.parseInt(dayNum);
 
-                        //임시 테스트용
-                            //클릭한 뷰의 백그라운드와 drawable 파일과의 비교
-                            if (habitProgressArr[boxNum].indexOf(dayIndex) == 1) {
-                                progressBuilderArr[boxNum].setCharAt(dayIndex, '0');
+
+                        //클릭한 뷰의 백그라운드와 drawable 파일과의 비교
+                        if (isDarkmode == 0) {
+                            if (v.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.habitbtn_border_round_pressed).getConstantState())) {
+                                progressBuilderArr[boxNum].setCharAt(habitProgressArr[boxNum].length() - dayIndex - 1, '0');
                                 updateProgress(boxNum, progressBuilderArr[boxNum].toString());
                                 v.setBackgroundResource(R.drawable.habitbtn_border_round);
                                 String btnText = ((Button) v).getText().toString();
                                 ((Button) v).setText(btnText.substring(0, btnText.length() - 5));
+                                ((Button) v).setTextColor(Color.BLACK);
                             } else {
-                                progressBuilderArr[boxNum].setCharAt(dayIndex, '1');
+                                progressBuilderArr[boxNum].setCharAt(habitProgressArr[boxNum].length() - dayIndex - 1, '1');
                                 updateProgress(boxNum, progressBuilderArr[boxNum].toString());
                                 v.setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
-                                ((Button) v).append("  완료!");
+                                ((Button) v).setText(((Button) v).getText() + "  완료!");
+                                ((Button) v).setTextColor(Color.WHITE);
                             }
+                        }
+
+                        else {
+                            if (v.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.habitbtn_border_round_pressed_dark).getConstantState())) {
+                                progressBuilderArr[boxNum].setCharAt(habitProgressArr[boxNum].length() - dayIndex - 1, '0');
+                                updateProgress(boxNum, progressBuilderArr[boxNum].toString());
+                                v.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+                                String btnText = ((Button) v).getText().toString();
+                                ((Button) v).setText(btnText.substring(0, btnText.length() - 5));
+                                ((Button) v).setTextColor(Color.WHITE);
+                            } else {
+                                progressBuilderArr[boxNum].setCharAt(habitProgressArr[boxNum].length() - dayIndex - 1, '1');
+                                updateProgress(boxNum, progressBuilderArr[boxNum].toString());
+                                v.setBackgroundResource(R.drawable.habitbtn_border_round_pressed_dark);
+                                ((Button) v).setText(((Button) v).getText() + "  완료!");
+                                ((Button) v).setTextColor(Color.BLACK);
+                            }
+                        }
 
 
+                        cursor = db.rawQuery("SELECT habitProgress FROM Habits", null);
+                        cursor.moveToPosition(boxNum);
                         //진행도 문자열 잘 변하는지 테스트용
                         Toast.makeText(HabitActivity.this, cursor.getString(0), Toast.LENGTH_SHORT).show();
                     }
@@ -233,31 +256,31 @@ public class HabitActivity extends Activity {
                         if (isDarkmode == 0) {
                             //클릭한 뷰의 백그라운드와 drawable 파일과의 비교
                             if (v.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.habitbtn_border_round_pressed).getConstantState())) {
-                                progressBuilderArr[boxNum].setCharAt(dayIndex, '0');
+                                progressBuilderArr[boxNum].setCharAt(habitProgressArr[boxNum].length() - dayIndex - 1, '0');
                                 updateProgress(boxNum, progressBuilderArr[boxNum].toString());
                                 v.setBackgroundResource(R.drawable.habitbtn_border_round);
                                 String btnText = ((Button) v).getText().toString();
                                 ((Button) v).setText(btnText.substring(0, btnText.length() - 5));
                             } else {
-                                progressBuilderArr[boxNum].setCharAt(dayIndex, '1');
+                                progressBuilderArr[boxNum].setCharAt(habitProgressArr[boxNum].length() - dayIndex - 1, '1');
                                 updateProgress(boxNum, progressBuilderArr[boxNum].toString());
                                 v.setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
-                                ((Button) v).append("  완료!");
+                                ((Button) v).setText(((Button) v).getText() + "  완료!");
                             }
                         } else {
                             if (v.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.habitbtn_border_round_pressed_dark).getConstantState())) {
-                                progressBuilderArr[boxNum].setCharAt(dayIndex, '0');
+                                progressBuilderArr[boxNum].setCharAt(habitProgressArr[boxNum].length() - dayIndex - 1, '0');
                                 updateProgress(boxNum, progressBuilderArr[boxNum].toString());
                                 ((Button) v).setTextColor(Color.WHITE);
                                 v.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
                                 String btnText = ((Button) v).getText().toString();
                                 ((Button) v).setText(btnText.substring(0, btnText.length() - 5));
                             } else {
-                                progressBuilderArr[boxNum].setCharAt(dayIndex, '1');
+                                progressBuilderArr[boxNum].setCharAt(habitProgressArr[boxNum].length() - dayIndex - 1, '1');
                                 v.setBackgroundResource(R.drawable.habitbtn_border_round_pressed_dark);
                                 updateProgress(boxNum, progressBuilderArr[boxNum].toString());
                                 ((Button) v).setTextColor(Color.BLACK);
-                                ((Button) v).append("  완료!");
+                                ((Button) v).setText(((Button) v).getText() + "  완료!");
                             }
                         }
 
@@ -281,12 +304,12 @@ public class HabitActivity extends Activity {
                 //습관 진행도 문자열에서 1이 있는 인덱스를 연속으로 뽑아서 oneIndex 배열에 삽입
                 for (int i = 0; i < oneCount[boxNum]; i++) {
                     if (oneCount[boxNum] == 1) {
-                        oneIndex[0] = habitProgressArr[boxNum].indexOf('1', 0);
+                        oneIndex[0] = habitProgressArr[boxNum].length() - habitProgressArr[boxNum].indexOf('1', 0) - 1;
                     }
                     else {
-                        oneIndex[0] = habitProgressArr[boxNum].indexOf('1', 0);
+                        oneIndex[0] = habitProgressArr[boxNum].length() - habitProgressArr[boxNum].indexOf('1', 0) - 1;
                         if (i > 0) {
-                            oneIndex[i] = habitProgressArr[boxNum].indexOf('1', oneIndex[i - 1] + 1);
+                            oneIndex[i] = habitProgressArr[boxNum].length() - habitProgressArr[boxNum].indexOf('1', oneIndex[i - 1] + 1) - 1;
                         }
                     }
                 }
@@ -295,12 +318,13 @@ public class HabitActivity extends Activity {
                 for (int j = 0; j < oneCount[boxNum]; j++) {
                     if (isDarkmode == 0) {
                         ll.findViewWithTag("dateBox_" + oneIndex[j]).setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
+                        ((Button)ll.findViewWithTag("dateBox_" + oneIndex[j])).setTextColor(Color.WHITE);
                     }
                     else {
                         ll.findViewWithTag("dateBox_" + oneIndex[j]).setBackgroundResource(R.drawable.habitbtn_border_round_pressed_dark);
                         ((Button)ll.findViewWithTag("dateBox_" + oneIndex[j])).setTextColor(Color.BLACK);
                     }
-                    ((Button)ll.findViewWithTag("dateBox_" + oneIndex[j])).append("  완료!");
+                    ((Button)ll.findViewWithTag("dateBox_" + oneIndex[j])).setText(((Button)ll.findViewWithTag("dateBox_" + oneIndex[j])).getText() + "  완료!");
                 }
             }
 
