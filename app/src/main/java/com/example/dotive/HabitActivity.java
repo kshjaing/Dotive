@@ -29,15 +29,15 @@ public class HabitActivity extends AppCompatActivity {
         setContentView(R.layout.activity_habit);
 
         //최종목표 페이지에서 받아온 버튼 id (string)
-        TextView t_Name = (TextView)findViewById(R.id.t_Name);
+        /*TextView t_Name = (TextView)findViewById(R.id.t_Name);
         TextView t_Progress = (TextView)findViewById(R.id.t_Progress);
         TextView t_Create_Day = (TextView)findViewById(R.id.t_Create_Day);
         TextView t_Objdays = (TextView)findViewById(R.id.t_Objdays);
         TextView t_Get_i = (TextView)findViewById(R.id.t_Get_i);
         TextView t_Get_Count = (TextView)findViewById(R.id.t_Get_Count);
-        long Long_Get_Count = 0;
-        Button button = (Button)findViewById(R.id.button);
 
+        Button button = (Button)findViewById(R.id.button);*/
+        long Long_Get_Count = 0;
         Intent intent = getIntent(); //데이터 받아옴
 
         //최종목표 명 :
@@ -49,12 +49,19 @@ public class HabitActivity extends AppCompatActivity {
         Get_i = intent.getExtras().getString("Get_i"); //현재 무슨 버튼인지 알아야함.
         final Long Get_Count = intent.getLongExtra("Count",Long_Get_Count); //오늘 위치 계산값
 
-        t_Name.setText(name);
+        /*t_Name.setText(name);
         t_Objdays.setText(objdays);
         t_Progress.setText(progress);
         t_Create_Day.setText(createday);
         t_Get_i.setText(Get_i);
-        t_Get_Count.setText(Long.toString(Get_Count));
+        t_Get_Count.setText(Long.toString(Get_Count));*/
+
+        Log.e("HabitActivity.java", "습관명 : "+name);
+        Log.e("HabitActivity.java", "습관 목표일 수 : "+objdays);
+        Log.e("HabitActivity.java", "습관 진행도 : "+progress);
+        Log.e("HabitActivity.java", "습관 생성 날짜 : "+createday);
+        Log.e("HabitActivity.java", "현재 버튼 번호 : "+Get_i);
+        Log.e("HabitActivity.java", "목표일 수에서 오늘 날짜 위치 : "+Get_Count);
 
         //t_Get_Count.setText(Long.toString(MainActivity.count));
         //버튼을 누르면 다시 메인 페이지로 가면서 동그라미 버튼이 변한다.
@@ -63,7 +70,8 @@ public class HabitActivity extends AppCompatActivity {
         //DB에서 습관 진행도 0000에서 변환된 값은 1로 변환시킨다.
         //DB 변환은 여기서 업데이트를 한 후  값만 넘긴다.
 
-        button.setOnClickListener(new View.OnClickListener() {
+
+        /*button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //1. 습관 진행도를 배열로 나눈다.
@@ -77,7 +85,7 @@ public class HabitActivity extends AppCompatActivity {
                 //현재 버튼 번호 값에 맞는 습관을 찾아 그 습관 명을 변경시켜본다.
                 /*UPDATE_Habits();
                 Intent intent1 = new Intent(HabitActivity.this, MainActivity.class);
-                startActivity(intent1);*/
+                startActivity(intent1);
                 //잘 변경된다.
 
                 Arr_Progress = new String[Integer.parseInt(objdays)]; //습관 진행도 배열 공간 목표일 수 만큼 생성;
@@ -97,7 +105,7 @@ public class HabitActivity extends AppCompatActivity {
                 Intent intent1 = new Intent(HabitActivity.this, MainActivity.class);
                 startActivity(intent1);
             }
-        });
+        });*/
     }
 
     public void UPDATE_Habits() {
