@@ -127,6 +127,8 @@ public class HabitActivity extends Activity {
             view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             txtHabitName.setTextColor(Color.BLACK);
             txtObjectDays.setTextColor(Color.BLACK);
+            ibtnBack.setBackgroundResource(R.drawable.arrow_back_dark);
+            ibtnBar.setBackgroundResource(R.drawable.actionbar_dark);
         }
 
         else {
@@ -134,6 +136,8 @@ public class HabitActivity extends Activity {
             getWindow().setStatusBarColor(Color.parseColor("#272B36"));
             txtHabitName.setTextColor(Color.WHITE);
             txtObjectDays.setTextColor(Color.WHITE);
+            ibtnBack.setBackgroundResource(R.drawable.arrow_back);
+            ibtnBar.setBackgroundResource(R.drawable.actionbar);
         }
 
 
@@ -175,7 +179,7 @@ public class HabitActivity extends Activity {
                         int obj_index = v.getTag().toString().lastIndexOf("_");
                         String dayNum = v.getTag().toString().substring(obj_index + 1);
                         dayIndex = Integer.parseInt(dayNum);
-                        Toast.makeText(HabitActivity.this, String.valueOf(dayIndex), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(HabitActivity.this, String.valueOf(dayIndex), Toast.LENGTH_SHORT).show();
 
 
                         //클릭한 뷰의 백그라운드와 drawable 파일과의 비교
@@ -299,7 +303,7 @@ public class HabitActivity extends Activity {
 
 
                         //진행도 문자열 잘 변하는지 테스트용
-                        Toast.makeText(HabitActivity.this, habitProgressArr[boxNum], Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(HabitActivity.this, habitProgressArr[boxNum], Toast.LENGTH_SHORT).show();
                         //Toast.makeText(HabitActivity.this, v.getTag().toString(), Toast.LENGTH_SHORT).show();
                     }
                 });

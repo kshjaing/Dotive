@@ -416,7 +416,7 @@ public class MainActivity extends AppCompatActivity{
                 boxBtnArr[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(MainActivity.this, v.getTag().toString(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(MainActivity.this, v.getTag().toString(), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MainActivity.this, HabitActivity.class);
                         intent.putExtra("tag", String.valueOf(v.getTag()));
                         startActivity(intent);

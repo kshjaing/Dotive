@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="189dp"
         android:layout_marginLeft="189dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="80dp"
         android:layout_marginEnd="188dp"
         android:layout_marginRight="188dp"
         android:fontFamily="@font/katuri"
@@ -20,47 +20,9 @@
         android:textColor="#000000"
         android:textSize="35sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btn_darkmode"
-        android:layout_width="360dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="26dp"
-        android:layout_marginRight="26dp"
-        android:background="@drawable/button_border_round"
-        android:fontFamily="@font/katuri"
-        android:paddingStart="60dp"
-        android:text="다크모드로 전환"
-        android:textAlignment="textStart"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtSettingLetters" />
-
-    <Button
-        android:id="@+id/btn_language"
-        android:layout_width="360dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="26dp"
-        android:layout_marginRight="26dp"
-        android:background="@drawable/button_border_round"
-        android:fontFamily="@font/katuri"
-        android:paddingStart="60dp"
-        android:text="언어"
-        android:textAlignment="textStart"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_darkmode" />
 
     <Button
         android:id="@+id/btn_rating"
@@ -68,7 +30,7 @@
         android:layout_height="60dp"
         android:layout_marginStart="25dp"
         android:layout_marginLeft="25dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="26dp"
         android:layout_marginRight="26dp"
         android:background="@drawable/button_border_round"
@@ -78,6 +40,7 @@
         android:textAlignment="textStart"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_language" />
 
@@ -87,7 +50,7 @@
         android:layout_height="60dp"
         android:layout_marginStart="25dp"
         android:layout_marginLeft="25dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="26dp"
         android:layout_marginRight="26dp"
         android:background="@drawable/button_border_round"
@@ -102,12 +65,31 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_rating" />
 
     <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="155dp"
+        android:layout_marginLeft="155dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="156dp"
+        android:layout_marginRight="156dp"
+        android:background="@drawable/button_border_round"
+        android:fontFamily="@font/katuri"
+        android:text="확인"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_reset" />
+
+    <Button
         android:id="@+id/btn_reset"
         android:layout_width="360dp"
         android:layout_height="60dp"
         android:layout_marginStart="25dp"
         android:layout_marginLeft="25dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="26dp"
         android:layout_marginRight="26dp"
         android:background="@drawable/button_border_round"
@@ -122,23 +104,44 @@
         app:layout_constraintTop_toBottomOf="@+id/btn_contact" />
 
     <Button
-        android:id="@+id/btn_confirm"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="155dp"
-        android:layout_marginLeft="155dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="156dp"
-        android:layout_marginRight="156dp"
+        android:id="@+id/btn_language"
+        android:layout_width="360dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="26dp"
+        android:layout_marginRight="26dp"
         android:background="@drawable/button_border_round"
         android:fontFamily="@font/katuri"
-        android:text="확인"
-        android:textAlignment="center"
+        android:paddingStart="60dp"
+        android:text="언어"
+        android:textAlignment="textStart"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_darkmode" />
+
+    <Button
+        android:id="@+id/btn_darkmode"
+        android:layout_width="360dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="26dp"
+        android:layout_marginRight="26dp"
+        android:background="@drawable/button_border_round"
+        android:fontFamily="@font/katuri"
+        android:paddingStart="60dp"
+        android:text="다크모드로 전환"
+        android:textAlignment="textStart"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_reset" />
+        app:layout_constraintTop_toBottomOf="@+id/txtSettingLetters" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
