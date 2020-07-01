@@ -15,16 +15,24 @@ import androidx.annotation.Nullable;
 public class Provider extends ContentProvider {
     private static final String AUTHORITY = "com.example.dotive";
     private static final String BASE_PATH = "Habits";
+    private static final String BASE_PATH2 = "Settings";
+
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY  + "/" + BASE_PATH);
+    public static final Uri CONTENT_URI2 = Uri.parse("content://" + AUTHORITY  + "/" + BASE_PATH2);
 
     private static final int HABITS = 1;
-    private static final int HABITS_ID = 2;
+    private static final int HABITS_ID = 1;
+    private static final int SETTINGS = 2;
+    private static final int SETTINGS_darkmode = 2;
 
     private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
     static {
         uriMatcher.addURI(AUTHORITY, BASE_PATH, HABITS);
         uriMatcher.addURI(AUTHORITY, BASE_PATH + "/#", HABITS_ID);
+        uriMatcher.addURI(AUTHORITY, BASE_PATH2, SETTINGS);
+        uriMatcher.addURI(AUTHORITY, BASE_PATH2 + "/#", SETTINGS_darkmode);
     }
+
 
     private SQLiteDatabase sqLiteDatabase;
 
@@ -32,7 +40,7 @@ public class Provider extends ContentProvider {
     public boolean onCreate() {
         DatabaseHelper databaseHelper = new DatabaseHelper(getContext());
         sqLiteDatabase = databaseHelper.getWritableDatabase();
-
+        sqLiteDatabase = databaseHelper.getWritableDatabase();
         return true;
     }
 
@@ -54,6 +62,11 @@ public class Provider extends ContentProvider {
                         DatabaseHelper.ALL_COLUMNS,
                         s, null, null, null, DatabaseHelper.Habits_ID + " ASC"); //자동 증가되는 ID 값 순
                 break;
+            case SETTINGS:
+                cursor = sqLiteDatabase.query(DatabaseHelper.TABLE_NAME2,
+                        DatabaseHelper.ALL_COLUMNS_Settings,
+                        s,null,null,null,null);
+                break;
             default:
                 throw new IllegalArgumentException("알 수 없는 URI " + uri);
         }
@@ -71,6 +84,8 @@ public class Provider extends ContentProvider {
         switch (uriMatcher.match(uri)) {
             case HABITS:
                 return "vnd.android.cursor.dir/Habits";
+            case SETTINGS:
+                return "vnd.android.cursor.dir/Settings";
             default:
                 throw new IllegalArgumentException("알 수 없는 URI " + uri);
         }
@@ -84,14 +99,22 @@ public class Provider extends ContentProvider {
         * 2. 저장할 칼럼명과 값들이 들어간 ContentValues 객체
         * 결과 값으로 새로 추가된 값 Uri 정보 반환
         * */
-        long id = sqLiteDatabase.insert(DatabaseHelper.TABLE_NAME, null, contentValues);
-
-        if(id > 0) {
-            Uri _uri = ContentUris.withAppendedId(CONTENT_URI, id);
-            getContext().getContentResolver().notifyChange(_uri, null);
-            return _uri;
+        switch (uriMatcher.match(uri)) {
+            case HABITS:
+                long id = sqLiteDatabase.insert(DatabaseHelper.TABLE_NAME, null, contentValues);
+                if(id > 0) {
+                    Uri _uri = ContentUris.withAppendedId(CONTENT_URI, id);
+                    getContext().getContentResolver().notifyChange(_uri, null);
+                    return _uri;
+                }
+            case SETTINGS:
+                long id2 = sqLiteDatabase.insert(DatabaseHelper.TABLE_NAME2, null, contentValues);
+                if(id2 > 0) {
+                    Uri _uri = ContentUris.withAppendedId(CONTENT_URI2, id2);
+                    getContext().getContentResolver().notifyChange(_uri, null);
+                    return _uri;
+                }
         }
-
         throw new SQLException("추가 실패 -> URI :" + uri);
     }
 
@@ -107,6 +130,9 @@ public class Provider extends ContentProvider {
         switch (uriMatcher.match(uri)) {
             case HABITS:
                 count = sqLiteDatabase.delete(DatabaseHelper.TABLE_NAME, s, strings);
+                break;
+            case SETTINGS:
+                count = sqLiteDatabase.delete(DatabaseHelper.TABLE_NAME2,s,strings);
                 break;
             default:
                 throw new IllegalArgumentException("알 수 없는 URI " + uri);
@@ -129,6 +155,9 @@ public class Provider extends ContentProvider {
         switch (uriMatcher.match(uri)) {
             case HABITS:
                 count = sqLiteDatabase.update(DatabaseHelper.TABLE_NAME,contentValues,s,strings);
+                break;
+            case SETTINGS:
+                count = sqLiteDatabase.update(DatabaseHelper.TABLE_NAME2,contentValues,s,strings);
                 break;
             default:
                 throw new IllegalArgumentException("알 수 없는 URI " + uri);

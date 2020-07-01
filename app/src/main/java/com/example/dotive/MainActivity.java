@@ -25,6 +25,7 @@ import android.media.Image;
 import android.media.JetPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
@@ -117,6 +118,9 @@ public class MainActivity extends AppCompatActivity {
     //설정 버튼
     ImageButton ibtnSettings;
 
+    //db에서 다크모드 값 , 언어 값
+    int DB_darkmode; // 1 = > 다크 , 기본값 : 0
+    String DB_language;
 
     int Table_Count;
     @Override
@@ -130,7 +134,11 @@ public class MainActivity extends AppCompatActivity {
 
         QUERY_Habits();
 
+        QUERY_Settings();
+
         Log.e("MainActivity.java", "Habits_Table_Count : " + Habits_Table_Count);
+
+
         //final Habits_Table_Count = 0;
         //습관 하나 이상 존재함
         //존재하면 DB 에서 값을 받아온다.
@@ -176,7 +184,8 @@ public class MainActivity extends AppCompatActivity {
         View view_main = (View) getLayoutInflater().inflate(R.layout.activity_main, null);
 
         scrollView = (ScrollView) view_main.findViewById(R.id.scrollView);
-        scrollView.setBackgroundColor(Color.parseColor("#FFF7CD")); //뒷 배경 설정
+
+
 
         frameLayout = (FrameLayout) view_main.findViewById(R.id.frameLayout);
 
@@ -319,8 +328,18 @@ public class MainActivity extends AppCompatActivity {
             Arr_TextView_Habit_Name[i].setGravity(Gravity.CENTER);
 
 
+
             //습관 버튼 radius Drawable
             Arr_Btn_Habit[i].setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.radius));
+            //다크모드 버튼 색상변경
+            if(DB_darkmode == 0) {
+                //Arr_Btn_Habit[i]
+
+            }
+            else {
+                GradientDrawable bgShape = (GradientDrawable) Arr_Btn_Habit[i].getBackground().getCurrent(); //GradientDrawable 그대로 하면 오류남 마지막에 .getCurrent() 중요
+                bgShape.setColor(Color.parseColor("#414b5c"));
+            }
 
             //습관 제목 텍스트뷰 CSS
             Arr_TextView_Habit_Name[i].setBackground(ContextCompat.getDrawable(this, R.drawable.textview_custom_css));
@@ -455,6 +474,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //db에서 다크모드 여부 확인 하고 변경
+        if (DB_darkmode == 0) {
+            scrollView.setBackgroundColor(Color.parseColor("#FFEBD3")); //뒷 배경 설정
+            ibtnEdit.setBackgroundResource(R.drawable.edit_dark);
+            ibtnSettings.setBackgroundResource(R.drawable.settings_dark);
+        }
+        else {
+            scrollView.setBackgroundColor(Color.parseColor("#272B36")); //뒷 배경 설정
+            ibtnEdit.setBackgroundResource(R.drawable.edit);
+            ibtnSettings.setBackgroundResource(R.drawable.settings);
+        }
+
         //제일 위에 있는것을 뿌려야 차례대로 child view 들이 보인다. (중간꺼든 다른거 넣으면 페이탈 에러)
         setContentView(scrollView);
     }
@@ -482,6 +513,28 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+    public void QUERY_Settings() {
+        try {
+            String uriString = "content://com.example.dotive/Settings";
+            Uri uri = new Uri.Builder().build().parse(uriString);
+
+            String[] columns = new String[] {"darkmode","language"};
+            Cursor cursor = getContentResolver().query(uri, columns, null, null, null);
+            Log.e("MainActivity.java", "QUERY 결과 (Settings) : " + cursor.getCount());
+
+            while (cursor.moveToNext()) {
+                int darkmode = cursor.getInt(cursor.getColumnIndex(columns[0]));
+                String language = cursor.getString(cursor.getColumnIndex(columns[1]));
+
+                DB_darkmode = darkmode;
+                DB_language = language;
+
+                Log.e("MainActivity.java", "Settings 레코드 " + darkmode + ", " + language);
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void QUERY_Habits() {
@@ -636,7 +689,7 @@ public class MainActivity extends AppCompatActivity {
 
                         for(int q = 0; q < Arr_Btn_Paint_Progress.length; q++) {
                             if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Color.YELLOW);
-                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) paint.setColor(Color.GRAY);
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) paint.setColor(Color.parseColor("#7a8599"));
                             if(q == 0) canvas.drawCircle(X + W/2, Y + H/2 , 100, paint);
                             if(count == 0) canvas.drawCircle(X + W/2, Y + H/2 , 100, stroke);
                         }
@@ -645,7 +698,7 @@ public class MainActivity extends AppCompatActivity {
                     else if(Object_Days == 2) {
                         for(int q = 0; q<Arr_Btn_Paint_Progress.length; q++) {
                             if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Color.YELLOW);
-                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) paint.setColor(Color.GRAY);
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) paint.setColor(Color.parseColor("#7a8599"));
                             if(q == 0) canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, paint);
                             if(q == 1) canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, paint);
                             if(count == 0) canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, stroke);
@@ -655,7 +708,7 @@ public class MainActivity extends AppCompatActivity {
                     else if(Object_Days == 3) {
                         for(int q = 0; q<Arr_Btn_Paint_Progress.length; q++){
                             if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Color.YELLOW);
-                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) paint.setColor(Color.GRAY);
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) paint.setColor(Color.parseColor("#7a8599"));
                             if(q == 0) canvas.drawCircle(X + W/2 - 300, Y + H/2, 100, paint);
                             if(q == 1) canvas.drawCircle(X + W/2, Y + H/2, 100, paint);
                             if(q == 2) canvas.drawCircle(X + W/2 + 300, Y + H/2, 100, paint);
@@ -667,7 +720,7 @@ public class MainActivity extends AppCompatActivity {
                     else if(Object_Days == 4) {
                         for(int q = 0; q<Arr_Btn_Paint_Progress.length; q++) {
                             if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Color.YELLOW);
-                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) paint.setColor(Color.GRAY);
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) paint.setColor(Color.parseColor("#7a8599"));
                             if(q == 0) canvas.drawCircle(X + W/2 - 400, Y + H/2, 100, paint);
                             if(q == 1) canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, paint);
                             if(q == 2) canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, paint);
@@ -684,7 +737,7 @@ public class MainActivity extends AppCompatActivity {
                 if(Object_Days > 4 && Object_Days <15) { //목표일수 15일 이하
                     for(int b = 0; b<Object_Days; b++) { //목표일 수만큼 동그라미 반복해서 그림
                         if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 1) paint.setColor(Color.YELLOW);
-                        if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 0) paint.setColor(Color.GRAY);
+                        if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 0) paint.setColor(Color.parseColor("#7a8599"));
                         canvas.drawCircle(X + W/2 + index_X, Y + H/2 - 140 + index_Y , 55, paint);
                         if(count == b) canvas.drawCircle(X + W/2 + index_X, Y + H/2 - 140 + index_Y , 55, stroke);
                         index_X +=150;
@@ -694,7 +747,7 @@ public class MainActivity extends AppCompatActivity {
                 if(Object_Days >14) {
                     for(int b = 0; b<Object_Days; b++) {
                         if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 1) paint.setColor(Color.YELLOW);
-                        if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 0) paint.setColor(Color.GRAY);
+                        if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 0) paint.setColor(Color.parseColor("#7a8599"));
 
                         canvas.drawCircle(X + W/2 + index_X, Y + H/2 - 140 + index_Y , 35, paint);
                         if(count == b) canvas.drawCircle(X + W/2 + index_X, Y + H/2 - 140 + index_Y , 35, stroke);

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.Activity;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -19,6 +20,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -93,10 +95,15 @@ public class CreateActivity extends AppCompatActivity {
                     intent.putExtra("Habit_Name",edit_Habit_Name.getText().toString()); //습관명
                     intent.putExtra("Habit_Color",Integer.toString(int_Color)); //습관 색깔
                     intent.putExtra("edit_Habit_Day_Num",edit_Habit_Day_Num.getText().toString()); //습관 목표일 수
+
+                    //세팅 값
+                    if(MainActivity.TotalHabit == 1)
+                        INSERT_Settings();
                     MainActivity.TotalHabit +=1; //습관 버튼 개수
 
                     //habits 테이블을 추가한다.
                     INSERT_Habits();
+
 
                     startActivity(intent);
                 }
@@ -135,6 +142,31 @@ public class CreateActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    //설정값 추가 한번만 실행
+    public void INSERT_Settings() {
+        Log.e("CreateActivity.java", " INSERT_Settings 메서드 호출됨.");
+
+        String uriString = "content://com.example.dotive/Settings";
+        Uri uri = new Uri.Builder().build().parse(uriString);
+
+        Cursor cursor = getContentResolver().query(uri, null,null,null,null);
+        String[] columns = cursor.getColumnNames();
+        Log.e("CreateActivity.java", "columns count = " + columns.length);
+
+        for(int i = 0; i < columns.length; i++) {
+            Log.e("CreateActivity.java", "settings 레코드 " + i + " : " + columns[i]);
+        }
+
+        ContentValues values = new ContentValues();
+        values.put("darkmode", 0); //기본값 0
+        Log.e("CreateActivity.java", "다크모드 기본 값 0");
+        values.put("language", "한국어"); //기본값 한국어 , English 등.
+        Log.e("CreateActivity.java", "언어 : 한국어");
+
+        uri = getContentResolver().insert(uri, values);
+        Log.e("CreateActivity.java", "(settings) INSERT 결과 : " + uri.toString());
     }
 
     //습관을 추가한다.
@@ -188,6 +220,8 @@ public class CreateActivity extends AppCompatActivity {
         uri = getContentResolver().insert(uri, values);
         Log.e("CreateActivity.java", "INSERT 결과 : " + uri.toString());
     }
+
+
 
     public void openColorPicker() {
         final ColorPicker colorPicker = new ColorPicker(this); //ColorPicker 객체 생성
