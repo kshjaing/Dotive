@@ -343,7 +343,6 @@ public class MainActivity extends AppCompatActivity{
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 deleteHabits(String.valueOf(eraseNum));
-
                             }
                         });
                         builder.show();
@@ -510,7 +509,7 @@ public class MainActivity extends AppCompatActivity{
         return count;
     }
 
-    //Habits 테이블에 습관 추가
+    //Habits 테이블 습관 삭제
     public void deleteHabits(String id) {
         MainActivity.dbHelper.getWritableDatabase();
         db.execSQL("DELETE FROM Habits WHERE id=" + id);

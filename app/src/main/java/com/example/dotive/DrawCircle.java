@@ -178,7 +178,7 @@ public class DrawCircle extends View {
                             canvas.drawCircle(btn_x + radius * (j + 1) * 2.5f, btn_y + btn_Height / 2, radius, strokePaint);
                         }
 
-                        for (int k = 0; k < (j + 1); k++) {
+                        for (int k = 0; k < objectDays[i]; k++) {
                             progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
                         }
 
@@ -198,7 +198,7 @@ public class DrawCircle extends View {
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j + 1) * 2, btn_y + btn_Height / 2, radius * 0.75f, strokePaint);
                         }
-                        for (int k = 0; k < (j + 1); k++) {
+                        for (int k = 0; k < objectDays[i]; k++) {
                             progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
                         }
                         if (progressWord[j].equals("1"))  {
@@ -216,7 +216,7 @@ public class DrawCircle extends View {
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j + 1) * 1.68f, btn_y + btn_Height / 2, radius * 0.65f, strokePaint);
                         }
-                        for (int k = 0; k < (j + 1); k++) {
+                        for (int k = 0; k < objectDays[i]; k++) {
                             progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
                         }
                         if (progressWord[j].equals("1")) {
@@ -233,7 +233,7 @@ public class DrawCircle extends View {
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j + 1) * 1.43f, btn_y + btn_Height / 2, radius * 0.55f, strokePaint);
                         }
-                        for (int k = 0; k < (j + 1); k++) {
+                        for (int k = 0; k < objectDays[i]; k++) {
                             progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
                         }
                         if (progressWord[j].equals("1")) {
@@ -251,7 +251,7 @@ public class DrawCircle extends View {
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j + 1) * 1.26f, btn_y + btn_Height / 2, radius * 0.45f, strokePaint);
                         }
-                        for (int k = 0; k < (j + 1); k++) {
+                        for (int k = 0; k < objectDays[i]; k++) {
                             progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
                         }
                         if (progressWord[j].equals("1")) {
@@ -272,7 +272,7 @@ public class DrawCircle extends View {
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j + 1) * 1.25f, btn_y + btn_Height / 2 - radius, radius * 0.45f, strokePaint);
                         }
-                        for (int k = 0; k < (j + 1); k++) {
+                        for (int k = 0; k < objectDays[i]; k++) {
                             progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
                         }
                         if (progressWord[j].equals("1")) {
@@ -288,7 +288,7 @@ public class DrawCircle extends View {
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j - 6) * 1.25f, btn_y + btn_Height / 2 + radius * 0.7f, radius * 0.45f, strokePaint);
                         }
-                        for (int k = 0; k < (j + 1); k++) {
+                        for (int k = 0; k < objectDays[i]; k++) {
                             progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
                         }
                         if (progressWord[j].equals("1")) {
@@ -310,7 +310,7 @@ public class DrawCircle extends View {
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j + 1) * 0.905f, btn_y + btn_Height / 2 - radius, radius * 0.3f, strokePaint);
                         }
-                        for (int k = 0; k < (j + 1); k++) {
+                        for (int k = 0; k < objectDays[i]; k++) {
                             progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
                         }
                         if (progressWord[j].equals("1")) {
@@ -326,7 +326,7 @@ public class DrawCircle extends View {
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j - 9) * 0.905f, btn_y + btn_Height / 2 + radius * 0.35f, radius * 0.3f, strokePaint);
                         }
-                        for (int k = 0; k < (j + 1); k++) {
+                        for (int k = 0; k < objectDays[i]; k++) {
                             progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
                         }
                         if (progressWord[j].equals("1")) {
@@ -348,7 +348,7 @@ public class DrawCircle extends View {
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j + 1) * 0.905f, btn_y + radius * 1.7f, radius * 0.3f, strokePaint);
                         }
-                        for (int k = 0; k < (j + 1); k++) {
+                        for (int k = 0; k < objectDays[i]; k++) {
                             progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
                         }
                         if (progressWord[j].equals("1")) {
@@ -365,7 +365,7 @@ public class DrawCircle extends View {
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j - 9) * 0.905f, btn_y + radius * 2.7f, radius * 0.3f, strokePaint);
                         }
-                        for (int k = 0; k < (j + 1); k++) {
+                        for (int k = 0; k < objectDays[i]; k++) {
                             progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
                         }
                         if (progressWord[j].equals("1")) {
@@ -381,7 +381,7 @@ public class DrawCircle extends View {
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j - 19) * 0.905f, btn_y + radius * 3.7f, radius * 0.3f, strokePaint);
                         }
-                        for (int k = 0; k < (j + 1); k++) {
+                        for (int k = 0; k < objectDays[i]; k++) {
                             progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
                         }
                         if (progressWord[j].equals("1")) {
