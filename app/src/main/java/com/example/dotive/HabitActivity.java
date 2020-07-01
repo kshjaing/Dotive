@@ -9,26 +9,43 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 /* */
 public class HabitActivity extends AppCompatActivity {
 
-    public static String name;
-    public static String objdays;
-    public static String progress;
-    public static String createday;
-    public static String Get_i;
-    public static String[] Arr_Progress = {};
+    ImageButton ibtnBack;
+    String id;
+    String name;
+    String objdays;
+    String progress;
+    String createday;
+    String Get_i;
+    String[] Arr_Progress = {};
     String New_Progress = ""; //변경된 습관 진행도 값 //이건 static 하면 누적되서 안됨.
-
-
+    Button[] Habit_Buttons;
+    LinearLayout ll_habit;
+    int ButtonCount = 0; //목표일수 같거나 초과 : 목표일수 , 목표일수 아래 : 오늘날짜 수 만큼
+    String[] DateCount = {}; //생성일 - > 오늘날짜 까지의 더한 날짜값
+    String[] Week = {"일요일","월요일","화요일","수요일","목요일","금요일","토요일"};
+    //String[] Year_Month_Day = {}; //모양 배치를 위해 날짜를 자름 (ex: 2020-05-05 - > 2020 , 05,  05)
+    int index = 0;
+    int[] Arr_index = {};
+    int i = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_habit);
+        //setContentView(R.layout.activity_habit);
 
         //최종목표 페이지에서 받아온 버튼 id (string)
         /*TextView t_Name = (TextView)findViewById(R.id.t_Name);
@@ -39,11 +56,21 @@ public class HabitActivity extends AppCompatActivity {
         TextView t_Get_Count = (TextView)findViewById(R.id.t_Get_Count);
 
         Button button = (Button)findViewById(R.id.button);*/
+
+        //xml inflater
+        View view_habit = (View) getLayoutInflater().inflate(R.layout.activity_habit, null);
+
+        //버튼 담을 리니어 레이아웃
+        ll_habit = (LinearLayout) view_habit.findViewById(R.id.ll_habit);
+        //뒤로가기 버튼 - > MainActivity 이동
+        ibtnBack = (ImageButton) view_habit.findViewById(R.id.ibtnBack);
+
         long Long_Get_Count = 0;
         Intent intent = getIntent(); //데이터 받아옴
 
         //최종목표 명 :
         //MainActivity 에서 선언한 key 값 그대로 써야함.
+        id = intent.getExtras().getString("id"); //습관 id증가 값
         name = intent.getExtras().getString("Habit_Name"); //습관명
         objdays = intent.getExtras().getString("Habit_ObjDays"); //습관 목표일 수
         progress = intent.getExtras().getString("Habit_Progress"); //습관 진행도 (ex: 0,0,0,1,0,0,)
@@ -58,6 +85,7 @@ public class HabitActivity extends AppCompatActivity {
         t_Get_i.setText(Get_i);
         t_Get_Count.setText(Long.toString(Get_Count));*/
 
+        Log.e("HabitActivity.java", "습관 id : "+id);
         Log.e("HabitActivity.java", "습관명 : "+name);
         Log.e("HabitActivity.java", "습관 목표일 수 : "+objdays);
         Log.e("HabitActivity.java", "습관 진행도 : "+progress);
@@ -73,7 +101,186 @@ public class HabitActivity extends AppCompatActivity {
         //DB 변환은 여기서 업데이트를 한 후  값만 넘긴다.
 
 
-        /*button.setOnClickListener(new View.OnClickListener() {
+
+
+        //들어온 습관 수 ex : 5일을 목표로 한다면
+        //그중 오늘 날짜 위치만큼 버튼을 생성한다.
+        //그전에 목표일 수보다 오늘날짜 위치가 같거나 높아지는 경우 목표일 수만큼 채우도록 한다.
+        //날짜는 날짜 더하기 함수로 더해줘서 버튼이름에 적용시킨다.
+
+
+        if(Integer.parseInt(objdays) == Integer.parseInt(Long.toString(Get_Count)) ||
+                Integer.parseInt(objdays) < Integer.parseInt(Long.toString(Get_Count)))
+        {
+            Habit_Buttons = new Button[Integer.parseInt(objdays)];
+            ButtonCount = Integer.parseInt(objdays);
+        }
+        else
+        {
+            Habit_Buttons = new Button[Integer.parseInt(Long.toString(Get_Count)) + 1];
+            ButtonCount = Integer.parseInt(Long.toString(Get_Count)) + 1;
+        }
+
+        DateCount = new String[ButtonCount];
+        index = ButtonCount;
+        Arr_index = new int[index];
+        //Date 클래스
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+        Arr_Progress = new String[Integer.parseInt(objdays)]; //습관 진행도 배열 공간 목표일 수 만큼 생성;
+
+        Arr_Progress = progress.split(","); //습관 진행도 값 (Ex: 0,0,0,0,0 ) 잘라 배열에 저장.
+
+        //반복해서 버튼 추가
+        for(int i = 0; i<ButtonCount; i++)
+        {
+            try {
+                Date date = dateFormat.parse(createday);
+
+                //날짜 더하기 생성된 버튼 카운트 만큼
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                calendar.add(Calendar.DATE, i);
+
+                int w = calendar.get(Calendar.DAY_OF_WEEK) -1;
+                String day = Week[w];
+                DateCount[i] = dateFormat.format(calendar.getTime()) + " " + day;
+                Log.e("HabitActivity.java", "버튼 수만큼 날짜 더한 값 : "+ dateFormat.format(calendar.getTime()));
+                Log.e("HabitActivity.java", "각 날짜당 요일 :"+ Week[w]);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //마지막날은 디자인이 다르다.
+        for(int i = 0; i < ButtonCount; i++)
+        {
+
+            index -=1;
+            Arr_index[i] = index;
+            String a = DateCount[index];
+            a = a.replace("-",".");
+            Habit_Buttons[i] = new Button(this);
+            ll_habit.addView(Habit_Buttons[i]);
+            Habit_Buttons[i].setText(a);//DateCount[index]
+
+            if(Integer.parseInt(Arr_Progress[index]) == 1)
+            {
+                Habit_Buttons[i].setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
+                Habit_Buttons[i].setTag("1");
+            }
+            else
+            {
+                Habit_Buttons[i].setBackgroundResource(R.drawable.habitbtn_border_round);
+                Habit_Buttons[i].setTag("0");
+            }
+
+            if(index == 0) {
+                a = DateCount[i];
+                a = a.replace("-",".");
+                Habit_Buttons[index].setText(a + " (오늘)");
+                Habit_Buttons[index].setBackgroundResource(R.drawable.habitbtn_border_round_stroke);
+                if(Integer.parseInt(Arr_Progress[i]) == 1)
+                {
+                    Habit_Buttons[index].setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
+                    Habit_Buttons[index].setTag("1");
+                }
+            }
+
+            final int q = i;
+            //버튼 클릭 리스너 (누를 시 DB에서 달성한 값 적용 , 한번 더 누르면 다시 적용)
+            Habit_Buttons[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    New_Progress = "";
+                    if(Habit_Buttons[q].getTag() == "1")
+                    {
+                        String a = Integer.toString(Arr_index[q]);
+                        int b = Integer.parseInt(a);
+                        Arr_Progress[b] = "0"; //변환된 값
+
+                        ///
+
+                        if(Habit_Buttons[q].getText().toString().contains("(오늘)"))
+                            Habit_Buttons[q].setBackgroundResource(R.drawable.habitbtn_border_round_stroke);
+                        else
+                            Habit_Buttons[q].setBackgroundResource(R.drawable.habitbtn_border_round);
+                        Habit_Buttons[q].setTag("0");
+                        //UPDATE_Habits2();
+
+                        for(int j = 0; j<Integer.parseInt(objdays); j++){
+                            New_Progress += Arr_Progress[j] + ",";
+                        }
+                        New_Progress = New_Progress.substring(0, New_Progress.length() - 1); //마지막 쉼표 제거
+                    }
+                    else
+                    {
+                        String a = Integer.toString(Arr_index[q]);
+                        int b = Integer.parseInt(a);
+                        Arr_Progress[b] = "1"; //변환된 값
+
+                        ///
+                        Habit_Buttons[q].setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
+                        Habit_Buttons[q].setTag("1");
+                        //UPDATE_Habits2();
+                        for(int j = 0; j<Integer.parseInt(objdays); j++){
+                            New_Progress += Arr_Progress[j] + ",";
+                        }
+                        New_Progress = New_Progress.substring(0, New_Progress.length() - 1); //마지막 쉼표 제거
+                    }
+                    UPDATE_Habits2();
+                }
+            });
+        }
+
+        ibtnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HabitActivity.this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+
+        setContentView(view_habit);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        //startActivity(new Intent(this,MainActivity.class));
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+
+    }
+
+    public void UPDATE_Habits2() {
+        String uriString = "content://com.example.dotive/Habits";
+        Uri uri = new Uri.Builder().build().parse(uriString);
+
+        //String sqlInsert = "UPDATE Habits SET New_Progress = '" + New_Progress +"' WHERE id="+Integer.parseInt(id);
+        String selection = "id = ?";
+        String[] selectionArgs = new String[] {id}; //습관 id증가 값
+        ContentValues updateValue = new ContentValues();
+        updateValue.put("habitProgress", New_Progress); //습관 진행도 (오늘날짜 변경됨)
+        int count = getContentResolver().update(uri, updateValue, selection, selectionArgs);
+        Log.e("HabitActivity.java","습관 변경한 레코드:"+ count);
+    }
+
+    /*public void UPDATE_Habits() {
+        String uriString = "content://com.example.dotive/Habits";
+        Uri uri = new Uri.Builder().build().parse(uriString);
+
+        String selection = "habitName = ?";
+        String[] selectionArgs = new String[] {name};  //습관명
+        ContentValues updateValue = new ContentValues();
+        updateValue.put("habitProgress",New_Progress); //습관 진행도 (오늘날짜 변경됨)
+        int count = getContentResolver().update(uri, updateValue, selection, selectionArgs);
+        Log.e("HabitActivity.java","습관 변경한 레코드:"+ count);
+    }*/
+
+    /*button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //1. 습관 진행도를 배열로 나눈다.
@@ -88,7 +295,7 @@ public class HabitActivity extends AppCompatActivity {
                 /*UPDATE_Habits();
                 Intent intent1 = new Intent(HabitActivity.this, MainActivity.class);
                 startActivity(intent1);
-                //잘 변경된다.
+                //잘 변경된다.////////////////////
 
                 Arr_Progress = new String[Integer.parseInt(objdays)]; //습관 진행도 배열 공간 목표일 수 만큼 생성;
 
@@ -108,24 +315,4 @@ public class HabitActivity extends AppCompatActivity {
                 startActivity(intent1);
             }
         });*/
-
-        //들어온 습관 수 ex : 5일을 목표로 한다면
-        //목표일 수 만큼 버튼을 생성 후 마지막 날짜 계산해서 각각 버튼에 추가
-        for(int i = 0; (i < Integer.parseInt(objdays)); i++)
-        {
-
-        }
-    }
-
-    public void UPDATE_Habits() {
-        String uriString = "content://com.example.dotive/Habits";
-        Uri uri = new Uri.Builder().build().parse(uriString);
-
-        String selection = "habitName = ?";
-        String[] selectionArgs = new String[] {name};
-        ContentValues updateValue = new ContentValues();
-        updateValue.put("habitProgress",New_Progress);
-        int count = getContentResolver().update(uri, updateValue, selection, selectionArgs);
-        Log.e("HabitActivity.java","습관 변경한 레코드:"+ count);
-    }
 }

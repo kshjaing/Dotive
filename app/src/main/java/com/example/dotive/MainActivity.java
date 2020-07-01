@@ -19,6 +19,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
+import android.media.Image;
 import android.media.JetPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -66,12 +67,14 @@ public class MainActivity extends AppCompatActivity {
     ScrollView scrollView;
     FrameLayout frameLayout;
 
-    LinearLayout linearLayout;
+    LinearLayout linearLayout; //버튼
     ImageButton Btn_Habit_Add;
     Button[] Arr_Btn_Habit;
 
-    LinearLayout linearLayout2;
+    LinearLayout linearLayout2; //습관 제목 텍스트
     TextView[] Arr_TextView_Habit_Name;
+
+    LinearLayout linearLayout3; //편집 버튼 누르면 삭제 버튼
 
     //습관 개수에따라 버튼 증가
     static int TotalHabit = 1;
@@ -80,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     int Habits_Table_Count = 0;
 
     //CreateActivity 에서 intent 값
+    String ID = ""; //증가 id
     String Habit_Name = ""; //습관명
     //int i_Habit_Color = 0; //습관 색깔
     String Habit_Color = ""; //습관 색깔
@@ -88,7 +92,9 @@ public class MainActivity extends AppCompatActivity {
     String Habit_Progress = ""; //습관 진행도
     String Habit_Create_Day = "";// 습관 생성 날짜
 
+
     //DB에서 받아온 값
+    public static String[] Arr_ID = {}; //습관 ID 증가 값
     public static String[] Arr_Habit_Name = {};//습관명
     public static String[] Arr_Habit_Color = {};//습관 색깔
     public static String[] Arr_edit_Habit_Day_Num = {}; //습관 목표일 수
@@ -98,9 +104,13 @@ public class MainActivity extends AppCompatActivity {
     public static long count; //생성날짜 오늘날짜 차이
     public static long[] COUNT; //생성날짜 오늘 날짜 차이 배열 저장
 
-
     //페인트 할때 습관 진행도 값 배열 (1,0,0,0,0)
     String Arr_Btn_Paint_Progress[] = {};
+
+    //편집 버튼
+    ImageButton ibtnEdit;
+    //편집 시 삭제 버튼
+    Button[] DeleteButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,12 +144,14 @@ public class MainActivity extends AppCompatActivity {
             }*/
 
             //DB에서 받은 값 확인
+            Log.e("MainActivity.java", "id : " + ID);
             Log.e("MainActivity.java", "Habit_Name : " + Habit_Name);
             Log.e("MainActivity.java", "Habit_Color : " + Habit_Color);
             Log.e("MainActivity.java", "edit_Habit_Day_Num : " + edit_Habit_Day_Num);
             Log.e("MainActivity.java", "Habit_Progress 습관 진행도: " + Habit_Progress);
             Log.e("MainActivity.java", "habitCreateDay : " + Habit_Create_Day);
 
+            Arr_ID = ID.split("_");
             Arr_Habit_Name = Habit_Name.split("_");
             Arr_Habit_Color = Habit_Color.split("_");
             Arr_edit_Habit_Day_Num = edit_Habit_Day_Num.split("_");
@@ -165,6 +177,9 @@ public class MainActivity extends AppCompatActivity {
 
         //버튼위에 제목 (물 1L 마시기 등)
         linearLayout2 = (LinearLayout) view_main.findViewById(R.id.linearLayout2);
+
+        //습관 삭제 버튼 위치를 위해
+        linearLayout3 = (LinearLayout) view_main.findViewById(R.id.linearLayout3);
 
         Day();
         Painting_Circle1 painting_circle = new Painting_Circle1(this); //CustomView.java 파일을 불러와 실행
@@ -196,18 +211,28 @@ public class MainActivity extends AppCompatActivity {
         int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 340, getResources().getDisplayMetrics());
         int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 190, getResources().getDisplayMetrics());
 
+        //textView (습관 제목)
         int textView_width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 190, getResources().getDisplayMetrics());
         int textView_height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
+
+        //delete 버튼 (x 버튼)
+        int DeleteButton_width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
+        int DeleteButton_height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
+
 
         int btn_margin_left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, getResources().getDisplayMetrics());
         int btn_margin_bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
         int btn_margin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
 
-        //textView만 따로 마진값을 준다.
+        //textView (습관 제목 마진)
         int textView_btn_margin_left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 115, getResources().getDisplayMetrics());
         int textView_btn_margin_bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 215, getResources().getDisplayMetrics());
         int textView_btn_margin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 15, getResources().getDisplayMetrics());
 
+        //delete 버튼 마진 (X 버튼)
+        int delete_marin_left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 325, getResources().getDisplayMetrics());
+        int delete_margin_bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, getResources().getDisplayMetrics());
+        int delete_margin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 45, getResources().getDisplayMetrics());
 
         //margin 설정을 위해 (margin을 Layout에서 부모값을 정하고 그곳에 마진을 아까 dp 계산한 int 값으로 지정.)
         LinearLayout.LayoutParams Button_LinearParams = new LinearLayout.LayoutParams(
@@ -217,6 +242,12 @@ public class MainActivity extends AppCompatActivity {
 
         //margin 설정 2 (textview 설정 (물 1L 마시기)
         LinearLayout.LayoutParams textView_LinearParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+
+        //margin 설정 3 (delete 버튼 위치 (x 버튼))
+        LinearLayout.LayoutParams DeleteButton_LinearParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
@@ -231,13 +262,27 @@ public class MainActivity extends AppCompatActivity {
         textView_LinearParams.bottomMargin = textView_btn_margin_bottom;
         textView_LinearParams.topMargin = textView_btn_margin_top;
 
+        //margin 값 dp로 설정해주는중. delete 버튼 적용
+        /*DeleteButton_LinearParams.leftMargin = delete_marin_left; //size
+        DeleteButton_LinearParams.bottomMargin = delete_margin_bottom;
+        DeleteButton_LinearParams.topMargin = delete_margin_top;*/
+
+        //delete 버튼 크기를 위해
+        //delete 버튼 width, height
+        DeleteButton_LinearParams.width = 100;
+        DeleteButton_LinearParams.height = 100;
+
         int Table_Count = Habits_Table_Count;
         Arr_Btn_Habit = new Button[Table_Count - 1];
         Arr_TextView_Habit_Name = new TextView[Table_Count - 1];
 
+        //편집 delete 버튼 (X 버튼)
+        DeleteButton = new Button[Table_Count - 1];
+
 
         for (int i = 0; i < Table_Count - 1; i++) {
 
+            //여기부터 습관 버튼 관련
             //습관 버튼 인스턴스 초기화
             Arr_Btn_Habit[i] = new Button(this);
             linearLayout.addView(Arr_Btn_Habit[i]);
@@ -246,6 +291,10 @@ public class MainActivity extends AppCompatActivity {
             //습관 제목 텍스트뷰 인스턴스 초기화
             Arr_TextView_Habit_Name[i] = new TextView(this);
             linearLayout2.addView(Arr_TextView_Habit_Name[i]);
+
+            //delete 버튼 초기화
+            DeleteButton[i] = new Button(this);
+            linearLayout3.addView(DeleteButton[i]);
 
             //습관 버튼 글꼴 및 Text
             Arr_Btn_Habit[i].setText(Arr_Habit_Name[i]);
@@ -264,11 +313,17 @@ public class MainActivity extends AppCompatActivity {
             Arr_TextView_Habit_Name[i].setHeight(textView_height);
             Arr_TextView_Habit_Name[i].setGravity(Gravity.CENTER);
 
+
+
             //습관 버튼 radius Drawable
             Arr_Btn_Habit[i].setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.radius));
 
             //습관 제목 텍스트뷰 CSS
             Arr_TextView_Habit_Name[i].setBackground(ContextCompat.getDrawable(this, R.drawable.textview_custom_css));
+
+            //delete 버튼 이미지 씌움
+            DeleteButton[i].setBackgroundResource(R.drawable.erase_button);
+            //DeleteButton[i].setBackgroundDrawable(ContextCompat.getDrawable(this,R.drawable.erase_button));
 
             //습관 제목 텍스트뷰의 백그라운드 컬러 값 (CreateActivity에서 받아온 값)
             GradientDrawable bgShape = (GradientDrawable) Arr_TextView_Habit_Name[i].getBackground().getCurrent(); //GradientDrawable 그대로 하면 오류남 마지막에 .getCurrent() 중요
@@ -280,7 +335,8 @@ public class MainActivity extends AppCompatActivity {
             //습관 제목 텍스트뷰 절대 좌표
             Arr_TextView_Habit_Name[i].setLayoutParams(textView_LinearParams);
 
-
+            //delete 버튼 절대 좌표
+            DeleteButton[i].setLayoutParams(DeleteButton_LinearParams);
 
             final int a = i; //final 에러 방지 로컬변수로 선언해서 사용함.
 
@@ -289,6 +345,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(MainActivity.this, HabitActivity.class);
+                    intent.putExtra("id", Arr_ID[a]); //습관 id 증가 값.
                     intent.putExtra("Habit_Name", Arr_TextView_Habit_Name[a].getText()); //버튼의 이름을 HabitActivity에 전달.
                     intent.putExtra("Habit_ObjDays",Arr_edit_Habit_Day_Num[a]);//습관 목표일 수
                     intent.putExtra("Habit_Progress", Arr_Habit_Progress[a]); //습관 진행도
@@ -318,6 +375,25 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent1 = new Intent(MainActivity.this, CreateActivity.class);
                 startActivity(intent1);
+            }
+        });
+
+        //편집 버튼 누르면 버튼 위에 x 표시 및 DB 삭제
+        ibtnEdit = (ImageButton) view_main.findViewById(R.id.ibtnEdit);
+
+        ibtnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                float X, Y;
+                for(int i = 0; i< Habits_Table_Count - 1; i++) {
+                    X = Arr_Btn_Habit[i].getX();
+                    Y = Arr_Btn_Habit[i].getY();
+
+                    //버튼 width, height
+                    int W = Arr_Btn_Habit[i].getWidth();
+                    int H = Arr_Btn_Habit[i].getHeight();
+
+                }
             }
         });
 
@@ -355,26 +431,28 @@ public class MainActivity extends AppCompatActivity {
             String uriString = "content://com.example.dotive/Habits";
             Uri uri = new Uri.Builder().build().parse(uriString);
 
-            String[] columns = new String[]{"habitName", "habitColor", "objDays", "habitProgress","habitCreateDay"};
+            String[] columns = new String[]{"id","habitName", "habitColor", "objDays", "habitProgress","habitCreateDay"};
             Cursor cursor = getContentResolver().query(uri, columns, null, null, "id ASC");
             Log.e("MainActivity.java", "QUERY 결과 : " + cursor.getCount());
 
             int index = 1;
 
             while (cursor.moveToNext()) { //각 레코드 값을 출력함.
-                String habitName = cursor.getString(cursor.getColumnIndex(columns[0]));
-                String habitColor = cursor.getString(cursor.getColumnIndex(columns[1]));
-                int objDays = cursor.getInt(cursor.getColumnIndex(columns[2]));
-                String habitProgress = cursor.getString(cursor.getColumnIndex(columns[3]));
-                String habitCreateDay = cursor.getString(cursor.getColumnIndex(columns[4]));
+                String id = cursor.getString(cursor.getColumnIndex(columns[0]));
+                String habitName = cursor.getString(cursor.getColumnIndex(columns[1]));
+                String habitColor = cursor.getString(cursor.getColumnIndex(columns[2]));
+                int objDays = cursor.getInt(cursor.getColumnIndex(columns[3]));
+                String habitProgress = cursor.getString(cursor.getColumnIndex(columns[4]));
+                String habitCreateDay = cursor.getString(cursor.getColumnIndex(columns[5]));
 
+                ID += id + "_"; //습관 ID 증가 값
                 Habit_Name += habitName + "_"; //습관명
                 Habit_Color += habitColor + "_"; //습관 색깔
                 edit_Habit_Day_Num += objDays + "_"; //습관 목표일 수
                 Habit_Progress += habitProgress + "_"; //습관 진행도
                 Habit_Create_Day += habitCreateDay + "_"; //습관 생성 날짜
 
-                Log.e("MainActivity.java", "레코드 " + index + " :" + habitName + ", " + habitColor + ", " + objDays + ", " + habitProgress + ", " + habitCreateDay);
+                Log.e("MainActivity.java", "레코드 " + index + " :" + id + ", " + habitName + ", " + habitColor + ", " + objDays + ", " + habitProgress + ", " + habitCreateDay);
                 index += 1;
             }
             Habits_Table_Count = index;
