@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity{
     public static Date[] createDateArr, objectDateArr;
     public static int[] oneCount;                           //진행도 문자열에서 1이 몇개 있는지 담는 배열
     String[] boxTags;
+    int eraseNum;
 
 
 
@@ -153,10 +154,6 @@ public class MainActivity extends AppCompatActivity{
         ibtnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                cursor = db.rawQuery("SELECT habitName FROM Habits WHERE id=1 AND habitName ='3'", null);
-                cursor.moveToPosition(0);
-                Toast.makeText(MainActivity.this, cursor.getString(0), Toast.LENGTH_SHORT).show();
                 for (int i = 0; i < totalHabit; i++) {
                     if (ibtnErase[i].getVisibility() == View.VISIBLE) {
                         ibtnErase[i].setVisibility(View.INVISIBLE);
@@ -164,7 +161,7 @@ public class MainActivity extends AppCompatActivity{
                     else
                         ibtnErase[i].setVisibility(View.VISIBLE);
                 }
-
+                Log.d("array", boxBtnArr[0].getTag().toString());
             }
         });
 
@@ -328,7 +325,7 @@ public class MainActivity extends AppCompatActivity{
                 ibtnErase[i].setTag("erase_" + i);
                 String eraseTag = ibtnErase[i].getTag().toString();
                 int eraseStringIndex = eraseTag.lastIndexOf("_");
-                final int eraseNum = Integer.parseInt(eraseTag.substring(eraseStringIndex + 1));
+                eraseNum = Integer.parseInt(eraseTag.substring(eraseStringIndex + 1));
 
                 cursor = db.rawQuery("SELECT habitName FROM Habits", null);
 
@@ -346,7 +343,31 @@ public class MainActivity extends AppCompatActivity{
                         builder.setNegativeButton("삭제", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                deleteHabits(String.valueOf(eraseNum));
+                                deleteHabits(eraseNum);
+                                cursor = db.rawQuery("SELECT COUNT(id) FROM Habits", null);
+                                while(cursor.moveToNext()) {
+                                    totalHabit = Integer.parseInt(cursor.getString(0));
+                                }
+
+                                //DB에서 '습관 진행도' 문자열 가져와서 habitProgressArr 배열에 삽입
+                                //최종적으로는 StringBuilder 인 progressBuilderArr 에 각 진행도 문자열을 저장
+                                cursor = db.rawQuery("SELECT habitProgress FROM Habits", null);
+                                habitProgressArr = new String[totalHabit];
+                                progressBuilderArr = new StringBuilder[totalHabit];
+
+                                for (int i = 0; i < totalHabit; i++) {
+                                    cursor.moveToPosition(i);
+                                    habitProgressArr[i] = cursor.getString(0);
+                                    progressBuilderArr[i] = new StringBuilder(habitProgressArr[i]);
+                                }
+
+                                oneCount = new int[totalHabit];
+                                for (int j = 0; j < totalHabit; j++) {
+                                    //진행도 문자열에서 1의 개수를 계산해서 oneCount 에 삽입
+                                    oneCount[j] = getCharNumber(habitProgressArr[j], '1');
+                                }
+
+                                calDateDiff();
                             }
                         });
                         builder.show();
@@ -516,9 +537,9 @@ public class MainActivity extends AppCompatActivity{
     }
 
     //Habits 테이블 습관 삭제
-    public void deleteHabits(String id) {
+    public void deleteHabits(Integer id) {
         MainActivity.dbHelper.getWritableDatabase();
-        db.execSQL("DELETE FROM Habits WHERE id=" + (id + 1));
+        db.execSQL("DELETE FROM Habits WHERE ROWID = (SELECT ROWID FROM Habits LIMIT 1 OFFSET "+ id +")");
     }
 }
 

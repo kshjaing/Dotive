@@ -346,6 +346,7 @@ public class HabitActivity extends Activity {
     protected void onStart() {
         super.onStart();
 
+
         ibtnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
