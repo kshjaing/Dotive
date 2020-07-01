@@ -27,6 +27,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -54,30 +55,26 @@ public class MainActivity extends AppCompatActivity{
     public static StringBuilder[] progressBuilderArr;
     public static Typeface typeface;
     public static int[] objectDays;                 //각 습관의 목표일수를 담는 변수
-
-    Cursor cursor;
-    ImageButton ibtnSettings, ibtnEdit;
-    ImageButton[] ibtnErase;
-    ScrollView sv;
-    LinearLayout ll, ll2, ll3;
-    FrameLayout fl;
-
     public static String curDateString, createDateString;
-    Date curDate;                      //현재날짜 Date변수
-    long todayTimestamp;               //현재날짜 시간량
-    long[] createDateTimestamp;        //습관생성날짜 시간량
     public static long[] calDate;      //현재날짜 시간량 - 습관생성날짜 시간량
     public static String[] dateDiff;   //calDate의 시간량을 숫자로 변환
     public static Date[] createDateArr, objectDateArr;
     public static int[] oneCount;                           //진행도 문자열에서 1이 몇개 있는지 담는 배열
-    String[] boxTags;
     int eraseNum, boxNum1;
 
+    Date curDate;                      //현재날짜 Date변수
+    long todayTimestamp;               //현재날짜 시간량
+    long[] createDateTimestamp;        //습관생성날짜 시간량
 
-
-
-
-
+    Cursor cursor;
+    ImageButton ibtnSettings, ibtnEdit;
+    ImageButton[] ibtnErase;
+    ImageView[] imgFire;
+    TextView[] txtSequence;
+    ScrollView sv;
+    LinearLayout ll, ll2, ll3, ll4, ll5; //ll은 버튼, ll2는 습관명, ll3는 삭제버튼, ll4는 불아이콘, ll5는 연속일수 텍스트
+    FrameLayout fl;
+    String[] boxTags;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -119,6 +116,8 @@ public class MainActivity extends AppCompatActivity{
             cursor.moveToPosition(i);
             habitProgressArr[i] = cursor.getString(0);
             progressBuilderArr[i] = new StringBuilder(habitProgressArr[i]);
+            imgFire = new ImageView[totalHabit];
+            txtSequence = new TextView[totalHabit];
         }
 
 
@@ -175,10 +174,14 @@ public class MainActivity extends AppCompatActivity{
         ll = new LinearLayout(this);
         ll2 = new LinearLayout(this);
         ll3 = new LinearLayout(this);
+        ll4 = new LinearLayout(this);
+        ll5 = new LinearLayout(this);
         fl = findViewById(R.id.fl);
         ll = findViewById(R.id.ll);
         ll2 = findViewById(R.id.ll2);
         ll3 = findViewById(R.id.ll3);
+        ll4 = findViewById(R.id.ll4);
+        ll5 = findViewById(R.id.ll5);
         //ll3.setBackgroundColor(Color.BLACK);
 
 
@@ -245,6 +248,20 @@ public class MainActivity extends AppCompatActivity{
                     getResources().getDisplayMetrics());
             int erase_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,230,
                     getResources().getDisplayMetrics());
+            int fire_size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,32,
+                    getResources().getDisplayMetrics());
+            int fire_marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,115,
+                    getResources().getDisplayMetrics());
+            int fire_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,230,
+                    getResources().getDisplayMetrics());
+            int fire_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,65,
+                    getResources().getDisplayMetrics());
+            int txtSeq_marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,150,
+                    getResources().getDisplayMetrics());
+            int txtSeq_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,238,
+                    getResources().getDisplayMetrics());
+            int txtSeq_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,72,
+                    getResources().getDisplayMetrics());
 
 
             typeface = Typeface.createFromAsset(getAssets(), "font/katuri.ttf");
@@ -257,10 +274,16 @@ public class MainActivity extends AppCompatActivity{
                     txt_Width, LinearLayout.LayoutParams.WRAP_CONTENT);
             LinearLayout.LayoutParams erasebtn_linearParams = new LinearLayout.LayoutParams(
                     erase_btn_size, erase_btn_size);
+            LinearLayout.LayoutParams imgFire_linearParams = new LinearLayout.LayoutParams(
+                    fire_size, fire_size);
+            LinearLayout.LayoutParams txtSeq_linearParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
             //박스 마진 설정
             btn_linearParams.setMargins(0, btn_marginTop, 0, btn_marginBottom);
             erasebtn_linearParams.setMargins(erase_marginLeft, erase_marginTop, 0, erase_marginBottom);
+            imgFire_linearParams.setMargins(fire_marginLeft, fire_marginTop, 0, fire_marginBottom);
+            txtSeq_linearParams.setMargins(txtSeq_marginLeft, txtSeq_marginTop, 0, txtSeq_marginBottom);
 
             //습관제목 텍스트뷰 마진 설정
             txtView_linearParams.setMargins(txt_marginLeft, txt_marginTop, 0, txt_marginBottom);
@@ -278,6 +301,15 @@ public class MainActivity extends AppCompatActivity{
                 ibtnErase[i].setVisibility(View.INVISIBLE);
                 boxBtnArr[i].setLayoutParams(btn_linearParams);
                 txtViewArr[i].setLayoutParams(txtView_linearParams);
+                imgFire[i] = new ImageView(this);
+                imgFire[i].setBackgroundResource(R.drawable.fire);
+                imgFire[i].setLayoutParams(imgFire_linearParams);
+                txtSequence[i] = new TextView(this);
+                txtSequence[i].setText("연속 일째!");
+                txtSequence[i].setTypeface(typeface);
+                txtSequence[i].setTextSize(16);
+                txtSequence[i].setLayoutParams(txtSeq_linearParams);
+
 
 
                 //습관제목 텍스트뷰 각 속성들 설정
@@ -314,10 +346,12 @@ public class MainActivity extends AppCompatActivity{
                 if (isDarkmode == 0) {
                     boxBtnArr[i].setBackgroundResource(R.drawable.custom_mainbox);
                     ibtnErase[i].setBackgroundResource(R.drawable.erase_button_dark);
+                    txtSequence[i].setTextColor(Color.BLACK);
                 }
                 else {
                     boxBtnArr[i].setBackgroundResource(R.drawable.custom_mainbox_dark);
                     ibtnErase[i].setBackgroundResource(R.drawable.erase_button);
+                    txtSequence[i].setTextColor(Color.WHITE);
                 }
 
                 //각 박스,습관명 마다 태그설정
@@ -367,6 +401,8 @@ public class MainActivity extends AppCompatActivity{
                 ll.addView(boxBtnArr[i]);
                 ll2.addView(txtViewArr[i]);
                 ll3.addView(ibtnErase[i]);
+                ll4.addView(imgFire[i]);
+                ll5.addView(txtSequence[i]);
 
 
                 //클릭시 버튼 태그 토스트(테스트용)
