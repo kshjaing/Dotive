@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
     FrameLayout frameLayout;
 
     LinearLayout linearLayout;
-    Button Btn_Habit_Add;
+    ImageButton Btn_Habit_Add;
     Button[] Arr_Btn_Habit;
 
     LinearLayout linearLayout2;
@@ -303,14 +303,15 @@ public class MainActivity extends AppCompatActivity {
 
         //습관 추가 버튼 (이 버튼은 동적 버튼 맨 아래에 위치해야 하므로 여기서 addView 했다.)
         //이 부분 버튼 가운데 정렬 필요 or 이미지 버튼이 아닌 css로 그리던지
-        Btn_Habit_Add = new Button(this);
-        Btn_Habit_Add.setBackgroundResource(R.drawable.habit_add_image);
-        Btn_Habit_Add.setLayoutParams(Button_LinearParams);
+        Btn_Habit_Add = (ImageButton) view_main.findViewById(R.id.ibtnPlus);
+        //Btn_Habit_Add.setBackgroundResource(R.drawable.habit_add_image);
+        //Btn_Habit_Add.setLayoutParams(Button_LinearParams);
         //Btn_Habit_Add.setWidth(30);
         //Btn_Habit_Add.setHeight(30);
         //Btn_Habit_Add.setGravity(Gravity.RIGHT);
 
-        linearLayout.addView(Btn_Habit_Add);
+        //linearLayout.addView(Btn_Habit_Add);
+
         //습관 추가 버튼 클릭 리스너
         Btn_Habit_Add.setOnClickListener(new View.OnClickListener() {
             @Override
