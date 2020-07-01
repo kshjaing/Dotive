@@ -1,6 +1,8 @@
 package com.example.dotive;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -14,10 +16,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.ColorRes;
+import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import org.w3c.dom.Text;
 
+import static com.example.dotive.MainActivity.context_main;
 import static com.example.dotive.MainActivity.db;
 import static com.example.dotive.MainActivity.dbHelper;
 import static com.example.dotive.MainActivity.isDarkmode;
@@ -25,15 +29,36 @@ import static com.example.dotive.MainActivity.totalHabit;
 
 public class SettingsActivity extends Activity {
 
+    Context context_settings;
     ConstraintLayout cl;
-    Button darkmodeBtn, resetBtn;
+    Button btnDarkmode, btnLanguage, btnRating, btnContact, btnReset, btnConfirm;
     Integer intDarkmodeCount;
-    TextView txtConfirm;
+    TextView txtSettingLetters;
     Cursor cursor = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_settings);
+
+        cl = new ConstraintLayout(this);
+        btnDarkmode = new Button(this);
+        btnLanguage = new Button(this);
+        btnRating  = new Button(this);
+        btnContact = new Button(this);
+        btnReset = new Button(this);
+        btnConfirm = new Button(this);
+        txtSettingLetters = new TextView(this);
+        cl = findViewById(R.id.clSettings);
+        btnDarkmode = findViewById(R.id.btn_darkmode);
+        btnLanguage = findViewById(R.id.btn_language);
+        btnRating = findViewById(R.id.btn_rating);
+        btnContact = findViewById(R.id.btn_contact);
+        btnReset = findViewById(R.id.btn_reset);
+        btnConfirm = findViewById(R.id.btn_confirm);
+        txtSettingLetters = findViewById(R.id.txtSettingLetters);
+
         dbHelper.getWritableDatabase();
         //db.execSQL("DELETE FROM Settings");
 
@@ -52,68 +77,54 @@ public class SettingsActivity extends Activity {
         while(cursor.moveToNext()) {
             isDarkmode = Integer.parseInt(cursor.getString(0));
         }
-    }
 
-    protected void onStart() {
-        super.onStart();
-        cl = new ConstraintLayout(this);
-        darkmodeBtn = new Button(this);
-        resetBtn = new Button(this);
-        txtConfirm = new TextView(this);
-        final View view = getWindow().getDecorView();
-
-        setContentView(R.layout.activity_settings);
-
-        cl = findViewById(R.id.clSettings);
-        darkmodeBtn = findViewById(R.id.btnDarkmode);
-        resetBtn = findViewById(R.id.btnReset);
-        txtConfirm = findViewById(R.id.txtConfirm);
-        if (isDarkmode == 0) {
-            darkmodeBtn.setText("라이트모드");
-            cl.setBackgroundColor(Color.parseColor("#FFEBD3"));
-            getWindow().setStatusBarColor(Color.parseColor("#FFEBD3"));
-            view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-            txtConfirm.setTextColor(Color.BLACK);
-        }
-
-        else {
-            darkmodeBtn.setText("다크모드");
-            cl.setBackgroundColor(Color.parseColor("#272B36"));
-            getWindow().setStatusBarColor(Color.parseColor("#272B36"));
-            txtConfirm.setTextColor(Color.WHITE);
-        }
-
-        darkmodeBtn.setOnClickListener(new View.OnClickListener() {
+        btnDarkmode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isDarkmode == 0) {
                     isDarkmode = 1;
-                    darkmodeBtn.setText("다크모드");
+                    ((Button) v).setText("라이트모드로 전환");
                     cl.setBackgroundColor(Color.parseColor("#272B36"));
                     getWindow().setStatusBarColor(Color.parseColor("#272B36"));
-                    txtConfirm.setTextColor(Color.WHITE);
+                    txtSettingLetters.setTextColor(Color.WHITE);
+                    btnDarkmode.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+                    btnLanguage.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+                    btnRating.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+                    btnContact.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+                    btnReset.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+                    btnConfirm.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+                    btnDarkmode.setTextColor(Color.WHITE);
+                    btnLanguage.setTextColor(Color.WHITE);
+                    btnRating.setTextColor(Color.WHITE);
+                    btnContact.setTextColor(Color.WHITE);
+                    btnReset.setTextColor(Color.WHITE);
+                    btnConfirm.setTextColor(Color.WHITE);
                 }
                 else {
+                    View view = getWindow().getDecorView();
                     isDarkmode = 0;
-                    darkmodeBtn.setText("라이트모드");
+                    ((Button) v).setText("다크모드로 전환");
                     cl.setBackgroundColor(Color.parseColor("#FFEBD3"));
                     getWindow().setStatusBarColor(Color.parseColor("#FFEBD3"));
                     view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                    txtConfirm.setTextColor(Color.BLACK);
+                    txtSettingLetters.setTextColor(Color.BLACK);
+                    btnDarkmode.setBackgroundResource(R.drawable.habitbtn_border_round);
+                    btnLanguage.setBackgroundResource(R.drawable.habitbtn_border_round);
+                    btnRating.setBackgroundResource(R.drawable.habitbtn_border_round);
+                    btnContact.setBackgroundResource(R.drawable.habitbtn_border_round);
+                    btnReset.setBackgroundResource(R.drawable.habitbtn_border_round);
+                    btnConfirm.setBackgroundResource(R.drawable.habitbtn_border_round);
+                    btnDarkmode.setTextColor(Color.BLACK);
+                    btnLanguage.setTextColor(Color.BLACK);
+                    btnRating.setTextColor(Color.BLACK);
+                    btnContact.setTextColor(Color.BLACK);
+                    btnReset.setTextColor(Color.BLACK);
+                    btnConfirm.setTextColor(Color.BLACK);
                 }
             }
         });
 
-        resetBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                totalHabit = 0;
-                truncateHabits();
-                Toast.makeText(SettingsActivity.this, "모든 데이터가 초기화되었습니다!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        txtConfirm.setOnClickListener(new View.OnClickListener() {
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateSettings();
@@ -121,6 +132,59 @@ public class SettingsActivity extends Activity {
                 startActivity(intent);
             }
         });
+
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                totalHabit = 0;
+                truncateHabits();
+                Toast.makeText(SettingsActivity.this, "모든 것이 잿더미가 됐어요!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    protected void onStart() {
+        super.onStart();
+
+        if (isDarkmode == 0) {
+            View view = getWindow().getDecorView();
+            btnDarkmode.setText("다크모드로 전환");
+            cl.setBackgroundColor(Color.parseColor("#FFEBD3"));
+            getWindow().setStatusBarColor(Color.parseColor("#FFEBD3"));
+            view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            txtSettingLetters.setTextColor(Color.BLACK);
+            btnDarkmode.setBackgroundResource(R.drawable.habitbtn_border_round);
+            btnLanguage.setBackgroundResource(R.drawable.habitbtn_border_round);
+            btnRating.setBackgroundResource(R.drawable.habitbtn_border_round);
+            btnContact.setBackgroundResource(R.drawable.habitbtn_border_round);
+            btnReset.setBackgroundResource(R.drawable.habitbtn_border_round);
+            btnConfirm.setBackgroundResource(R.drawable.habitbtn_border_round);
+            btnDarkmode.setTextColor(Color.BLACK);
+            btnLanguage.setTextColor(Color.BLACK);
+            btnRating.setTextColor(Color.BLACK);
+            btnContact.setTextColor(Color.BLACK);
+            btnReset.setTextColor(Color.BLACK);
+            btnConfirm.setTextColor(Color.BLACK);
+        }
+
+        else {
+            btnDarkmode.setText("라이트모드로 전환");
+            cl.setBackgroundColor(Color.parseColor("#272B36"));
+            getWindow().setStatusBarColor(Color.parseColor("#272B36"));
+            txtSettingLetters.setTextColor(Color.WHITE);
+            btnDarkmode.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+            btnLanguage.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+            btnRating.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+            btnContact.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+            btnReset.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+            btnConfirm.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+            btnDarkmode.setTextColor(Color.WHITE);
+            btnLanguage.setTextColor(Color.WHITE);
+            btnRating.setTextColor(Color.WHITE);
+            btnContact.setTextColor(Color.WHITE);
+            btnReset.setTextColor(Color.WHITE);
+            btnConfirm.setTextColor(Color.WHITE);
+        }
     }
 
     protected void onDestroy() {
