@@ -153,6 +153,10 @@ public class MainActivity extends AppCompatActivity{
         ibtnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                cursor = db.rawQuery("SELECT habitName FROM Habits WHERE id=1 AND habitName ='3'", null);
+                cursor.moveToPosition(0);
+                Toast.makeText(MainActivity.this, cursor.getString(0), Toast.LENGTH_SHORT).show();
                 for (int i = 0; i < totalHabit; i++) {
                     if (ibtnErase[i].getVisibility() == View.VISIBLE) {
                         ibtnErase[i].setVisibility(View.INVISIBLE);
@@ -514,7 +518,7 @@ public class MainActivity extends AppCompatActivity{
     //Habits 테이블 습관 삭제
     public void deleteHabits(String id) {
         MainActivity.dbHelper.getWritableDatabase();
-        db.execSQL("DELETE FROM Habits WHERE id=" + id);
+        db.execSQL("DELETE FROM Habits WHERE id=" + (id + 1));
     }
 }
 
