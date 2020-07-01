@@ -25,6 +25,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity{
     public static int[] objectDays;                 //각 습관의 목표일수를 담는 변수
 
     Cursor cursor;
-    TextView txtSettings, txtEdit;
+    ImageButton ibtnSettings, ibtnEdit;
     ScrollView sv;
     LinearLayout ll, ll2;
     FrameLayout fl;
@@ -84,6 +85,11 @@ public class MainActivity extends AppCompatActivity{
         dbHelper = new DBHelper(this, 4);
         db = dbHelper.getWritableDatabase();
         View view = getWindow().getDecorView();
+
+        ibtnSettings = new ImageButton(this);
+        ibtnSettings = findViewById(R.id.ibtnSettings);
+        ibtnEdit = new ImageButton(this);
+        ibtnEdit = findViewById(R.id.ibtnEdit);
 
 
 
@@ -132,9 +138,7 @@ public class MainActivity extends AppCompatActivity{
 
 
         //설정버튼 클릭이벤트 부여
-        txtSettings = new TextView(this);
-        txtSettings = findViewById(R.id.txtSettings);
-        txtSettings.setOnClickListener(new View.OnClickListener() {
+        ibtnSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
@@ -147,20 +151,6 @@ public class MainActivity extends AppCompatActivity{
         //스크롤뷰 생성
         sv = new ScrollView(this);
         sv = findViewById(R.id.sv);
-
-        //다크모드에 따른 배경색 변화
-        if (isDarkmode == 0) {
-            sv.setBackgroundColor(Color.parseColor("#FFEBD3"));
-            getWindow().setStatusBarColor(Color.parseColor("#FFEBD3"));
-            view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
-
-        else {
-            sv.setBackgroundColor(Color.parseColor("#272B36"));
-            getWindow().setStatusBarColor(Color.parseColor("#272B36"));
-        }
-
-
         //선형 레이아웃 생성 (ll에 박스, ll2에 텍스트뷰 배치)
         fl = new FrameLayout(this);
         ll = new LinearLayout(this);
@@ -171,13 +161,25 @@ public class MainActivity extends AppCompatActivity{
 
 
 
+        //다크모드에 따른 배경색 변화
+        if (isDarkmode == 0) {
+            sv.setBackgroundColor(Color.parseColor("#FFEBD3"));
+            getWindow().setStatusBarColor(Color.parseColor("#FFEBD3"));
+            view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            ibtnEdit.setBackgroundResource(R.drawable.edit_dark);
+            ibtnSettings.setBackgroundResource(R.drawable.settings_dark);
+            ibtnEdit.setAlpha(0);
+            ibtnSettings.setAlpha(0);
+        }
 
-        //ll.setBackgroundColor(Color.YELLOW);
-        //ll2.setBackgroundColor(Color.GREEN);
-
-
-
-
+        else {
+            sv.setBackgroundColor(Color.parseColor("#272B36"));
+            getWindow().setStatusBarColor(Color.parseColor("#272B36"));
+            ibtnEdit.setBackgroundResource(R.drawable.edit);
+            ibtnSettings.setBackgroundResource(R.drawable.settings);
+            ibtnEdit.setAlpha(0);
+            ibtnSettings.setAlpha(0);
+        }
 
 
         //----------------------------앱 시작 시 총 습관 개수 계산해서 버튼 생성-----------------------------
@@ -271,7 +273,7 @@ public class MainActivity extends AppCompatActivity{
                 }
 
 
-                //다크모드에 따른 박스 색변경(임시)
+                //다크모드에 따른 박스 색변경
                 if (isDarkmode == 0) {
                     boxBtnArr[i].setBackgroundResource(R.drawable.custom_mainbox);
                 }
@@ -326,19 +328,17 @@ public class MainActivity extends AppCompatActivity{
     @SuppressLint("ResourceType")
     protected void onResume() {
         super.onResume();
-        txtSettings = new TextView(this);
-        txtSettings = findViewById(R.id.txtSettings);
-        txtEdit = new TextView(this);
-        txtEdit = findViewById(R.id.txtEdit);
+
 
         calDateDiff();
 
         //메인액티비티로 돌아왔을 때 다크모드 체크
         if (isDarkmode == 0) {
             sv.setBackgroundColor(Color.parseColor("#FFEBD3"));
-            txtSettings.setTextColor(Color.parseColor("#0a0d09"));
-            txtEdit.setTextColor(Color.parseColor("#0a0d09"));
-
+            ibtnEdit.setBackgroundResource(R.drawable.edit_dark);
+            ibtnSettings.setBackgroundResource(R.drawable.settings_dark);
+            ibtnEdit.setAlpha(0);
+            ibtnSettings.setAlpha(0);
             for (int i = 0; i < totalHabit; i++) {
                 boxBtnArr[i].setBackgroundResource(R.drawable.custom_mainbox);
             }
@@ -346,9 +346,10 @@ public class MainActivity extends AppCompatActivity{
 
         else {
             sv.setBackgroundColor(Color.parseColor("#272B36"));
-            txtSettings.setTextColor(Color.WHITE);
-            txtEdit.setTextColor(Color.WHITE);
-
+            ibtnEdit.setBackgroundResource(R.drawable.edit);
+            ibtnSettings.setBackgroundResource(R.drawable.settings);
+            ibtnEdit.setAlpha(0);
+            ibtnSettings.setAlpha(0);
             for (int i = 0; i < totalHabit; i++) {
                 boxBtnArr[i].setBackgroundResource(R.drawable.custom_mainbox_dark);
             }
