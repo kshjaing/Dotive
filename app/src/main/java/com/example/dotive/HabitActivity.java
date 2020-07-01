@@ -261,8 +261,7 @@ public class HabitActivity extends Activity {
 
                         //몇번째 날짜 버튼을 눌렀는지 dayIndex에 담음
                         int obj_index = v.getTag().toString().lastIndexOf("_");
-                        String dayNum = v.getTag().toString().substring(obj_index + 1);
-                        dayIndex = Integer.parseInt(dayNum);
+                        String dayNum = v.getTag().toString().substring(obj_index);
 
                         if (isDarkmode == 0) {
                             //클릭한 뷰의 백그라운드와 drawable 파일과의 비교
@@ -277,6 +276,7 @@ public class HabitActivity extends Activity {
                                 updateProgress(boxNum, progressBuilderArr[boxNum].toString());
                                 v.setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
                                 ((Button) v).setText(((Button) v).getText() + "  완료!");
+                                ((Button) v).setTextColor(Color.BLACK);
                             }
                         } else {
                             if (v.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.habitbtn_border_round_pressed_dark).getConstantState())) {

@@ -85,6 +85,7 @@ public class DrawCircle extends View {
             cursor.moveToPosition(i);
             objectDays[i] = Integer.parseInt(cursor.getString(0));
 
+            progressWord = new String[objectDays[i]];
 
 
 
@@ -152,12 +153,12 @@ public class DrawCircle extends View {
 
                     switch(habitProgressArr[i]){
                         case "01":
-                            canvas.drawCircle(btn_x + (btn_Width / 2) + radius * 1.5f, btn_y + btn_Height / 2, radius, paint);
-                            canvas.drawCircle(btn_x + (btn_Width / 2) - radius * 1.5f, btn_y + btn_Height / 2, radius, completePaint);
+                            canvas.drawCircle(btn_x + (btn_Width / 2) - radius * 1.5f, btn_y + btn_Height / 2, radius, paint);
+                            canvas.drawCircle(btn_x + (btn_Width / 2) + radius * 1.5f, btn_y + btn_Height / 2, radius, completePaint);
                             break;
                         case "10":
-                            canvas.drawCircle(btn_x + (btn_Width / 2) + radius * 1.5f, btn_y + btn_Height / 2, radius, completePaint);
-                            canvas.drawCircle(btn_x + (btn_Width / 2) - radius * 1.5f, btn_y + btn_Height / 2, radius, paint);
+                            canvas.drawCircle(btn_x + (btn_Width / 2) - radius * 1.5f, btn_y + btn_Height / 2, radius, completePaint);
+                            canvas.drawCircle(btn_x + (btn_Width / 2) + radius * 1.5f, btn_y + btn_Height / 2, radius, paint);
                             break;
                         case "11":
                             canvas.drawCircle(btn_x + (btn_Width / 2) - radius * 1.5f, btn_y + btn_Height / 2, radius, completePaint);
@@ -171,16 +172,14 @@ public class DrawCircle extends View {
                     break;
 
                 case 3:
-                    progressWord = new String[objectDays[i]];
-                    int idx;
                     for (int j = 0; j < 3; j++) {
                         //현재날짜 테두리
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j + 1) * 2.5f, btn_y + btn_Height / 2, radius, strokePaint);
                         }
-                        for (int k = 0; k < 3; k++) {
-                            idx = 3 - k - 1;
-                            progressWord[k] = String.valueOf(habitProgressArr[i].charAt(idx));
+
+                        for (int k = 0; k < (j + 1); k++) {
+                            progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
                         }
 
                         if (progressWord[j].equals("1"))  {
@@ -199,7 +198,15 @@ public class DrawCircle extends View {
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j + 1) * 2, btn_y + btn_Height / 2, radius * 0.75f, strokePaint);
                         }
-                        canvas.drawCircle(btn_x + radius * (j + 1) * 2, btn_y + btn_Height / 2, radius * 0.75f, paint);
+                        for (int k = 0; k < (j + 1); k++) {
+                            progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
+                        }
+                        if (progressWord[j].equals("1"))  {
+                            canvas.drawCircle(btn_x + radius * (j + 1) * 2, btn_y + btn_Height / 2, radius * 0.75f, completePaint);
+                        }
+                        else {
+                            canvas.drawCircle(btn_x + radius * (j + 1) * 2, btn_y + btn_Height / 2, radius * 0.75f, paint);
+                        }
                     }
                     break;
 
@@ -209,7 +216,15 @@ public class DrawCircle extends View {
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j + 1) * 1.68f, btn_y + btn_Height / 2, radius * 0.65f, strokePaint);
                         }
-                        canvas.drawCircle(btn_x + radius * (j + 1) * 1.68f, btn_y + btn_Height / 2, radius * 0.65f, paint);
+                        for (int k = 0; k < (j + 1); k++) {
+                            progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
+                        }
+                        if (progressWord[j].equals("1")) {
+                            canvas.drawCircle(btn_x + radius * (j + 1) * 1.68f, btn_y + btn_Height / 2, radius * 0.65f, completePaint);
+                        }
+                        else {
+                            canvas.drawCircle(btn_x + radius * (j + 1) * 1.68f, btn_y + btn_Height / 2, radius * 0.65f, paint);
+                        }
                     }
                     break;
                 case 6:
@@ -218,7 +233,16 @@ public class DrawCircle extends View {
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j + 1) * 1.43f, btn_y + btn_Height / 2, radius * 0.55f, strokePaint);
                         }
-                        canvas.drawCircle(btn_x + radius * (j + 1) * 1.43f, btn_y + btn_Height / 2, radius * 0.55f, paint);
+                        for (int k = 0; k < (j + 1); k++) {
+                            progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
+                        }
+                        if (progressWord[j].equals("1")) {
+                            canvas.drawCircle(btn_x + radius * (j + 1) * 1.43f, btn_y + btn_Height / 2, radius * 0.55f, completePaint);
+                        }
+                        else {
+                            canvas.drawCircle(btn_x + radius * (j + 1) * 1.43f, btn_y + btn_Height / 2, radius * 0.55f, paint);
+                        }
+
                     }
                     break;
                 case 7:
@@ -227,7 +251,15 @@ public class DrawCircle extends View {
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j + 1) * 1.26f, btn_y + btn_Height / 2, radius * 0.45f, strokePaint);
                         }
-                        canvas.drawCircle(btn_x + radius * (j + 1) * 1.26f, btn_y + btn_Height / 2, radius * 0.45f, paint);
+                        for (int k = 0; k < (j + 1); k++) {
+                            progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
+                        }
+                        if (progressWord[j].equals("1")) {
+                            canvas.drawCircle(btn_x + radius * (j + 1) * 1.26f, btn_y + btn_Height / 2, radius * 0.45f, completePaint);
+                        }
+                        else {
+                            canvas.drawCircle(btn_x + radius * (j + 1) * 1.26f, btn_y + btn_Height / 2, radius * 0.45f, paint);
+                        }
                     }
                     break;
             }
