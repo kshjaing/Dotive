@@ -15,10 +15,15 @@ import androidx.annotation.Nullable;
 
 import java.math.BigDecimal;
 import java.sql.Struct;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Locale;
 
 import static com.example.dotive.MainActivity.calDate;
 import static com.example.dotive.MainActivity.context_main;
+import static com.example.dotive.MainActivity.createDateArr;
 import static com.example.dotive.MainActivity.db;
 import static com.example.dotive.MainActivity.dbHelper;
 import static com.example.dotive.MainActivity.habitProgressArr;
@@ -29,12 +34,15 @@ import static com.example.dotive.MainActivity.dateDiff;
 
 public class DrawCircle extends View {
     public static int[] oneIndex;                   //진행도 문자열에서 1이 어느 인덱스에 있는지 담는 배열
-    Paint paint, strokePaint, completePaint, completeStrokePaint;
+    Paint paint, strokePaint, completePaint;
     Cursor cursor;
     Integer[] objectDays = new Integer[totalHabit];
     float btn_x, btn_y;
     String[] progressWord;
     int[] progressLength;
+    Calendar calendar;
+    SimpleDateFormat dateFormat;
+
 
 
     int btn_Width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,360,
@@ -59,6 +67,8 @@ public class DrawCircle extends View {
         strokePaint = new Paint();
         completePaint = new Paint();
         dbHelper = new DBHelper(context_main, 4);
+        calendar = Calendar.getInstance();
+        dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일 (E)", Locale.KOREAN);
     }
 
     @Override
@@ -74,6 +84,10 @@ public class DrawCircle extends View {
             cursor = db.rawQuery("SELECT objDays FROM Habits", null);
             cursor.moveToPosition(i);
             objectDays[i] = Integer.parseInt(cursor.getString(0));
+
+
+
+
             btn_x = MainActivity.boxBtnArr[i].getX();
             btn_y = MainActivity.boxBtnArr[i].getY();
             strokePaint.setStrokeWidth(25);
@@ -158,13 +172,15 @@ public class DrawCircle extends View {
 
                 case 3:
                     progressWord = new String[objectDays[i]];
+                    int idx;
                     for (int j = 0; j < 3; j++) {
                         //현재날짜 테두리
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j + 1) * 2.5f, btn_y + btn_Height / 2, radius, strokePaint);
                         }
-                        for (int k = 0; k < habitProgressArr[i].length(); k++) {
-                            progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
+                        for (int k = 0; k < 3; k++) {
+                            idx = 3 - k - 1;
+                            progressWord[k] = String.valueOf(habitProgressArr[i].charAt(idx));
                         }
 
                         if (progressWord[j].equals("1"))  {

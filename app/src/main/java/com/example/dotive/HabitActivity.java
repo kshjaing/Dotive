@@ -51,6 +51,7 @@ public class HabitActivity extends Activity {
     String habitName;
     String progressString;
     int boxNum;
+    String objectDate;                                //최종목표날짜
 
     Cursor cursor;
 
@@ -69,6 +70,7 @@ public class HabitActivity extends Activity {
 
         ibtnBack = findViewById(R.id.ibtnBack);
         ibtnBar = findViewById(R.id.ibtnBar);
+        View view = getWindow().getDecorView();
 
 
 
@@ -121,12 +123,15 @@ public class HabitActivity extends Activity {
         //다크모드에 따른 배경색, 텍스트색 변화
         if (isDarkmode == 0) {
             sv.setBackgroundColor(Color.parseColor("#FFEBD3"));
+            getWindow().setStatusBarColor(Color.parseColor("#FFEBD3"));
+            view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             txtHabitName.setTextColor(Color.BLACK);
             txtObjectDays.setTextColor(Color.BLACK);
         }
 
         else {
             sv.setBackgroundColor(Color.parseColor("#272B36"));
+            getWindow().setStatusBarColor(Color.parseColor("#272B36"));
             txtHabitName.setTextColor(Color.WHITE);
             txtObjectDays.setTextColor(Color.WHITE);
         }
@@ -135,6 +140,11 @@ public class HabitActivity extends Activity {
 
         //메인액티비티에서 클릭한 박스의 인덱스에 해당하는 목표일수를 obj 에 삽입
         int obj = objectDays[boxNum];
+
+        //습관 생성날짜에 목표일수를 더해 최종 목표날짜를 구함
+        //calendar.setTime(createDateArr[boxNum]);
+        //calendar.add(Calendar.DATE, objectDays[boxNum]);
+        //objectDate = dateFormat.format(calendar.getTime());
 
 
 
@@ -152,7 +162,7 @@ public class HabitActivity extends Activity {
                 boxHabitArr[i] = new Button(this);
                 boxHabitArr[i].setLayoutParams(btn_linearParams);
                 boxHabitArr[i].setBackgroundResource(R.drawable.habitbtn_border_round);
-                boxHabitArr[i].setTag("dateBox_" + i);
+                boxHabitArr[i].setTag("dateBox_" + (Integer.parseInt(dateDiff[boxNum]) - i));
 
                 boxHabitArr[i].setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -167,14 +177,14 @@ public class HabitActivity extends Activity {
                         //클릭한 뷰의 백그라운드와 drawable 파일과의 비교
                         if (isDarkmode == 0) {
                             if (v.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.habitbtn_border_round_pressed).getConstantState())) {
-                                progressBuilderArr[boxNum].setCharAt(habitProgressArr[boxNum].length() - dayIndex - 1, '0');
+                                progressBuilderArr[boxNum].setCharAt(dayIndex, '0');
                                 updateProgress(boxNum, progressBuilderArr[boxNum].toString());
                                 v.setBackgroundResource(R.drawable.habitbtn_border_round);
                                 String btnText = ((Button) v).getText().toString();
                                 ((Button) v).setText(btnText.substring(0, btnText.length() - 5));
                                 ((Button) v).setTextColor(Color.BLACK);
                             } else {
-                                progressBuilderArr[boxNum].setCharAt(habitProgressArr[boxNum].length() - dayIndex - 1, '1');
+                                progressBuilderArr[boxNum].setCharAt(dayIndex, '1');
                                 updateProgress(boxNum, progressBuilderArr[boxNum].toString());
                                 v.setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
                                 ((Button) v).setText(((Button) v).getText() + "  완료!");
@@ -184,14 +194,14 @@ public class HabitActivity extends Activity {
 
                         else {
                             if (v.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.habitbtn_border_round_pressed_dark).getConstantState())) {
-                                progressBuilderArr[boxNum].setCharAt(habitProgressArr[boxNum].length() - dayIndex - 1, '0');
+                                progressBuilderArr[boxNum].setCharAt(dayIndex, '0');
                                 updateProgress(boxNum, progressBuilderArr[boxNum].toString());
                                 v.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
                                 String btnText = ((Button) v).getText().toString();
                                 ((Button) v).setText(btnText.substring(0, btnText.length() - 5));
                                 ((Button) v).setTextColor(Color.WHITE);
                             } else {
-                                progressBuilderArr[boxNum].setCharAt(habitProgressArr[boxNum].length() - dayIndex - 1, '1');
+                                progressBuilderArr[boxNum].setCharAt(dayIndex, '1');
                                 updateProgress(boxNum, progressBuilderArr[boxNum].toString());
                                 v.setBackgroundResource(R.drawable.habitbtn_border_round_pressed_dark);
                                 ((Button) v).setText(((Button) v).getText() + "  완료!");
@@ -204,6 +214,7 @@ public class HabitActivity extends Activity {
                         cursor.moveToPosition(boxNum);
                         //진행도 문자열 잘 변하는지 테스트용
                         Toast.makeText(HabitActivity.this, cursor.getString(0), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(HabitActivity.this, v.getTag().toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
                 boxHabitArr[i].setText(curDateString);
@@ -243,7 +254,7 @@ public class HabitActivity extends Activity {
                 boxHabitArr[i] = new Button(this);
                 boxHabitArr[i].setLayoutParams(btn_linearParams);
                 boxHabitArr[i].setBackgroundResource(R.drawable.habitbtn_border_round);
-                boxHabitArr[i].setTag("dateBox_" + i);
+                boxHabitArr[i].setTag("dateBox_" + (Integer.parseInt(dateDiff[boxNum]) - i));
                 boxHabitArr[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -256,27 +267,27 @@ public class HabitActivity extends Activity {
                         if (isDarkmode == 0) {
                             //클릭한 뷰의 백그라운드와 drawable 파일과의 비교
                             if (v.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.habitbtn_border_round_pressed).getConstantState())) {
-                                progressBuilderArr[boxNum].setCharAt(habitProgressArr[boxNum].length() - dayIndex - 1, '0');
+                                progressBuilderArr[boxNum].setCharAt(dayIndex, '0');
                                 updateProgress(boxNum, progressBuilderArr[boxNum].toString());
                                 v.setBackgroundResource(R.drawable.habitbtn_border_round);
                                 String btnText = ((Button) v).getText().toString();
                                 ((Button) v).setText(btnText.substring(0, btnText.length() - 5));
                             } else {
-                                progressBuilderArr[boxNum].setCharAt(habitProgressArr[boxNum].length() - dayIndex - 1, '1');
+                                progressBuilderArr[boxNum].setCharAt(dayIndex, '1');
                                 updateProgress(boxNum, progressBuilderArr[boxNum].toString());
                                 v.setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
                                 ((Button) v).setText(((Button) v).getText() + "  완료!");
                             }
                         } else {
                             if (v.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.habitbtn_border_round_pressed_dark).getConstantState())) {
-                                progressBuilderArr[boxNum].setCharAt(habitProgressArr[boxNum].length() - dayIndex - 1, '0');
+                                progressBuilderArr[boxNum].setCharAt(dayIndex, '0');
                                 updateProgress(boxNum, progressBuilderArr[boxNum].toString());
                                 ((Button) v).setTextColor(Color.WHITE);
                                 v.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
                                 String btnText = ((Button) v).getText().toString();
                                 ((Button) v).setText(btnText.substring(0, btnText.length() - 5));
                             } else {
-                                progressBuilderArr[boxNum].setCharAt(habitProgressArr[boxNum].length() - dayIndex - 1, '1');
+                                progressBuilderArr[boxNum].setCharAt(dayIndex, '1');
                                 v.setBackgroundResource(R.drawable.habitbtn_border_round_pressed_dark);
                                 updateProgress(boxNum, progressBuilderArr[boxNum].toString());
                                 ((Button) v).setTextColor(Color.BLACK);
@@ -287,6 +298,7 @@ public class HabitActivity extends Activity {
 
                         //진행도 문자열 잘 변하는지 테스트용
                         Toast.makeText(HabitActivity.this, habitProgressArr[boxNum], Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(HabitActivity.this, v.getTag().toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
                 boxHabitArr[i].setText(curDateString);
@@ -304,12 +316,12 @@ public class HabitActivity extends Activity {
                 //습관 진행도 문자열에서 1이 있는 인덱스를 연속으로 뽑아서 oneIndex 배열에 삽입
                 for (int i = 0; i < oneCount[boxNum]; i++) {
                     if (oneCount[boxNum] == 1) {
-                        oneIndex[0] = habitProgressArr[boxNum].length() - habitProgressArr[boxNum].indexOf('1', 0) - 1;
+                        oneIndex[0] = habitProgressArr[boxNum].indexOf('1');
                     }
                     else {
-                        oneIndex[0] = habitProgressArr[boxNum].length() - habitProgressArr[boxNum].indexOf('1', 0) - 1;
+                        oneIndex[0] = habitProgressArr[boxNum].indexOf('1');
                         if (i > 0) {
-                            oneIndex[i] = habitProgressArr[boxNum].length() - habitProgressArr[boxNum].indexOf('1', oneIndex[i - 1] + 1) - 1;
+                            oneIndex[i] = habitProgressArr[boxNum].indexOf('1', oneIndex[i - 1] + 1);
                         }
                     }
                 }

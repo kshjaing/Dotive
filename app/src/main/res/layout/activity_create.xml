@@ -26,7 +26,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.55"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtHabit" />
+        app:layout_constraintTop_toBottomOf="@+id/txtHabit"
+        android:nextFocusDown="@id/edtObjDays"/>
 
     <Button
         android:id="@+id/btnCreate"
@@ -130,7 +131,7 @@
         android:layout_marginLeft="2dp"
         android:layout_marginTop="34dp"
         android:fontFamily="@font/katuri"
-        android:text="일동안 하겠습니다!"
+        android:text="일동안 (최대 30일까지)"
         android:textColor="#000000"
         android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/edtObjDays"

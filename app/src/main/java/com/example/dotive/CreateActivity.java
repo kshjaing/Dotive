@@ -7,10 +7,13 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -41,11 +44,13 @@ public class CreateActivity extends Activity {
     ImageButton red, orange, green, blue, purple, gray;
     Integer objectDays = 1;
     String curColor = "red";
+    InputMethodManager imm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+        imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
     }
 
     protected  void onStart() {
@@ -54,6 +59,31 @@ public class CreateActivity extends Activity {
         cl = findViewById(R.id.cl);
         edtHabitName = findViewById(R.id.edtHabit);
         edtObjectDays = findViewById(R.id.edtObjDays);
+        View view = getWindow().getDecorView();
+
+        //화면 터치시 키보드내림
+        cl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imm.hideSoftInputFromWindow(edtHabitName.getWindowToken(), 0);
+            }
+        });
+
+        //엔터키 눌렀을 때 키보드 내려갈수있게
+        edtObjectDays.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                switch (actionId) {
+                    case EditorInfo.IME_ACTION_SEARCH:
+                        // 검색 동작
+                        break;
+                    default:
+                        // 기본 엔터키 동작
+                        return false;
+                }
+                return true;
+            }
+        });
 
 
         //-----------------------------색상 버튼들 생성 및 이벤트 설정------------------------------------
@@ -161,12 +191,15 @@ public class CreateActivity extends Activity {
         //액티비티 들어올때 다크모드 체크
         if (isDarkmode == 0) {
             cl.setBackgroundColor(Color.parseColor("#FFEBD3"));
+            getWindow().setStatusBarColor(Color.parseColor("#FFEBD3"));
+            view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             txtHabit.setTextColor(Color.BLACK);
             txtObjdays.setTextColor(Color.BLACK);
         }
 
         else {
             cl.setBackgroundColor(Color.parseColor("#272B36"));
+            getWindow().setStatusBarColor(Color.parseColor("#272B36"));
             txtHabit.setTextColor(Color.WHITE);
             txtObjdays.setTextColor(Color.WHITE);
         }
@@ -178,6 +211,10 @@ public class CreateActivity extends Activity {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (Integer.parseInt(edtObjectDays.getText().toString()) > 30) {
+                    Toast.makeText(CreateActivity.this, "습관은 30일까지만 생성가능합니다", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if (edtHabitName.length() == 0) {
                     Toast.makeText(CreateActivity.this, "습관명을 입력해주세요!", Toast.LENGTH_SHORT).show();
                     return;

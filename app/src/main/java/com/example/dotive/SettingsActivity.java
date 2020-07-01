@@ -60,6 +60,7 @@ public class SettingsActivity extends Activity {
         darkmodeBtn = new Button(this);
         resetBtn = new Button(this);
         txtConfirm = new TextView(this);
+        final View view = getWindow().getDecorView();
 
         setContentView(R.layout.activity_settings);
 
@@ -70,12 +71,15 @@ public class SettingsActivity extends Activity {
         if (isDarkmode == 0) {
             darkmodeBtn.setText("라이트모드");
             cl.setBackgroundColor(Color.parseColor("#FFEBD3"));
+            getWindow().setStatusBarColor(Color.parseColor("#FFEBD3"));
+            view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             txtConfirm.setTextColor(Color.BLACK);
         }
 
         else {
             darkmodeBtn.setText("다크모드");
-            cl.setBackgroundColor(Color.parseColor("#1C1C1F"));
+            cl.setBackgroundColor(Color.parseColor("#272B36"));
+            getWindow().setStatusBarColor(Color.parseColor("#272B36"));
             txtConfirm.setTextColor(Color.WHITE);
         }
 
@@ -85,13 +89,16 @@ public class SettingsActivity extends Activity {
                 if (isDarkmode == 0) {
                     isDarkmode = 1;
                     darkmodeBtn.setText("다크모드");
-                    cl.setBackgroundColor(Color.parseColor("#1C1C1F"));
+                    cl.setBackgroundColor(Color.parseColor("#272B36"));
+                    getWindow().setStatusBarColor(Color.parseColor("#272B36"));
                     txtConfirm.setTextColor(Color.WHITE);
                 }
                 else {
                     isDarkmode = 0;
                     darkmodeBtn.setText("라이트모드");
                     cl.setBackgroundColor(Color.parseColor("#FFEBD3"));
+                    getWindow().setStatusBarColor(Color.parseColor("#FFEBD3"));
+                    view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                     txtConfirm.setTextColor(Color.BLACK);
                 }
             }

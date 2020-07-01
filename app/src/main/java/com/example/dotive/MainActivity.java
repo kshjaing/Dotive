@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity{
     public static StringBuilder[] progressBuilderArr;
     public static Typeface typeface;
     public static int[] objectDays;                 //각 습관의 목표일수를 담는 변수
+
     Cursor cursor;
     TextView txtSettings, txtEdit;
     ScrollView sv;
@@ -82,6 +83,8 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
         dbHelper = new DBHelper(this, 4);
         db = dbHelper.getWritableDatabase();
+        View view = getWindow().getDecorView();
+
 
 
         //DB에서 '다크모드' 인수 가져와서 isDarkmode 변수에 삽입
@@ -148,10 +151,13 @@ public class MainActivity extends AppCompatActivity{
         //다크모드에 따른 배경색 변화
         if (isDarkmode == 0) {
             sv.setBackgroundColor(Color.parseColor("#FFEBD3"));
+            getWindow().setStatusBarColor(Color.parseColor("#FFEBD3"));
+            view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
 
         else {
             sv.setBackgroundColor(Color.parseColor("#272B36"));
+            getWindow().setStatusBarColor(Color.parseColor("#272B36"));
         }
 
 
@@ -418,7 +424,6 @@ public class MainActivity extends AppCompatActivity{
                     //현재날짜와 습관생성날짜 두 시간량을 뺀 시간량을 calDate 에 저장
                     calDate[i] = todayTimestamp - createDateTimestamp[i];
                     if (calDate[i] >= 0) {
-                        dateDiff[i] = String.valueOf(calDate[i] / (24*60*60*1000));
                         dateDiff[i] = String.valueOf(calDate[i] / (24*60*60*1000));
                     }
                 }
