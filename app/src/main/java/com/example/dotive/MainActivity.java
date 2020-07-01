@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity{
     public static Date[] createDateArr, objectDateArr;
     public static int[] oneCount;                           //진행도 문자열에서 1이 몇개 있는지 담는 배열
     int eraseNum, boxNum1;
-    int seqAmount;                     //연속일수
 
     Date curDate;                      //현재날짜 Date변수
     long todayTimestamp;               //현재날짜 시간량
@@ -306,13 +305,7 @@ public class MainActivity extends AppCompatActivity{
                 imgFire[i].setBackgroundResource(R.drawable.fire);
                 imgFire[i].setLayoutParams(imgFire_linearParams);
                 txtSequence[i] = new TextView(this);
-                seqAmount = 0;
-                if (habitProgressArr[i].length() >= Integer.parseInt(dateDiff[i])) {
-                    if (Integer.parseInt(String.valueOf(habitProgressArr[i].charAt(Integer.parseInt(dateDiff[i])))) == 1){
-                        seqAmount = habitProgressArr[i].lastIndexOf("1", Integer.parseInt(dateDiff[i])) - habitProgressArr[i].lastIndexOf("0", habitProgressArr[i].lastIndexOf("1", Integer.parseInt(dateDiff[i])) - 1);
-                    }
-                }
-                txtSequence[i].setText("연속 "+ seqAmount +"일째!");
+                txtSequence[i].setText("연속 일째!");
                 txtSequence[i].setTypeface(typeface);
                 txtSequence[i].setTextSize(16);
                 txtSequence[i].setLayoutParams(txtSeq_linearParams);
