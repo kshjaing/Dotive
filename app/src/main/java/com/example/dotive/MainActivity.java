@@ -402,6 +402,7 @@ public class MainActivity extends AppCompatActivity{
             ibtnSettings.setAlpha(0);
             for (int i = 0; i < totalHabit; i++) {
                 boxBtnArr[i].setBackgroundResource(R.drawable.custom_mainbox);
+                ibtnErase[i].setVisibility(View.INVISIBLE);
             }
         }
 
@@ -413,6 +414,7 @@ public class MainActivity extends AppCompatActivity{
             ibtnSettings.setAlpha(0);
             for (int i = 0; i < totalHabit; i++) {
                 boxBtnArr[i].setBackgroundResource(R.drawable.custom_mainbox_dark);
+                ibtnErase[i].setVisibility(View.INVISIBLE);
             }
         }
 
