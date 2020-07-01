@@ -272,14 +272,32 @@ public class DrawCircle extends View {
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j + 1) * 1.25f, btn_y + btn_Height / 2 - radius, radius * 0.45f, strokePaint);
                         }
-                        canvas.drawCircle(btn_x + radius * (j + 1) * 1.25f, btn_y + btn_Height / 2 - radius, radius * 0.45f, paint);
+                        for (int k = 0; k < (j + 1); k++) {
+                            progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
+                        }
+                        if (progressWord[j].equals("1")) {
+                            canvas.drawCircle(btn_x + radius * (j + 1) * 1.25f, btn_y + btn_Height / 2 - radius, radius * 0.45f, completePaint);
+                        }
+                        else {
+                            canvas.drawCircle(btn_x + radius * (j + 1) * 1.25f, btn_y + btn_Height / 2 - radius, radius * 0.45f, paint);
+                        }
+
                     }
                     else {
                         //현재날짜 테두리
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j - 6) * 1.25f, btn_y + btn_Height / 2 + radius * 0.7f, radius * 0.45f, strokePaint);
                         }
-                        canvas.drawCircle(btn_x + radius * (j - 6) * 1.25f, btn_y + btn_Height / 2 + radius * 0.7f, radius * 0.45f, paint);
+                        for (int k = 0; k < (j + 1); k++) {
+                            progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
+                        }
+                        if (progressWord[j].equals("1")) {
+                            canvas.drawCircle(btn_x + radius * (j - 6) * 1.25f, btn_y + btn_Height / 2 + radius * 0.7f, radius * 0.45f, completePaint);
+                        }
+                        else {
+                            canvas.drawCircle(btn_x + radius * (j - 6) * 1.25f, btn_y + btn_Height / 2 + radius * 0.7f, radius * 0.45f, paint);
+                        }
+
                     }
                 }
             }
@@ -292,14 +310,32 @@ public class DrawCircle extends View {
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j + 1) * 0.905f, btn_y + btn_Height / 2 - radius, radius * 0.3f, strokePaint);
                         }
-                        canvas.drawCircle(btn_x + radius * (j + 1) * 0.905f, btn_y + btn_Height / 2 - radius, radius * 0.3f, paint);
+                        for (int k = 0; k < (j + 1); k++) {
+                            progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
+                        }
+                        if (progressWord[j].equals("1")) {
+                            canvas.drawCircle(btn_x + radius * (j + 1) * 0.905f, btn_y + btn_Height / 2 - radius, radius * 0.3f, completePaint);
+                        }
+                        else {
+                            canvas.drawCircle(btn_x + radius * (j + 1) * 0.905f, btn_y + btn_Height / 2 - radius, radius * 0.3f, paint);
+                        }
+
                     }
                     else {
                         //현재날짜 테두리
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j - 9) * 0.905f, btn_y + btn_Height / 2 + radius * 0.35f, radius * 0.3f, strokePaint);
                         }
-                        canvas.drawCircle(btn_x + radius * (j - 9) * 0.905f, btn_y + btn_Height / 2 + radius * 0.35f, radius * 0.3f, paint);
+                        for (int k = 0; k < (j + 1); k++) {
+                            progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
+                        }
+                        if (progressWord[j].equals("1")) {
+                            canvas.drawCircle(btn_x + radius * (j - 9) * 0.905f, btn_y + btn_Height / 2 + radius * 0.35f, radius * 0.3f, completePaint);
+                        }
+                        else {
+                            canvas.drawCircle(btn_x + radius * (j - 9) * 0.905f, btn_y + btn_Height / 2 + radius * 0.35f, radius * 0.3f, paint);
+                        }
+
                     }
                 }
             }
@@ -312,21 +348,49 @@ public class DrawCircle extends View {
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j + 1) * 0.905f, btn_y + radius * 1.7f, radius * 0.3f, strokePaint);
                         }
-                        canvas.drawCircle(btn_x + radius * (j + 1) * 0.905f, btn_y + radius * 1.7f, radius * 0.3f, paint);
+                        for (int k = 0; k < (j + 1); k++) {
+                            progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
+                        }
+                        if (progressWord[j].equals("1")) {
+                            canvas.drawCircle(btn_x + radius * (j + 1) * 0.905f, btn_y + radius * 1.7f, radius * 0.3f, completePaint);
+
+                        }
+                        else {
+                            canvas.drawCircle(btn_x + radius * (j + 1) * 0.905f, btn_y + radius * 1.7f, radius * 0.3f, paint);
+                        }
+
                     }
                     else if (10 <= j && j < 20) {
                         //현재날짜 테두리
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j - 9) * 0.905f, btn_y + radius * 2.7f, radius * 0.3f, strokePaint);
                         }
-                        canvas.drawCircle(btn_x + radius * (j - 9) * 0.905f, btn_y + radius * 2.7f, radius * 0.3f, paint);
+                        for (int k = 0; k < (j + 1); k++) {
+                            progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
+                        }
+                        if (progressWord[j].equals("1")) {
+                            canvas.drawCircle(btn_x + radius * (j - 9) * 0.905f, btn_y + radius * 2.7f, radius * 0.3f, completePaint);
+                        }
+                        else {
+                            canvas.drawCircle(btn_x + radius * (j - 9) * 0.905f, btn_y + radius * 2.7f, radius * 0.3f, paint);
+                        }
+
                     }
                     else if (20 <= j) {
                         //현재날짜 테두리
                         if (j == (Integer.parseInt(dateDiff[i]))){
                             canvas.drawCircle(btn_x + radius * (j - 19) * 0.905f, btn_y + radius * 3.7f, radius * 0.3f, strokePaint);
                         }
-                        canvas.drawCircle(btn_x + radius * (j - 19) * 0.905f, btn_y + radius * 3.7f, radius * 0.3f, paint);
+                        for (int k = 0; k < (j + 1); k++) {
+                            progressWord[k] = String.valueOf(habitProgressArr[i].charAt(k));
+                        }
+                        if (progressWord[j].equals("1")) {
+                            canvas.drawCircle(btn_x + radius * (j - 19) * 0.905f, btn_y + radius * 3.7f, radius * 0.3f, completePaint);
+                        }
+                        else {
+                            canvas.drawCircle(btn_x + radius * (j - 19) * 0.905f, btn_y + radius * 3.7f, radius * 0.3f, paint);
+                        }
+
                     }
                 }
             }
