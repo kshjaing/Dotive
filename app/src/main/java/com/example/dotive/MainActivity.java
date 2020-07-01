@@ -352,7 +352,7 @@ public class MainActivity extends AppCompatActivity{
                     boxBtnArr[i].setBackgroundResource(R.drawable.custom_mainbox_dark);
                     ibtnErase[i].setBackgroundResource(R.drawable.erase_button);
                     txtSequence[i].setTextColor(Color.WHITE);
-                } 
+                }
 
                 //각 박스,습관명 마다 태그설정
                 boxBtnArr[i].setTag("box_" + i);
