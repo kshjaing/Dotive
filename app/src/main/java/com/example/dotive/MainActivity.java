@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
         //동적 view 생성
         frameLayout.addView(painting_circle); //버튼 위의 원 배열을 위해
 
-        //main 액션 바 만들기
+        /*//main 액션 바 만들기
 
         //main_actionbar.xml inflater
         View actionview = (View) getLayoutInflater().inflate(R.layout.main_actionbar, null);
@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
         actionBar.setDisplayShowCustomEnabled(true); //커스텀 액션바 보이게
         actionBar.setDisplayShowTitleEnabled(false); //기본 제목 false = > 안보이게 함. (제목 삭제)
         actionBar.setDisplayHomeAsUpEnabled(true); //이 값은 자동으로 뒤로가기 버튼 생성
-        linearLayout.addView(actionview);
+        linearLayout.addView(actionview);*/
 
 
         //java 코드로 폰트 설정 (xml 에서 fontFamily)
@@ -205,8 +205,8 @@ public class MainActivity extends AppCompatActivity {
 
         //textView만 따로 마진값을 준다.
         int textView_btn_margin_left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 115, getResources().getDisplayMetrics());
-        int textView_btn_margin_bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 160, getResources().getDisplayMetrics());
-        int textView_btn_margin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 70, getResources().getDisplayMetrics());
+        int textView_btn_margin_bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 215, getResources().getDisplayMetrics());
+        int textView_btn_margin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 15, getResources().getDisplayMetrics());
 
 
         //margin 설정을 위해 (margin을 Layout에서 부모값을 정하고 그곳에 마진을 아까 dp 계산한 int 값으로 지정.)

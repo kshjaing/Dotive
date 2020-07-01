@@ -23,6 +23,8 @@ public class HabitActivity extends AppCompatActivity {
     public static String Get_i;
     public static String[] Arr_Progress = {};
     String New_Progress = ""; //변경된 습관 진행도 값 //이건 static 하면 누적되서 안됨.
+
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +108,13 @@ public class HabitActivity extends AppCompatActivity {
                 startActivity(intent1);
             }
         });*/
+
+        //들어온 습관 수 ex : 5일을 목표로 한다면
+        //목표일 수 만큼 버튼을 생성 후 마지막 날짜 계산해서 각각 버튼에 추가
+        for(int i = 0; (i < Integer.parseInt(objdays)); i++)
+        {
+
+        }
     }
 
     public void UPDATE_Habits() {

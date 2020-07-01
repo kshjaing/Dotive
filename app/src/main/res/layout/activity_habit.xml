@@ -1,8 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:id="@+id/linearLayout"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:id="@+id/sv_habit">
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:id="@+id/rlTopMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <ImageButton
+                android:id="@+id/ibtnBack"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/arrow_back_dark"
+                android:scaleType="centerInside"
+                android:background="@android:color/transparent"/>
+
+            <ImageButton
+                android:id="@+id/ibtnBar"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/actionbar_dark"
+                android:scaleType="centerInside"
+                android:background="@android:color/transparent"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rlDays"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <FrameLayout
+                android:id="@+id/fl_habit"
+                android:layout_width="360dp"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="TextView" />
+
+                </LinearLayout>
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/sv_habit_Add">
+                <LinearLayout
+                    android:id="@+id/ll_habit"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginBottom="60dp">
+                </LinearLayout>
+                </ScrollView>
+            </FrameLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
+</ScrollView>
