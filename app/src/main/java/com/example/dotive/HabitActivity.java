@@ -24,7 +24,7 @@ public class HabitActivity extends AppCompatActivity {
     public static String[] Arr_Progress = {};
     String New_Progress = ""; //변경된 습관 진행도 값 //이건 static 하면 누적되서 안됨.
 
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
