@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity{
     public static Date[] createDateArr, objectDateArr;
     public static int[] oneCount;                           //진행도 문자열에서 1이 몇개 있는지 담는 배열
     String[] boxTags;
-    int eraseNum;
+    int eraseNum, boxNum1;
 
 
 
@@ -322,10 +322,10 @@ public class MainActivity extends AppCompatActivity{
 
                 //각 박스,습관명 마다 태그설정
                 boxBtnArr[i].setTag("box_" + i);
-                ibtnErase[i].setTag("erase_" + i);
-                String eraseTag = ibtnErase[i].getTag().toString();
-                int eraseStringIndex = eraseTag.lastIndexOf("_");
-                eraseNum = Integer.parseInt(eraseTag.substring(eraseStringIndex + 1));
+                String boxTag = boxBtnArr[i].getTag().toString();
+                int boxidx = boxTag.lastIndexOf("_");
+                boxNum1 = Integer.parseInt(boxTag.substring(boxidx + 1));
+                ibtnErase[i].setTag("erase_" + boxNum1);
 
                 cursor = db.rawQuery("SELECT habitName FROM Habits", null);
 
@@ -340,34 +340,19 @@ public class MainActivity extends AppCompatActivity{
                         builder.setTitle("알림");
                         builder.setMessage("습관을 삭제하시겠습니까?");
                         builder.setPositiveButton("취소", null);
+
+                        String eraseTag = v.getTag().toString();
+                        int eraseStringIndex = eraseTag.lastIndexOf("_");
+                        eraseNum = Integer.parseInt(eraseTag.substring(eraseStringIndex + 1));
+
                         builder.setNegativeButton("삭제", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 deleteHabits(eraseNum);
-                                cursor = db.rawQuery("SELECT COUNT(id) FROM Habits", null);
-                                while(cursor.moveToNext()) {
-                                    totalHabit = Integer.parseInt(cursor.getString(0));
-                                }
+                                Intent intent = new Intent(MainActivity.context_main, MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(intent);
 
-                                //DB에서 '습관 진행도' 문자열 가져와서 habitProgressArr 배열에 삽입
-                                //최종적으로는 StringBuilder 인 progressBuilderArr 에 각 진행도 문자열을 저장
-                                cursor = db.rawQuery("SELECT habitProgress FROM Habits", null);
-                                habitProgressArr = new String[totalHabit];
-                                progressBuilderArr = new StringBuilder[totalHabit];
-
-                                for (int i = 0; i < totalHabit; i++) {
-                                    cursor.moveToPosition(i);
-                                    habitProgressArr[i] = cursor.getString(0);
-                                    progressBuilderArr[i] = new StringBuilder(habitProgressArr[i]);
-                                }
-
-                                oneCount = new int[totalHabit];
-                                for (int j = 0; j < totalHabit; j++) {
-                                    //진행도 문자열에서 1의 개수를 계산해서 oneCount 에 삽입
-                                    oneCount[j] = getCharNumber(habitProgressArr[j], '1');
-                                }
-
-                                calDateDiff();
                             }
                         });
                         builder.show();
@@ -388,6 +373,7 @@ public class MainActivity extends AppCompatActivity{
                 boxBtnArr[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        Toast.makeText(MainActivity.this, v.getTag().toString(), Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MainActivity.this, HabitActivity.class);
                         intent.putExtra("tag", String.valueOf(v.getTag()));
                         startActivity(intent);

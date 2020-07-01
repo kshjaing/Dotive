@@ -163,6 +163,9 @@ public class HabitActivity extends Activity {
                 boxHabitArr[i].setLayoutParams(btn_linearParams);
                 boxHabitArr[i].setBackgroundResource(R.drawable.habitbtn_border_round);
                 boxHabitArr[i].setTag("dateBox_" + (Integer.parseInt(dateDiff[boxNum]) - i));
+                boxHabitArr[i].setText(curDateString);
+                boxHabitArr[i].setTypeface(typeface);
+                boxHabitArr[i].setTextSize(20);
 
                 boxHabitArr[i].setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -172,6 +175,7 @@ public class HabitActivity extends Activity {
                         int obj_index = v.getTag().toString().lastIndexOf("_");
                         String dayNum = v.getTag().toString().substring(obj_index + 1);
                         dayIndex = Integer.parseInt(dayNum);
+                        Toast.makeText(HabitActivity.this, String.valueOf(dayIndex), Toast.LENGTH_SHORT).show();
 
 
                         //클릭한 뷰의 백그라운드와 drawable 파일과의 비교
@@ -213,13 +217,11 @@ public class HabitActivity extends Activity {
                         cursor = db.rawQuery("SELECT habitProgress FROM Habits", null);
                         cursor.moveToPosition(boxNum);
                         //진행도 문자열 잘 변하는지 테스트용
-                        Toast.makeText(HabitActivity.this, cursor.getString(0), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(HabitActivity.this, cursor.getString(0), Toast.LENGTH_SHORT).show();
                         //Toast.makeText(HabitActivity.this, v.getTag().toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
-                boxHabitArr[i].setText(curDateString);
-                boxHabitArr[i].setTypeface(typeface);
-                boxHabitArr[i].setTextSize(20);
+
 
                 //오늘날짜는 테두리로 표시
                 if (isDarkmode == 0) {
@@ -368,7 +370,7 @@ public class HabitActivity extends Activity {
     //Habits 테이블 습관진행도 업데이트
     public void updateProgress(Integer id, String habitProgress) {
         MainActivity.dbHelper.getWritableDatabase();
-        db.execSQL("UPDATE Habits SET habitProgress='" + habitProgress +"' WHERE id='" + (id + 1) +"'");
+        db.execSQL("UPDATE Habits SET habitProgress='" + habitProgress +"' WHERE ROWID = (SELECT ROWID FROM Habits LIMIT 1 OFFSET "+ id +")");
     }
 
 
