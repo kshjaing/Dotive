@@ -2,8 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.dotive">
 
-    <permission android:name="com.example.dotive.READ_DATABASE" android:protectionLevel="normal"/>
-    <permission android:name="com.example.dotive.WRITE_DATABASE" android:protectionLevel="normal"/>
+    <permission
+        android:name="com.example.dotive.READ_DATABASE"
+        android:protectionLevel="normal" />
+    <permission
+        android:name="com.example.dotive.WRITE_DATABASE"
+        android:protectionLevel="normal" />
 
     <application
         android:allowBackup="true"
@@ -12,15 +16,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".SettingActivity"></activity>
 
         <provider
-            android:authorities="com.example.dotive"
             android:name=".Provider"
+            android:authorities="com.example.dotive"
             android:exported="true"
             android:readPermission="com.example.sampleprovider.READ_DATABASE"
-            android:writePermission="com.example.sampleprovider.WRITE_DATABASE"/>
+            android:writePermission="com.example.sampleprovider.WRITE_DATABASE" />
 
-        <activity android:name=".ResultActivity"/>
+        <activity android:name=".ResultActivity" />
         <activity android:name=".CreateActivity" />
         <activity android:name=".HabitActivity" />
         <activity android:name=".MainActivity">

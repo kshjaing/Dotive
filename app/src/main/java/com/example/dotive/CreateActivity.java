@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -79,9 +80,15 @@ public class CreateActivity extends AppCompatActivity {
         btn_OK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(edit_Habit_Name.getText().toString().length() > 0 && edit_Habit_Day_Num.getText().toString().length() > 0
+                if(edit_Habit_Name.getText().toString().length() > 0 &&
+                        edit_Habit_Day_Num.getText().toString().length() > 0
                         && int_Color < 0) //습관명, 목표일 수, 습관 색이 전부 정해져야 넘어간다.
                 {
+                    if(Integer.parseInt(edit_Habit_Day_Num.getText().toString()) > 30)
+                    {
+                        Toast.makeText(CreateActivity.this,"습관을 30일까지 지정가능", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     Intent intent = new Intent(CreateActivity.this, MainActivity.class);
                     intent.putExtra("Habit_Name",edit_Habit_Name.getText().toString()); //습관명
                     intent.putExtra("Habit_Color",Integer.toString(int_Color)); //습관 색깔

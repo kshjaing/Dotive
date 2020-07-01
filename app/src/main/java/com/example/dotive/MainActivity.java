@@ -114,6 +114,11 @@ public class MainActivity extends AppCompatActivity {
     //편집 시 삭제 버튼
     Button[] DeleteButton;
 
+    //설정 버튼
+    ImageButton ibtnSettings;
+
+
+    int Table_Count;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -272,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
         DeleteButton_LinearParams.width = 100;
         DeleteButton_LinearParams.height = 100;
 
-        int Table_Count = Habits_Table_Count;
+        Table_Count = Habits_Table_Count;
         Arr_Btn_Habit = new Button[Table_Count - 1];
         Arr_TextView_Habit_Name = new TextView[Table_Count - 1];
 
@@ -337,6 +342,8 @@ public class MainActivity extends AppCompatActivity {
             //delete 버튼 절대 좌표
             DeleteButton[i].setLayoutParams(DeleteButton_LinearParams);
 
+            //delete 버튼 기본 감춤
+            DeleteButton[i].setVisibility(View.INVISIBLE);
             final int a = i; //final 에러 방지 로컬변수로 선언해서 사용함.
 
             //습관 버튼 클릭 리스너
@@ -360,7 +367,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                            builder.setTitle("알림");
+                            builder.setTitle("삭제");
                             builder.setMessage("습관을 삭제하시겠습니까?");
                             builder.setCancelable(true); //뒤로가기 누르면 취소
                             builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
@@ -429,7 +436,22 @@ public class MainActivity extends AppCompatActivity {
         ibtnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                for(int k = 0; k < Table_Count - 1; k++) {
+                    if(DeleteButton[k].getVisibility() == View.VISIBLE)
+                        DeleteButton[k].setVisibility(View.INVISIBLE);
+                    else DeleteButton[k].setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
+        //설정 버튼 (다크모드 등)
+        ibtnSettings = (ImageButton) view_main.findViewById(R.id.ibtnSettings);
+
+        ibtnSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                startActivity(intent);
             }
         });
 
