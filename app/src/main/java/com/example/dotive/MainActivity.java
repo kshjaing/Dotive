@@ -15,6 +15,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -56,8 +57,9 @@ public class MainActivity extends AppCompatActivity{
 
     Cursor cursor;
     ImageButton ibtnSettings, ibtnEdit;
+    ImageButton[] ibtnErase;
     ScrollView sv;
-    LinearLayout ll, ll2;
+    LinearLayout ll, ll2, ll3;
     FrameLayout fl;
 
     public static String curDateString, createDateString;
@@ -87,8 +89,9 @@ public class MainActivity extends AppCompatActivity{
         View view = getWindow().getDecorView();
 
         ibtnSettings = new ImageButton(this);
-        ibtnSettings = findViewById(R.id.ibtnSettings);
         ibtnEdit = new ImageButton(this);
+
+        ibtnSettings = findViewById(R.id.ibtnSettings);
         ibtnEdit = findViewById(R.id.ibtnEdit);
 
 
@@ -146,6 +149,21 @@ public class MainActivity extends AppCompatActivity{
             }
         });
 
+        //편집버튼 클릭이벤트 부여
+        ibtnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for (int i = 0; i < totalHabit; i++) {
+                    if (ibtnErase[i].getVisibility() == View.VISIBLE) {
+                        ibtnErase[i].setVisibility(View.INVISIBLE);
+                    }
+                    else
+                        ibtnErase[i].setVisibility(View.VISIBLE);
+                }
+
+            }
+        });
+
 
 
         //스크롤뷰 생성
@@ -155,9 +173,12 @@ public class MainActivity extends AppCompatActivity{
         fl = new FrameLayout(this);
         ll = new LinearLayout(this);
         ll2 = new LinearLayout(this);
+        ll3 = new LinearLayout(this);
         fl = findViewById(R.id.fl);
         ll = findViewById(R.id.ll);
         ll2 = findViewById(R.id.ll2);
+        ll3 = findViewById(R.id.ll3);
+        //ll3.setBackgroundColor(Color.BLACK);
 
 
 
@@ -187,6 +208,7 @@ public class MainActivity extends AppCompatActivity{
         if (totalHabit > 0) {
             boxBtnArr = new Button[totalHabit];
             txtViewArr = new TextView[totalHabit];
+            ibtnErase = new ImageButton[totalHabit];
 
 
 
@@ -214,6 +236,14 @@ public class MainActivity extends AppCompatActivity{
                     getResources().getDisplayMetrics());
             int txt_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,245,
                     getResources().getDisplayMetrics());
+            int erase_btn_size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,25,
+                    getResources().getDisplayMetrics());
+            int erase_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,70,
+                    getResources().getDisplayMetrics());
+            int erase_marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,310,
+                    getResources().getDisplayMetrics());
+            int erase_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,230,
+                    getResources().getDisplayMetrics());
 
 
             typeface = Typeface.createFromAsset(getAssets(), "font/katuri.ttf");
@@ -224,9 +254,12 @@ public class MainActivity extends AppCompatActivity{
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
             LinearLayout.LayoutParams txtView_linearParams = new LinearLayout.LayoutParams(
                     txt_Width, LinearLayout.LayoutParams.WRAP_CONTENT);
+            LinearLayout.LayoutParams erasebtn_linearParams = new LinearLayout.LayoutParams(
+                    erase_btn_size, erase_btn_size);
 
             //박스 마진 설정
             btn_linearParams.setMargins(0, btn_marginTop, 0, btn_marginBottom);
+            erasebtn_linearParams.setMargins(erase_marginLeft, erase_marginTop, 0, erase_marginBottom);
 
             //습관제목 텍스트뷰 마진 설정
             txtView_linearParams.setMargins(txt_marginLeft, txt_marginTop, 0, txt_marginBottom);
@@ -239,6 +272,9 @@ public class MainActivity extends AppCompatActivity{
                 boxBtnArr[i].setHeight(btn_Height);
                 txtViewArr[i] = new TextView(this);
                 txtViewArr[i].setHeight(txt_Height);
+                ibtnErase[i] = new ImageButton(this);
+                ibtnErase[i].setLayoutParams(erasebtn_linearParams);
+                ibtnErase[i].setVisibility(View.INVISIBLE);
                 boxBtnArr[i].setLayoutParams(btn_linearParams);
                 txtViewArr[i].setLayoutParams(txtView_linearParams);
 
@@ -276,18 +312,43 @@ public class MainActivity extends AppCompatActivity{
                 //다크모드에 따른 박스 색변경
                 if (isDarkmode == 0) {
                     boxBtnArr[i].setBackgroundResource(R.drawable.custom_mainbox);
+                    ibtnErase[i].setBackgroundResource(R.drawable.erase_button_dark);
                 }
                 else {
                     boxBtnArr[i].setBackgroundResource(R.drawable.custom_mainbox_dark);
+                    ibtnErase[i].setBackgroundResource(R.drawable.erase_button);
                 }
 
                 //각 박스,습관명 마다 태그설정
                 boxBtnArr[i].setTag("box_" + i);
+                ibtnErase[i].setTag("erase_" + i);
+                String eraseTag = ibtnErase[i].getTag().toString();
+                int eraseStringIndex = eraseTag.lastIndexOf("_");
+                final int eraseNum = Integer.parseInt(eraseTag.substring(eraseStringIndex + 1));
+
                 cursor = db.rawQuery("SELECT habitName FROM Habits", null);
 
                 //DB에서 습관명 가져와서 텍스트뷰에 적용
                 cursor.moveToPosition(i);
                 txtViewArr[i].setText(cursor.getString(0));
+
+                ibtnErase[i].setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context_main);
+                        builder.setTitle("알림");
+                        builder.setMessage("습관을 삭제하시겠습니까?");
+                        builder.setPositiveButton("취소", null);
+                        builder.setNegativeButton("삭제", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                deleteHabits(String.valueOf(eraseNum));
+
+                            }
+                        });
+                        builder.show();
+                    }
+                });
 
 
                 //DrawCircle 클래스 객체 생성해서 레이아웃에 원 배치
@@ -296,6 +357,7 @@ public class MainActivity extends AppCompatActivity{
 
                 ll.addView(boxBtnArr[i]);
                 ll2.addView(txtViewArr[i]);
+                ll3.addView(ibtnErase[i]);
 
 
                 //클릭시 버튼 태그 토스트(테스트용)
@@ -446,6 +508,12 @@ public class MainActivity extends AppCompatActivity{
                 count++;
         }
         return count;
+    }
+
+    //Habits 테이블에 습관 추가
+    public void deleteHabits(String id) {
+        MainActivity.dbHelper.getWritableDatabase();
+        db.execSQL("DELETE FROM Habits WHERE id=" + id);
     }
 }
 

@@ -211,16 +211,16 @@ public class CreateActivity extends Activity {
         btnCreate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Integer.parseInt(edtObjectDays.getText().toString()) > 30) {
-                    Toast.makeText(CreateActivity.this, "습관은 30일까지만 생성가능합니다", Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 if (edtHabitName.length() == 0) {
                     Toast.makeText(CreateActivity.this, "습관명을 입력해주세요!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 else if (edtObjectDays.length() == 0) {
                     Toast.makeText(CreateActivity.this, "목표일수를 입력해주세요!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (Integer.parseInt(edtObjectDays.getText().toString()) > 30) {
+                    Toast.makeText(CreateActivity.this, "습관은 30일까지만 생성가능합니다", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
