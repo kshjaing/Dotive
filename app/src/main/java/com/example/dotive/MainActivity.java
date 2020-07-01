@@ -3,12 +3,14 @@ package com.example.dotive;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -216,8 +218,8 @@ public class MainActivity extends AppCompatActivity {
         int textView_height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
 
         //delete 버튼 (x 버튼)
-        int DeleteButton_width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
-        int DeleteButton_height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics());
+        int DeleteButton_width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
+        int DeleteButton_height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
 
 
         int btn_margin_left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, getResources().getDisplayMetrics());
@@ -248,8 +250,8 @@ public class MainActivity extends AppCompatActivity {
 
         //margin 설정 3 (delete 버튼 위치 (x 버튼))
         LinearLayout.LayoutParams DeleteButton_LinearParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
+                DeleteButton_width,
+                DeleteButton_height
         );
 
         //margin 값 dp로 설정해주는중. 버튼에 적용
@@ -263,9 +265,7 @@ public class MainActivity extends AppCompatActivity {
         textView_LinearParams.topMargin = textView_btn_margin_top;
 
         //margin 값 dp로 설정해주는중. delete 버튼 적용
-        /*DeleteButton_LinearParams.leftMargin = delete_marin_left; //size
-        DeleteButton_LinearParams.bottomMargin = delete_margin_bottom;
-        DeleteButton_LinearParams.topMargin = delete_margin_top;*/
+        DeleteButton_LinearParams.setMargins(delete_marin_left,delete_margin_top,0,delete_margin_bottom);
 
         //delete 버튼 크기를 위해
         //delete 버튼 width, height
@@ -314,7 +314,6 @@ public class MainActivity extends AppCompatActivity {
             Arr_TextView_Habit_Name[i].setGravity(Gravity.CENTER);
 
 
-
             //습관 버튼 radius Drawable
             Arr_Btn_Habit[i].setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.radius));
 
@@ -322,7 +321,7 @@ public class MainActivity extends AppCompatActivity {
             Arr_TextView_Habit_Name[i].setBackground(ContextCompat.getDrawable(this, R.drawable.textview_custom_css));
 
             //delete 버튼 이미지 씌움
-            DeleteButton[i].setBackgroundResource(R.drawable.erase_button);
+            DeleteButton[i].setBackgroundResource(R.drawable.erase_button_dark);
             //DeleteButton[i].setBackgroundDrawable(ContextCompat.getDrawable(this,R.drawable.erase_button));
 
             //습관 제목 텍스트뷰의 백그라운드 컬러 값 (CreateActivity에서 받아온 값)
@@ -355,6 +354,52 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
+
+            //편집 삭제 버튼 리스너
+            DeleteButton[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                            builder.setTitle("알림");
+                            builder.setMessage("습관을 삭제하시겠습니까?");
+                            builder.setCancelable(true); //뒤로가기 누르면 취소
+                            builder.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    try {
+                                        String uriString = "content://com.example.dotive/Habits";
+                                        Uri uri = new Uri.Builder().build().parse(uriString);
+
+                                        String selection = "id=?";
+                                        String[] selectionArgs = new String[] {Arr_ID[a]};
+
+                                        int count = getContentResolver().delete(uri, selection, selectionArgs);
+                                        Log.e("MainActivity.java", "delete 실행 : " + count);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    Toast myToast = Toast.makeText(getApplicationContext(),"습관을 삭제하였습니다", Toast.LENGTH_SHORT);
+                                    myToast.show();
+
+                                    //액티비티 갱신 (db 업데이트 사항 적용)
+                                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
+
+                                }
+                            });
+                            builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                        return;
+                                }
+                            });
+
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+                }
+            });
         }
 
 
@@ -384,16 +429,7 @@ public class MainActivity extends AppCompatActivity {
         ibtnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                float X, Y;
-                for(int i = 0; i< Habits_Table_Count - 1; i++) {
-                    X = Arr_Btn_Habit[i].getX();
-                    Y = Arr_Btn_Habit[i].getY();
-
-                    //버튼 width, height
-                    int W = Arr_Btn_Habit[i].getWidth();
-                    int H = Arr_Btn_Habit[i].getHeight();
-
-                }
+                
             }
         });
 
