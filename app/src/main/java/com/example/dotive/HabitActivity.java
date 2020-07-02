@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -17,7 +19,9 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -43,7 +47,8 @@ public class HabitActivity extends Activity {
     public static int dayIndex = 0;
     public static int[] oneIndex;                         //진행도 문자열에서 1이 어느 인덱스에 있는지 담는 배열
     Button[] boxHabitArr;                   //목표일수만큼 버튼 생성
-    ImageButton ibtnBack, ibtnBar;          //뒤로가기 버튼, 액션바 버튼
+    ImageButton ibtnBack;          //뒤로가기 버튼
+    androidx.appcompat.widget.Toolbar toolbar;
     TextView txtHabitName, txtObjectDays, txtDate;         //습관명, 버튼 속 날짜 텍스트
     SimpleDateFormat dateFormat;
     Calendar calendar;
@@ -67,9 +72,11 @@ public class HabitActivity extends Activity {
         txtHabitName = new TextView(this);
         txtObjectDays = new TextView(this);
         dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일 (E)", Locale.KOREAN);
+        ibtnBack = new ImageButton(this);
+        toolbar = new Toolbar(this);
 
         ibtnBack = findViewById(R.id.ibtnBack);
-        ibtnBar = findViewById(R.id.ibtnBar);
+        toolbar = findViewById(R.id.toolbar);
         View view = getWindow().getDecorView();
 
 
@@ -128,7 +135,7 @@ public class HabitActivity extends Activity {
             txtHabitName.setTextColor(Color.BLACK);
             txtObjectDays.setTextColor(Color.BLACK);
             ibtnBack.setBackgroundResource(R.drawable.arrow_back_dark);
-            ibtnBar.setBackgroundResource(R.drawable.actionbar_dark);
+            toolbar.setBackgroundResource(R.drawable.actionbar_dark);
         }
 
         else {
@@ -137,7 +144,7 @@ public class HabitActivity extends Activity {
             txtHabitName.setTextColor(Color.WHITE);
             txtObjectDays.setTextColor(Color.WHITE);
             ibtnBack.setBackgroundResource(R.drawable.arrow_back);
-            ibtnBar.setBackgroundResource(R.drawable.actionbar);
+            toolbar.setBackgroundResource(R.drawable.actionbar);
         }
 
 
@@ -361,7 +368,29 @@ public class HabitActivity extends Activity {
             }
         });
 
+        //다크모드에 따른 배경색, 텍스트색 변화
+        if (isDarkmode == 0) {
+            sv.setBackgroundColor(Color.parseColor("#FFEBD3"));
+            txtHabitName.setTextColor(Color.BLACK);
+            txtObjectDays.setTextColor(Color.BLACK);
+            ibtnBack.setBackgroundResource(R.drawable.arrow_back_dark);
+            toolbar.setBackgroundResource(R.drawable.actionbar_dark);
+        }
 
+        else {
+            sv.setBackgroundColor(Color.parseColor("#272B36"));
+            txtHabitName.setTextColor(Color.WHITE);
+            txtObjectDays.setTextColor(Color.WHITE);
+            ibtnBack.setBackgroundResource(R.drawable.arrow_back);
+            toolbar.setBackgroundResource(R.drawable.actionbar);
+        }
+
+    }
+
+    @Override
+    public boolean onnCreateOptionsMenu(Menu menu) {
+        ActionBar actionBar = getSupportActionBar();
+        actionBar = getSupportActionBar();
     }
 
     //뒤로가기 키 눌렀을 때 이벤트 설정

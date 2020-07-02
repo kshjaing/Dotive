@@ -17,29 +17,27 @@
 
             <ImageButton
                 android:id="@+id/ibtnBack"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentLeft="true"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/arrow_back_dark"
+                android:layout_marginTop="18dp"
                 android:scaleType="centerInside"
                 android:background="@android:color/transparent"/>
 
-            <ImageButton
-                android:id="@+id/ibtnBar"
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="12dp"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/actionbar_dark"
                 android:scaleType="centerInside"
-                android:background="@android:color/transparent"/>
+                android:background="@android:color/transparent">
+            </androidx.appcompat.widget.Toolbar>
+
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/rlDays"
