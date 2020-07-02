@@ -6,6 +6,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Typeface;
 import android.media.Image;
 import android.os.Build;
@@ -22,6 +24,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -60,6 +63,8 @@ public class MainActivity extends AppCompatActivity{
     public static String[] dateDiff;   //calDate의 시간량을 숫자로 변환
     public static Date[] createDateArr, objectDateArr;
     public static int[] oneCount;                           //진행도 문자열에서 1이 몇개 있는지 담는 배열
+    public static int standardSize_X, standardSize_Y;       //해상도별 디스플레이 가로, 세로크기
+    public static float density;
     int eraseNum, boxNum1;
     int seqAmount;
 
@@ -92,6 +97,9 @@ public class MainActivity extends AppCompatActivity{
 
         ibtnSettings = findViewById(R.id.ibtnSettings);
         ibtnEdit = findViewById(R.id.ibtnEdit);
+
+        getScreenSize(this);
+        getStandardSize();
 
 
 
@@ -227,19 +235,17 @@ public class MainActivity extends AppCompatActivity{
                     getResources().getDisplayMetrics());
 
             //습관제목 텍스트뷰 관련 dp값 설정
-            int txt_Width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,210,
+            int txt_Width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.5f,
                     getResources().getDisplayMetrics());
             int txt_Height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,46,
                     getResources().getDisplayMetrics());
-            int txt_paddingLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,24,
-                    getResources().getDisplayMetrics());
-            int txt_paddingRight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,24,
+            int txt_paddingSide = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,24,
                     getResources().getDisplayMetrics());
             int txt_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,34,
                     getResources().getDisplayMetrics());
             int txt_marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,75,
                     getResources().getDisplayMetrics());
-            int txt_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,245,
+            int txt_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,250,
                     getResources().getDisplayMetrics());
             int erase_btn_size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,25,
                     getResources().getDisplayMetrics());
@@ -247,7 +253,7 @@ public class MainActivity extends AppCompatActivity{
                     getResources().getDisplayMetrics());
             int erase_marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,310,
                     getResources().getDisplayMetrics());
-            int erase_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,230,
+            int erase_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,235,
                     getResources().getDisplayMetrics());
             int fire_size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,32,
                     getResources().getDisplayMetrics());
@@ -274,7 +280,7 @@ public class MainActivity extends AppCompatActivity{
             LinearLayout.LayoutParams txtView_linearParams = new LinearLayout.LayoutParams(
                     txt_Width, LinearLayout.LayoutParams.WRAP_CONTENT);
             LinearLayout.LayoutParams erasebtn_linearParams = new LinearLayout.LayoutParams(
-                    erase_btn_size, erase_btn_size);
+                    erase_btn_size, erase_btn_size, 1);
             LinearLayout.LayoutParams imgFire_linearParams = new LinearLayout.LayoutParams(
                     fire_size, fire_size);
             LinearLayout.LayoutParams txtSeq_linearParams = new LinearLayout.LayoutParams(
@@ -305,11 +311,20 @@ public class MainActivity extends AppCompatActivity{
                 imgFire[i] = new ImageView(this);
                 imgFire[i].setBackgroundResource(R.drawable.fire);
                 imgFire[i].setLayoutParams(imgFire_linearParams);
+
+                //연속일수 표시 로직
                 txtSequence[i] = new TextView(this);
                 seqAmount = 0;
                 if (habitProgressArr[i].length() >= Integer.parseInt(dateDiff[i])) {
                     if (Integer.parseInt(String.valueOf(habitProgressArr[i].charAt(Integer.parseInt(dateDiff[i])))) == 1){
                         seqAmount = habitProgressArr[i].lastIndexOf("1", Integer.parseInt(dateDiff[i])) - habitProgressArr[i].lastIndexOf("0", habitProgressArr[i].lastIndexOf("1", Integer.parseInt(dateDiff[i])) - 1);
+                    }
+                    else {
+                        if (habitProgressArr[i].indexOf("0") > 0) {
+                            if (Integer.parseInt(String.valueOf(habitProgressArr[i].charAt(Integer.parseInt(dateDiff[i]) - 1))) == 1) {
+                                seqAmount = habitProgressArr[i].lastIndexOf("1", Integer.parseInt(dateDiff[i]) - 1) - habitProgressArr[i].lastIndexOf("0", habitProgressArr[i].lastIndexOf("1", Integer.parseInt(dateDiff[i])) - 1);
+                            }
+                        }
                     }
                 }
                 txtSequence[i].setText("연속 "+ seqAmount +"일째!");
@@ -321,7 +336,7 @@ public class MainActivity extends AppCompatActivity{
 
                 //습관제목 텍스트뷰 각 속성들 설정
                 txtViewArr[i].setTypeface(typeface);
-                txtViewArr[i].setPadding(txt_paddingLeft, 0, txt_paddingRight, 0);
+                txtViewArr[i].setPadding(txt_paddingSide, 0, txt_paddingSide, 0);
                 txtViewArr[i].setGravity(Gravity.CENTER);
                 txtViewArr[i].setTextColor(Color.WHITE);
                 txtViewArr[i].setAutoSizeTextTypeUniformWithConfiguration(12, 18, 1, TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM);
@@ -569,6 +584,22 @@ public class MainActivity extends AppCompatActivity{
     public void deleteHabits(Integer id) {
         MainActivity.dbHelper.getWritableDatabase();
         db.execSQL("DELETE FROM Habits WHERE ROWID = (SELECT ROWID FROM Habits LIMIT 1 OFFSET "+ id +")");
+    }
+
+    public Point getScreenSize(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        return size;
+    }
+
+    public void getStandardSize() {
+        Point ScreenSize = getScreenSize(this);
+        density  = getResources().getDisplayMetrics().density;
+
+        standardSize_X = (int) (ScreenSize.x / density);
+        standardSize_Y = (int) (ScreenSize.y / density);
     }
 }
 
