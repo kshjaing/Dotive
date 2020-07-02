@@ -360,23 +360,33 @@ public class MainActivity extends AppCompatActivity {
             int habitcount = Integer.parseInt(Long.toString(COUNT[i])); //오늘까지의 날짜 카운트
 
             Continue_index = 0;
-            int ac = 0;
-            int in = 1;
+            
+            for(int z = 0; z <habitcount+1; z++) {
+                if(Integer.parseInt(Arr_Btn_Paint_Progress[z]) == 1) {
+                    if(z == habitcount) {
+                        Continue_index++;
+                        break;
+                    }
+                    if(Integer.parseInt(Arr_Btn_Paint_Progress[z+1]) == 1) Continue_index++;
+                }
+                else Continue_index=0;
+            }
 
+            //Continue_index+=1;
 
             /*for(int z = 0; z <habitcount+1; z++) {
-                if(in != Integer.parseInt(Arr_Btn_Paint_Progress[z])) {
-                    //in = Arr_Btn_Paint_Progress[z];
-                    //Continue_index = 1;
-                }else {
-                    Continue_index++;
+                if(Integer.parseInt(Arr_Btn_Paint_Progress[z]) == 1) {
+                    if(z == habitcount) {
+                        Continue_index = 1;
+                        break;
+                    }
+                    if(Integer.parseInt(Arr_Btn_Paint_Progress[z+1]) == 1)
+                        Continue_index++;
+
                 }
+            }
 
-
-            }*/
-
-
-
+            Continue_index+=1;*/
 
             Arr_TextView_continue_day[i].setText("연속 " + String.valueOf(Continue_index) + "일째");
             Arr_TextView_continue_day[i].setTypeface(typeface);
