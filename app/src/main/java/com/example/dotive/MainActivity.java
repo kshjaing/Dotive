@@ -122,11 +122,13 @@ public class MainActivity extends AppCompatActivity {
     ImageButton ibtnSettings;
 
     //연속일수 더할 값
-    int[] Continue_index = {};
+    int Continue_index = 0;
 
     //db에서 다크모드 값 , 언어 값
     public int DB_darkmode = 0; // 1 = > 다크 , 기본값 : 0
     String DB_language = "";
+
+    int Btn_Count = 1; //버튼 수
 
     int Table_Count;
     @Override
@@ -323,7 +325,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         for (int i = 0; i < Table_Count - 1; i++) {
-
+            Btn_Count +=1;
             //여기부터 습관 버튼 관련
             //습관 버튼 인스턴스 초기화
             Arr_Btn_Habit[i] = new Button(this);
@@ -355,7 +357,28 @@ public class MainActivity extends AppCompatActivity {
             String Btn_Paint_Progress = Arr_Habit_Progress[i];
             Arr_Btn_Paint_Progress = Btn_Paint_Progress.split(","); //Ex : [0] : 1, [1] : 0, [2] : 0 이렇게 잘라 저장.
 
-            Arr_TextView_continue_day[i].setText("연속 " + "..." + "일째");
+            int habitcount = Integer.parseInt(Long.toString(COUNT[i])); //오늘까지의 날짜 카운트
+
+            Continue_index = 0;
+            int ac = 0;
+            int in = 1;
+
+
+            /*for(int z = 0; z <habitcount+1; z++) {
+                if(in != Integer.parseInt(Arr_Btn_Paint_Progress[z])) {
+                    //in = Arr_Btn_Paint_Progress[z];
+                    //Continue_index = 1;
+                }else {
+                    Continue_index++;
+                }
+
+
+            }*/
+
+
+
+
+            Arr_TextView_continue_day[i].setText("연속 " + String.valueOf(Continue_index) + "일째");
             Arr_TextView_continue_day[i].setTypeface(typeface);
 
             //습관 버튼 Width, Height
@@ -410,6 +433,7 @@ public class MainActivity extends AppCompatActivity {
 
             //delete 버튼 기본 감춤
             DeleteButton[i].setVisibility(View.INVISIBLE);
+
             final int a = i; //final 에러 방지 로컬변수로 선언해서 사용함.
 
             //습관 버튼 클릭 리스너
@@ -747,7 +771,7 @@ public class MainActivity extends AppCompatActivity {
                     if(Object_Days == 1) {
 
                         for(int q = 0; q < Arr_Btn_Paint_Progress.length; q++) {
-                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Integer.parseInt(Arr_Habit_Color[q]));
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Integer.parseInt(Arr_Habit_Color[i]));
                             if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) { //빈칸
                                 if(DB_darkmode == 0) paint.setColor(Color.parseColor("#d6d6d6")); //다크모드 0;
                                 else paint.setColor(Color.parseColor("#7a8599"));
@@ -759,7 +783,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else if(Object_Days == 2) {
                         for(int q = 0; q<Arr_Btn_Paint_Progress.length; q++) {
-                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Integer.parseInt(Arr_Habit_Color[q]));
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Integer.parseInt(Arr_Habit_Color[i]));
                             if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) {
                                 if(DB_darkmode == 0) paint.setColor(Color.parseColor("#d6d6d6")); //다크모드 0;
                                 else paint.setColor(Color.parseColor("#7a8599"));
@@ -772,7 +796,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else if(Object_Days == 3) {
                         for(int q = 0; q<Arr_Btn_Paint_Progress.length; q++){
-                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Integer.parseInt(Arr_Habit_Color[q]));
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Integer.parseInt(Arr_Habit_Color[i]));
                             if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) {
                                 if(DB_darkmode == 0) paint.setColor(Color.parseColor("#d6d6d6")); //다크모드 0;
                                 else paint.setColor(Color.parseColor("#7a8599"));
@@ -787,7 +811,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else if(Object_Days == 4) {
                         for(int q = 0; q<Arr_Btn_Paint_Progress.length; q++) {
-                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Integer.parseInt(Arr_Habit_Color[q]));
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Integer.parseInt(Arr_Habit_Color[i]));
                             if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) {
                                 if(DB_darkmode == 0) paint.setColor(Color.parseColor("#d6d6d6")); //다크모드 0;
                                 else paint.setColor(Color.parseColor("#7a8599"));
@@ -808,7 +832,8 @@ public class MainActivity extends AppCompatActivity {
                 if(Object_Days > 4 && Object_Days <15) { //목표일수 15일 이하
                     stroke.setStrokeWidth(12);
                     for(int b = 0; b<Object_Days; b++) { //목표일 수만큼 동그라미 반복해서 그림
-                        if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 1) paint.setColor(Integer.parseInt(Arr_Habit_Color[b]));
+                        if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 1) paint.setColor(Integer.parseInt(Arr_Habit_Color[i]));
+
                         if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 0) {
                             if(DB_darkmode == 0) paint.setColor(Color.parseColor("#d6d6d6")); //다크모드 0;
                             else paint.setColor(Color.parseColor("#7a8599"));
@@ -822,7 +847,7 @@ public class MainActivity extends AppCompatActivity {
                 if(Object_Days >14) {
                     stroke.setStrokeWidth(10);
                     for(int b = 0; b<Object_Days; b++) {
-                        if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 1) paint.setColor(Integer.parseInt(Arr_Habit_Color[b]));
+                        if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 1) paint.setColor(Integer.parseInt(Arr_Habit_Color[i]));
                         if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 0) {
                             if(DB_darkmode == 0) paint.setColor(Color.parseColor("#d6d6d6")); //다크모드 0;
                             else paint.setColor(Color.parseColor("#7a8599"));

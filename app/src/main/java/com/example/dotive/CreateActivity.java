@@ -213,8 +213,8 @@ public class CreateActivity extends AppCompatActivity {
         Calendar CreateDay = Calendar.getInstance(); //현재 날짜 (=습관 생성 날짜)
         String create_day = simpleDateFormat.format(CreateDay.getTime());
 
-        values.put("habitCreateDay", create_day);
-        //values.put("habitCreateDay", "2020-06-30"); //테스트용
+        //values.put("habitCreateDay", create_day);
+        values.put("habitCreateDay", "2020-06-27"); //테스트용
         Log.e("CreateActivity.java", "습관 생성 날짜: " + create_day);
 
         uri = getContentResolver().insert(uri, values);
