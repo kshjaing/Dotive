@@ -362,14 +362,13 @@ public class MainActivity extends AppCompatActivity {
 
             Continue_index = 0;
             ac = 0;
-            
+
             for(int k = habitcount+1; k>0; k--){
                 if(Integer.parseInt(Arr_Btn_Paint_Progress[k]) == 1)
                 {
                     ac = k;
                     break;
                 }
-
             }
 
             for(int z = 0; z <ac+1; z++) {
