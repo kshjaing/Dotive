@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
     //연속일수 더할 값
     int Continue_index = 0;
-
+    int ac =0;
     //db에서 다크모드 값 , 언어 값
     public int DB_darkmode = 0; // 1 = > 다크 , 기본값 : 0
     String DB_language = "";
@@ -358,10 +358,36 @@ public class MainActivity extends AppCompatActivity {
             Arr_Btn_Paint_Progress = Btn_Paint_Progress.split(","); //Ex : [0] : 1, [1] : 0, [2] : 0 이렇게 잘라 저장.
 
             int habitcount = Integer.parseInt(Long.toString(COUNT[i])); //오늘까지의 날짜 카운트
+            int for_habitcount = Integer.parseInt(Long.toString(COUNT[i])); //오늘까지의 날짜 카운트
 
             Continue_index = 0;
+            ac = 0;
             
-            for(int z = 0; z <habitcount+1; z++) {
+            for(int k = habitcount+1; k>0; k--){
+                if(Integer.parseInt(Arr_Btn_Paint_Progress[k]) == 1)
+                {
+                    ac = k;
+                    break;
+                }
+
+            }
+
+            for(int z = 0; z <ac+1; z++) {
+                if(Integer.parseInt(Arr_Btn_Paint_Progress[z]) == 1) {
+                    if(z == ac) {
+                        Continue_index++;
+                        break;
+                    }
+                    if(Integer.parseInt(Arr_Btn_Paint_Progress[z+1]) == 1) Continue_index++;
+                }
+                else {
+                    if(Integer.parseInt(Arr_Btn_Paint_Progress[ac]) ==1) {
+                        Continue_index=0;
+                    }
+                }
+            }
+
+            /*for(int z = 0; z <habitcount+1; z++) {
                 if(Integer.parseInt(Arr_Btn_Paint_Progress[z]) == 1) {
                     if(z == habitcount) {
                         Continue_index++;
@@ -369,25 +395,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                     if(Integer.parseInt(Arr_Btn_Paint_Progress[z+1]) == 1) Continue_index++;
                 }
-                else Continue_index=0;
-            }
-
-            //Continue_index+=1;
-
-            /*for(int z = 0; z <habitcount+1; z++) {
-                if(Integer.parseInt(Arr_Btn_Paint_Progress[z]) == 1) {
-                    if(z == habitcount) {
-                        Continue_index = 1;
-                        break;
+                else {
+                    if(Integer.parseInt(Arr_Btn_Paint_Progress[habitcount]) ==1) {
+                        Continue_index=0;
                     }
-                    if(Integer.parseInt(Arr_Btn_Paint_Progress[z+1]) == 1)
-                        Continue_index++;
-
                 }
-            }
-
-            Continue_index+=1;*/
-
+            }*/
             Arr_TextView_continue_day[i].setText("연속 " + String.valueOf(Continue_index) + "일째");
             Arr_TextView_continue_day[i].setTypeface(typeface);
 
