@@ -19,7 +19,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 
@@ -387,11 +386,6 @@ public class HabitActivity extends Activity {
 
     }
 
-    @Override
-    public boolean onnCreateOptionsMenu(Menu menu) {
-        ActionBar actionBar = getSupportActionBar();
-        actionBar = getSupportActionBar();
-    }
 
     //뒤로가기 키 눌렀을 때 이벤트 설정
     @Override

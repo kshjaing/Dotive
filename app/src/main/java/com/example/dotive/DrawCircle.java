@@ -91,6 +91,7 @@ public class DrawCircle extends View {
 
             btn_x = MainActivity.boxBtnArr[i].getX();
             btn_y = MainActivity.boxBtnArr[i].getY();
+            paint.setAntiAlias(true);
             strokePaint.setStrokeWidth(25);
             strokePaint.setStyle(Paint.Style.STROKE);
             strokePaint.setAntiAlias(true);
