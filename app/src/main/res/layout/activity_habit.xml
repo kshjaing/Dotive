@@ -57,12 +57,12 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <TextView
-                        android:id="@+id/textView"
+                        android:id="@+id/txtHabitName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="습관 제목" />
                     <TextView
-                        android:id="@+id/textView2"
+                        android:id="@+id/txtObjDays"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="습관일로부터 오늘" />

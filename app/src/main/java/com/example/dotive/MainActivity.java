@@ -79,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
 
     LinearLayout linearLayout3; //편집 버튼 누르면 삭제 버튼
 
+    LinearLayout linearLayout4; //연속 일 수 레이아웃
+    TextView[] Arr_TextView_continue_day;
+
     //습관 개수에따라 버튼 증가
     static int TotalHabit = 1;
 
@@ -118,9 +121,12 @@ public class MainActivity extends AppCompatActivity {
     //설정 버튼
     ImageButton ibtnSettings;
 
+    //연속일수 더할 값
+    int[] Continue_index = {};
+
     //db에서 다크모드 값 , 언어 값
-    int DB_darkmode; // 1 = > 다크 , 기본값 : 0
-    String DB_language;
+    public int DB_darkmode = 0; // 1 = > 다크 , 기본값 : 0
+    String DB_language = "";
 
     int Table_Count;
     @Override
@@ -197,6 +203,9 @@ public class MainActivity extends AppCompatActivity {
         //습관 삭제 버튼 위치를 위해
         linearLayout3 = (LinearLayout) view_main.findViewById(R.id.linearLayout3);
 
+        //연속 일 수 레이아웃
+        linearLayout4 = (LinearLayout) view_main.findViewById(R.id.linearLayout4);
+
         Day();
         Painting_Circle1 painting_circle = new Painting_Circle1(this); //CustomView.java 파일을 불러와 실행
 
@@ -235,6 +244,9 @@ public class MainActivity extends AppCompatActivity {
         int DeleteButton_width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
         int DeleteButton_height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
 
+        //textView( 연속 0일째)
+        int Continue_width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
+        int Continue_height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, getResources().getDisplayMetrics());
 
         int btn_margin_left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, getResources().getDisplayMetrics());
         int btn_margin_bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
@@ -249,6 +261,11 @@ public class MainActivity extends AppCompatActivity {
         int delete_marin_left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 325, getResources().getDisplayMetrics());
         int delete_margin_bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, getResources().getDisplayMetrics());
         int delete_margin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 45, getResources().getDisplayMetrics());
+
+        //textView (연속 0일째)
+        int Continue_magin_left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, getResources().getDisplayMetrics());
+        int Continue_magin_bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 550, getResources().getDisplayMetrics());
+        int Continue_magin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 45, getResources().getDisplayMetrics());
 
         //margin 설정을 위해 (margin을 Layout에서 부모값을 정하고 그곳에 마진을 아까 dp 계산한 int 값으로 지정.)
         LinearLayout.LayoutParams Button_LinearParams = new LinearLayout.LayoutParams(
@@ -266,6 +283,12 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout.LayoutParams DeleteButton_LinearParams = new LinearLayout.LayoutParams(
                 DeleteButton_width,
                 DeleteButton_height
+        );
+
+        //margin 설정 4 (연속 0일째)
+        LinearLayout.LayoutParams Arr_TextView_continue_day_LinearParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
         );
 
         //margin 값 dp로 설정해주는중. 버튼에 적용
@@ -286,12 +309,17 @@ public class MainActivity extends AppCompatActivity {
         DeleteButton_LinearParams.width = 100;
         DeleteButton_LinearParams.height = 100;
 
+        //마진값 dp로 설정. (연속 0일째)
+        Arr_TextView_continue_day_LinearParams.setMargins(Continue_magin_left,Continue_magin_top,0,Continue_magin_bottom);
+
         Table_Count = Habits_Table_Count;
         Arr_Btn_Habit = new Button[Table_Count - 1];
         Arr_TextView_Habit_Name = new TextView[Table_Count - 1];
 
         //편집 delete 버튼 (X 버튼)
         DeleteButton = new Button[Table_Count - 1];
+        //연속일 수 저장
+        Arr_TextView_continue_day = new TextView[Table_Count - 1];
 
 
         for (int i = 0; i < Table_Count - 1; i++) {
@@ -310,13 +338,25 @@ public class MainActivity extends AppCompatActivity {
             DeleteButton[i] = new Button(this);
             linearLayout3.addView(DeleteButton[i]);
 
+            //연속 일 수 (ex 연속 0일째)
+            Arr_TextView_continue_day[i] = new TextView(this);
+            linearLayout4.addView(Arr_TextView_continue_day[i]);
+
             //습관 버튼 글꼴 및 Text
-            Arr_Btn_Habit[i].setText(Arr_Habit_Name[i]);
+            //Arr_Btn_Habit[i].setText(Arr_Habit_Name[i]);
             Arr_Btn_Habit[i].setTypeface(typeface);
 
             //습관 제목 텍스트뷰 글꼴 및 Text
             Arr_TextView_Habit_Name[i].setText(Arr_Habit_Name[i]);
             Arr_TextView_Habit_Name[i].setTypeface(typeface);
+
+            //연속 0일째
+            //Arr_edit_Habit_Day_Num , Arr_Habit_Progress
+            String Btn_Paint_Progress = Arr_Habit_Progress[i];
+            Arr_Btn_Paint_Progress = Btn_Paint_Progress.split(","); //Ex : [0] : 1, [1] : 0, [2] : 0 이렇게 잘라 저장.
+
+            Arr_TextView_continue_day[i].setText("연속 " + "..." + "일째");
+            Arr_TextView_continue_day[i].setTypeface(typeface);
 
             //습관 버튼 Width, Height
             Arr_Btn_Habit[i].setWidth(width);
@@ -328,13 +368,19 @@ public class MainActivity extends AppCompatActivity {
             Arr_TextView_Habit_Name[i].setGravity(Gravity.CENTER);
 
 
+            //연속 0일째 width,height
+            Arr_TextView_continue_day[i].setWidth(Continue_width);
+            Arr_TextView_continue_day[i].setHeight(Continue_height);
+            Arr_TextView_continue_day[i].setGravity(Gravity.CENTER);
+            Arr_TextView_continue_day[i].setCompoundDrawablesWithIntrinsicBounds(R.drawable.fire,0,0,0);
 
             //습관 버튼 radius Drawable
             Arr_Btn_Habit[i].setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.radius));
+
             //다크모드 버튼 색상변경
             if(DB_darkmode == 0) {
-                //Arr_Btn_Habit[i]
-
+                GradientDrawable bgShape = (GradientDrawable) Arr_Btn_Habit[i].getBackground().getCurrent(); //GradientDrawable 그대로 하면 오류남 마지막에 .getCurrent() 중요
+                bgShape.setColor(Color.parseColor("#fcfcfc"));
             }
             else {
                 GradientDrawable bgShape = (GradientDrawable) Arr_Btn_Habit[i].getBackground().getCurrent(); //GradientDrawable 그대로 하면 오류남 마지막에 .getCurrent() 중요
@@ -343,6 +389,7 @@ public class MainActivity extends AppCompatActivity {
 
             //습관 제목 텍스트뷰 CSS
             Arr_TextView_Habit_Name[i].setBackground(ContextCompat.getDrawable(this, R.drawable.textview_custom_css));
+            Arr_TextView_Habit_Name[i].setTextColor(Color.WHITE);
 
             //delete 버튼 이미지 씌움
             DeleteButton[i].setBackgroundResource(R.drawable.erase_button_dark);
@@ -470,6 +517,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                intent.putExtra("DARK_MODE", DB_darkmode); //습관 id 증가 값.
+                Log.e("MainActivity.java","다크모드 값 전달 : " + DB_darkmode);
                 startActivity(intent);
             }
         });
@@ -488,6 +537,12 @@ public class MainActivity extends AppCompatActivity {
 
         //제일 위에 있는것을 뿌려야 차례대로 child view 들이 보인다. (중간꺼든 다른거 넣으면 페이탈 에러)
         setContentView(scrollView);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finishAffinity();
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
 
     @Override
@@ -662,10 +717,14 @@ public class MainActivity extends AppCompatActivity {
 
                 //1일 ~ 4일 반지름 100
                 paint.setStyle(Paint.Style.FILL);
-                paint.setColor(Color.GRAY);
+
+                if(DB_darkmode == 0) paint.setColor(Color.parseColor("#d6d6d6")); //다크모드 0;
+                else paint.setColor(Color.parseColor("#7a8599")); //다크모드 1;
+
                 stroke.setStyle(Paint.Style.STROKE);
-                stroke.setColor(Color.GREEN);
-                stroke.setStrokeWidth(10);
+                if(DB_darkmode == 0) stroke.setColor(Color.parseColor("#fcb114")); //다크모드 0;
+                else stroke.setColor(Color.parseColor("#fcfcfc")); //다크모드 1;
+                stroke.setStrokeWidth(15);
 
                 //습관 진행도 값을 i를 통해 배열로 가져온다.
                 //그 배열엔 레코드 1 : 1,0,0,0,0  , 레코드 2: 0 , 레코드 3 : 0,0,0  이런식으로 저장된 값
@@ -688,8 +747,11 @@ public class MainActivity extends AppCompatActivity {
                     if(Object_Days == 1) {
 
                         for(int q = 0; q < Arr_Btn_Paint_Progress.length; q++) {
-                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Color.YELLOW);
-                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) paint.setColor(Color.parseColor("#7a8599"));
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Integer.parseInt(Arr_Habit_Color[q]));
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) { //빈칸
+                                if(DB_darkmode == 0) paint.setColor(Color.parseColor("#d6d6d6")); //다크모드 0;
+                                else paint.setColor(Color.parseColor("#7a8599"));
+                            }
                             if(q == 0) canvas.drawCircle(X + W/2, Y + H/2 , 100, paint);
                             if(count == 0) canvas.drawCircle(X + W/2, Y + H/2 , 100, stroke);
                         }
@@ -697,8 +759,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else if(Object_Days == 2) {
                         for(int q = 0; q<Arr_Btn_Paint_Progress.length; q++) {
-                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Color.YELLOW);
-                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) paint.setColor(Color.parseColor("#7a8599"));
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Integer.parseInt(Arr_Habit_Color[q]));
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) {
+                                if(DB_darkmode == 0) paint.setColor(Color.parseColor("#d6d6d6")); //다크모드 0;
+                                else paint.setColor(Color.parseColor("#7a8599"));
+                            }
                             if(q == 0) canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, paint);
                             if(q == 1) canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, paint);
                             if(count == 0) canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, stroke);
@@ -707,8 +772,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else if(Object_Days == 3) {
                         for(int q = 0; q<Arr_Btn_Paint_Progress.length; q++){
-                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Color.YELLOW);
-                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) paint.setColor(Color.parseColor("#7a8599"));
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Integer.parseInt(Arr_Habit_Color[q]));
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) {
+                                if(DB_darkmode == 0) paint.setColor(Color.parseColor("#d6d6d6")); //다크모드 0;
+                                else paint.setColor(Color.parseColor("#7a8599"));
+                            }
                             if(q == 0) canvas.drawCircle(X + W/2 - 300, Y + H/2, 100, paint);
                             if(q == 1) canvas.drawCircle(X + W/2, Y + H/2, 100, paint);
                             if(q == 2) canvas.drawCircle(X + W/2 + 300, Y + H/2, 100, paint);
@@ -719,8 +787,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else if(Object_Days == 4) {
                         for(int q = 0; q<Arr_Btn_Paint_Progress.length; q++) {
-                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Color.YELLOW);
-                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) paint.setColor(Color.parseColor("#7a8599"));
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Integer.parseInt(Arr_Habit_Color[q]));
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) {
+                                if(DB_darkmode == 0) paint.setColor(Color.parseColor("#d6d6d6")); //다크모드 0;
+                                else paint.setColor(Color.parseColor("#7a8599"));
+                            }
                             if(q == 0) canvas.drawCircle(X + W/2 - 400, Y + H/2, 100, paint);
                             if(q == 1) canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, paint);
                             if(q == 2) canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, paint);
@@ -735,9 +806,13 @@ public class MainActivity extends AppCompatActivity {
 
                 index_X = -450;
                 if(Object_Days > 4 && Object_Days <15) { //목표일수 15일 이하
+                    stroke.setStrokeWidth(12);
                     for(int b = 0; b<Object_Days; b++) { //목표일 수만큼 동그라미 반복해서 그림
-                        if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 1) paint.setColor(Color.YELLOW);
-                        if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 0) paint.setColor(Color.parseColor("#7a8599"));
+                        if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 1) paint.setColor(Integer.parseInt(Arr_Habit_Color[b]));
+                        if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 0) {
+                            if(DB_darkmode == 0) paint.setColor(Color.parseColor("#d6d6d6")); //다크모드 0;
+                            else paint.setColor(Color.parseColor("#7a8599"));
+                        }
                         canvas.drawCircle(X + W/2 + index_X, Y + H/2 - 140 + index_Y , 55, paint);
                         if(count == b) canvas.drawCircle(X + W/2 + index_X, Y + H/2 - 140 + index_Y , 55, stroke);
                         index_X +=150;
@@ -745,9 +820,13 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 if(Object_Days >14) {
+                    stroke.setStrokeWidth(10);
                     for(int b = 0; b<Object_Days; b++) {
-                        if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 1) paint.setColor(Color.YELLOW);
-                        if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 0) paint.setColor(Color.parseColor("#7a8599"));
+                        if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 1) paint.setColor(Integer.parseInt(Arr_Habit_Color[b]));
+                        if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 0) {
+                            if(DB_darkmode == 0) paint.setColor(Color.parseColor("#d6d6d6")); //다크모드 0;
+                            else paint.setColor(Color.parseColor("#7a8599"));
+                        }
 
                         canvas.drawCircle(X + W/2 + index_X, Y + H/2 - 140 + index_Y , 35, paint);
                         if(count == b) canvas.drawCircle(X + W/2 + index_X, Y + H/2 - 140 + index_Y , 35, stroke);

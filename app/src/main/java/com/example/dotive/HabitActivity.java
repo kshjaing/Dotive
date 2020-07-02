@@ -42,6 +42,9 @@ public class HabitActivity extends AppCompatActivity {
     int index = 0;
     int[] Arr_index = {};
     int i = 0;
+
+    TextView txtHabitName;
+    TextView txtObjDays;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +67,9 @@ public class HabitActivity extends AppCompatActivity {
         ll_habit = (LinearLayout) view_habit.findViewById(R.id.ll_habit);
         //뒤로가기 버튼 - > MainActivity 이동
         ibtnBack = (ImageButton) view_habit.findViewById(R.id.ibtnBack);
+
+        txtHabitName = (TextView) view_habit.findViewById(R.id.txtHabitName);
+        txtObjDays = (TextView) view_habit.findViewById(R.id.txtObjDays);
 
         long Long_Get_Count = 0;
         Intent intent = getIntent(); //데이터 받아옴
@@ -100,7 +106,8 @@ public class HabitActivity extends AppCompatActivity {
         //DB에서 습관 진행도 0000에서 변환된 값은 1로 변환시킨다.
         //DB 변환은 여기서 업데이트를 한 후  값만 넘긴다.
 
-
+        txtHabitName.setText(name);
+        txtObjDays.setText("(목표 "+ objdays+"일)");
 
 
         //들어온 습관 수 ex : 5일을 목표로 한다면
