@@ -324,7 +324,7 @@ public class MainActivity extends AppCompatActivity{
                 txtViewArr[i].setPadding(txt_paddingLeft, 0, txt_paddingRight, 0);
                 txtViewArr[i].setGravity(Gravity.CENTER);
                 txtViewArr[i].setTextColor(Color.WHITE);
-                txtViewArr[i].setAutoSizeTextTypeUniformWithConfiguration(12, 22, 1, TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM);
+                txtViewArr[i].setAutoSizeTextTypeUniformWithConfiguration(12, 18, 1, TextView.AUTO_SIZE_TEXT_TYPE_UNIFORM);
                 txtViewArr[i].setMaxLines(1);
                 //txtViewArr[i].setEllipsize(TextUtils.TruncateAt.END);
 
