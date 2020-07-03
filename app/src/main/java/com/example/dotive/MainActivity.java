@@ -8,15 +8,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
@@ -32,19 +43,28 @@ import android.text.style.BackgroundColorSpan;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
+import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
 import org.w3c.dom.Text;
 
@@ -52,8 +72,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 /*
- * 20200624 수정
+ * 20200703 수정
  * MainActivity : 추가한 습관들 나열. */
 
 /* 최종목표가 표시될 곳
@@ -64,7 +86,12 @@ import java.util.Calendar;
 //activity_main.xml을 inflater로 큰 레이아웃 틀을 만듦.
 //내용물 (버튼,습관 제목 textview)들은 동적 생성.
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity { //AppCompatActivity
+
+    private AppBarConfiguration mAppBarConfiguration;
+
+    //얼럿
+    SweetAlertDialog sweetAlertDialog;
 
     //여기에 쓰이는 동적 컨트롤들 객체
     ScrollView scrollView;
@@ -81,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
     LinearLayout linearLayout4; //연속 일 수 레이아웃
     TextView[] Arr_TextView_continue_day;
+    LinearLayout linearLayout5; //연속 일 수 옆에 불 모양 아이콘
 
     //습관 개수에따라 버튼 증가
     static int TotalHabit = 1;
@@ -113,6 +141,9 @@ public class MainActivity extends AppCompatActivity {
     //페인트 할때 습관 진행도 값 배열 (1,0,0,0,0)
     String Arr_Btn_Paint_Progress[] = {};
 
+    //테스트
+    String Arr_Btn_Progress[] = {};
+
     //편집 버튼
     ImageButton ibtnEdit;
     //편집 시 삭제 버튼
@@ -131,12 +162,36 @@ public class MainActivity extends AppCompatActivity {
     int Btn_Count = 1; //버튼 수
 
     int Table_Count;
+    //기기별 사이즈
+    int standardSize_X, standardSize_Y;
+    float density;
+
+    //불타는 아이콘
+    //ImageView imageView;
+
+    public Point getScreenSize(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        return size;
+    }
+    public void getStandardSize() {
+        Point ScreenSize =getScreenSize(this);
+        density = getResources().getDisplayMetrics().density;
+
+        standardSize_X = (int) (ScreenSize.x / density);
+        standardSize_Y = (int) (ScreenSize.y / density);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.activity_main);
         //setContentView(new MyView(this));  (클래스 MyView를 바로 실행)
 
+        getScreenSize(MainActivity.this);
+        getStandardSize();
 
         //Habits 테이블에 습관이 존재하지 않다면 CreateActivity.java로 돌아간다.
 
@@ -193,8 +248,6 @@ public class MainActivity extends AppCompatActivity {
 
         scrollView = (ScrollView) view_main.findViewById(R.id.scrollView);
 
-
-
         frameLayout = (FrameLayout) view_main.findViewById(R.id.frameLayout);
 
         linearLayout = (LinearLayout) view_main.findViewById(R.id.linearLayout);
@@ -208,15 +261,18 @@ public class MainActivity extends AppCompatActivity {
         //연속 일 수 레이아웃
         linearLayout4 = (LinearLayout) view_main.findViewById(R.id.linearLayout4);
 
+        //불타는 아이콘
+        //linearLayout5 = (LinearLayout) view_main.findViewById(R.id.linearLayout5);
+
         Day();
         Painting_Circle1 painting_circle = new Painting_Circle1(this); //CustomView.java 파일을 불러와 실행
 
         //동적 view 생성
         frameLayout.addView(painting_circle); //버튼 위의 원 배열을 위해
 
-        /*//main 액션 바 만들기
+        //main 액션 바 만들기
 
-        //main_actionbar.xml inflater
+        /*//main_actionbar.xml inflater
         View actionview = (View) getLayoutInflater().inflate(R.layout.main_actionbar, null);
 
         //toolbar 위젯 객체 인스턴스 초기화
@@ -233,68 +289,100 @@ public class MainActivity extends AppCompatActivity {
         Typeface typeface = Typeface.createFromAsset(getAssets(), "font/katuri.ttf");
 
 
-        //이렇게 안하면 픽셀로 값이 저장되기에 dp로 계산하는 것. value에서 원하는 숫자로 고치면 됨.
-        //dp 값으로 가져오기
-        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 340, getResources().getDisplayMetrics());
-        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 190, getResources().getDisplayMetrics());
+        //이렇게 안하면 픽셀로 값이 저장되기에 dp로 계산하는 것. value 에서 원하는 숫자로 고치면 됨.
+        //dp 값으로 변환
+
+        //습관 버튼
+        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, standardSize_X * 0.9f, getResources().getDisplayMetrics());
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, standardSize_Y * 0.35f, getResources().getDisplayMetrics());
 
         //textView (습관 제목)
-        int textView_width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 190, getResources().getDisplayMetrics());
+        int textView_width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, standardSize_X * 0.6f, getResources().getDisplayMetrics());
         int textView_height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
 
         //delete 버튼 (x 버튼)
-        int DeleteButton_width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
-        int DeleteButton_height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
+        int DeleteButton_width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
+        int DeleteButton_height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
+        int layout_DeleteButton_width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 35f, getResources().getDisplayMetrics());
+        int layout_DeleteButton_height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, standardSize_Y/20f, getResources().getDisplayMetrics());
 
         //textView( 연속 0일째)
-        int Continue_width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
-        int Continue_height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 300, getResources().getDisplayMetrics());
+        int Continue_width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, standardSize_X * 0.5f, getResources().getDisplayMetrics());
+        int Continue_height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, standardSize_Y / -1.0f, getResources().getDisplayMetrics());
+        //textView (연속 0일째 폰트 사이즈)Arr_TextView_continue_day
+        int fontSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
 
-        int btn_margin_left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 36, getResources().getDisplayMetrics());
-        int btn_margin_bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics());
-        int btn_margin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
+        //습관 버튼
+        int btn_margin_bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, standardSize_X * 0.095f, getResources().getDisplayMetrics());
+        int btn_margin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, standardSize_Y * 0.035f, getResources().getDisplayMetrics());
 
         //textView (습관 제목 마진)
-        int textView_btn_margin_left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 115, getResources().getDisplayMetrics());
-        int textView_btn_margin_bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 215, getResources().getDisplayMetrics());
-        int textView_btn_margin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 15, getResources().getDisplayMetrics());
+        int textView_btn_margin_bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, standardSize_X * 0.709f, getResources().getDisplayMetrics());
+        int textView_btn_margin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, standardSize_Y*0.015f, getResources().getDisplayMetrics());
 
         //delete 버튼 마진 (X 버튼)
-        int delete_marin_left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 325, getResources().getDisplayMetrics());
-        int delete_margin_bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 210, getResources().getDisplayMetrics());
-        int delete_margin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 45, getResources().getDisplayMetrics());
+        int delete_marin_left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, standardSize_X*0.832f, getResources().getDisplayMetrics());
+        int delete_margin_bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, standardSize_Y*0.338f, getResources().getDisplayMetrics());
+        int delete_margin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, standardSize_Y*0.048f, getResources().getDisplayMetrics());
 
         //textView (연속 0일째)
-        int Continue_magin_left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, getResources().getDisplayMetrics());
-        int Continue_magin_bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 550, getResources().getDisplayMetrics());
-        int Continue_magin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 45, getResources().getDisplayMetrics());
-
-        /*//margin 설정을 위해 (margin을 Layout에서 부모값을 정하고 그곳에 마진을 아까 dp 계산한 int 값으로 지정.)
-        LinearLayout.LayoutParams Button_LinearParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT
-        );
-
-        //margin 설정 2 (textview 설정 (물 1L 마시기)
-        LinearLayout.LayoutParams textView_LinearParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT
-        );
-
-        //margin 설정 3 (delete 버튼 위치 (x 버튼))
-        LinearLayout.LayoutParams DeleteButton_LinearParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT
-        );
-
-        //margin 설정 4 (연속 0일째)
-        LinearLayout.LayoutParams Arr_TextView_continue_day_LinearParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT
-        );*/
+        int Continue_margin_left = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, standardSize_X * 0.4f, getResources().getDisplayMetrics());
+        int Continue_margin_bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 0, getResources().getDisplayMetrics());
+        int Continue_margin_top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, standardSize_Y*0.3f, getResources().getDisplayMetrics());
 
 
         //margin 설정을 위해 (margin을 Layout에서 부모값을 정하고 그곳에 마진을 아까 dp 계산한 int 값으로 지정.)
+        //이 레이아웃 파라미터는 즉 버튼에서 layout_width 이렇게 값 주는 것이랑 같다.
+        LinearLayout.LayoutParams Button_LinearParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+
+        Button_LinearParams.weight = 1.0f; //height 가 MATCH_PARENT 일 경우 이렇게 무게로 비율 맞췄다.
+        Button_LinearParams.gravity = Gravity.CENTER;
+        Button_LinearParams.setMargins(0,btn_margin_top,0,btn_margin_bottom);
+
+        //margin 설정 2 (textview 설정 (물 1L 마시기)
+        LinearLayout.LayoutParams textView_LinearParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+
+        textView_LinearParams.weight = 1.0f; //일정한 비율을 맞춘다.
+        textView_LinearParams.gravity = Gravity.CENTER;
+        textView_LinearParams.width = textView_width;
+        textView_LinearParams.height = textView_height;
+        textView_LinearParams.setMargins(0,0,0,textView_btn_margin_bottom);
+
+
+        //margin 설정 3 (delete 버튼 위치 (x 버튼))
+        LinearLayout.LayoutParams DeleteButton_LinearParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+
+        DeleteButton_LinearParams.weight = 1.0f;
+        //DeleteButton_LinearParams.gravity = Gravity.RIGHT;
+
+        DeleteButton_LinearParams.width = layout_DeleteButton_width;
+        DeleteButton_LinearParams.height = layout_DeleteButton_height;
+        DeleteButton_LinearParams.setMargins(delete_marin_left,delete_margin_top,0,delete_margin_bottom);
+
+
+        //margin 설정 4 (연속 0일째)
+        LinearLayout.LayoutParams Arr_TextView_continue_day_LinearParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+
+        //Arr_TextView_continue_day_LinearParams.gravity = Gravity.CENTER;
+        Arr_TextView_continue_day_LinearParams.weight = 1.0f;
+        Arr_TextView_continue_day_LinearParams.width = Continue_width;
+        Arr_TextView_continue_day_LinearParams.height = Continue_height;
+        //마진값 dp로 설정. (연속 0일째)
+        Arr_TextView_continue_day_LinearParams.setMargins(Continue_margin_left,Continue_margin_top,0,Continue_margin_bottom);
+
+        /*//margin 설정을 위해 (margin을 Layout에서 부모값을 정하고 그곳에 마진을 아까 dp 계산한 int 값으로 지정.)
         LinearLayout.LayoutParams Button_LinearParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -338,6 +426,7 @@ public class MainActivity extends AppCompatActivity {
 
         //마진값 dp로 설정. (연속 0일째)
         Arr_TextView_continue_day_LinearParams.setMargins(Continue_magin_left,Continue_magin_top,0,Continue_magin_bottom);
+*/
 
         Table_Count = Habits_Table_Count;
         Arr_Btn_Habit = new Button[Table_Count - 1];
@@ -348,14 +437,18 @@ public class MainActivity extends AppCompatActivity {
         //연속일 수 저장
         Arr_TextView_continue_day = new TextView[Table_Count - 1];
 
+        //불타는 아이콘
+
+        //imageView = new ImageView(this);
+
 
         for (int i = 0; i < Table_Count - 1; i++) {
             Btn_Count +=1;
             //여기부터 습관 버튼 관련
             //습관 버튼 인스턴스 초기화
+
             Arr_Btn_Habit[i] = new Button(this);
             linearLayout.addView(Arr_Btn_Habit[i]);
-
 
             //습관 제목 텍스트뷰 인스턴스 초기화
             Arr_TextView_Habit_Name[i] = new TextView(this);
@@ -369,6 +462,10 @@ public class MainActivity extends AppCompatActivity {
             Arr_TextView_continue_day[i] = new TextView(this);
             linearLayout4.addView(Arr_TextView_continue_day[i]);
 
+            //불타는 아이콘
+            /*imageView.setImageResource(R.drawable.fire);
+            linearLayout5.addView(imageView);*/
+
             //습관 버튼 글꼴 및 Text
             //Arr_Btn_Habit[i].setText(Arr_Habit_Name[i]);
             Arr_Btn_Habit[i].setTypeface(typeface);
@@ -380,51 +477,91 @@ public class MainActivity extends AppCompatActivity {
             //연속 0일째
             //Arr_edit_Habit_Day_Num , Arr_Habit_Progress
             String Btn_Paint_Progress = Arr_Habit_Progress[i];
-            Arr_Btn_Paint_Progress = Btn_Paint_Progress.split(","); //Ex : [0] : 1, [1] : 0, [2] : 0 이렇게 잘라 저장.
+            Arr_Btn_Progress = Btn_Paint_Progress.split(","); //Ex : [0] : 1, [1] : 0, [2] : 0 이렇게 잘라 저장.
 
             int habitcount = Integer.parseInt(Long.toString(COUNT[i])); //오늘까지의 날짜 카운트
-            int for_habitcount = Integer.parseInt(Long.toString(COUNT[i])); //오늘까지의 날짜 카운트
 
             Continue_index = 0;
             ac = 0;
 
-            for(int k = habitcount+1; k>0; k--){
-                if(Integer.parseInt(Arr_Btn_Paint_Progress[k]) == 1)
+            for(int k = habitcount; k>0; k--){
+
+                if(habitcount >Arr_Btn_Progress.length)
                 {
-                    ac = k;
+                    Continue_index = 0;
                     break;
                 }
-            }
-
-            for(int z = 0; z <ac+1; z++) {
-                if(Integer.parseInt(Arr_Btn_Paint_Progress[z]) == 1) {
-                    if(z == ac) {
-                        Continue_index++;
+                else {
+                    if(Integer.parseInt(Arr_Btn_Progress[k]) == 1)
+                    {
+                        ac = k;
                         break;
                     }
-                    if(Integer.parseInt(Arr_Btn_Paint_Progress[z+1]) == 1) Continue_index++;
+                    else
+                    {
+                        if(Integer.parseInt(Arr_Btn_Progress[k-1]) == 1)
+                        {
+                            ac=k-1;
+                            break;
+                        }
+                        else
+                        {
+                            ac = 0;
+                            break;
+                        }
+                    }
                 }
-                else {
-                    if(Integer.parseInt(Arr_Btn_Paint_Progress[ac]) ==1) {
-                        Continue_index=0;
+            }
+            if (ac != 0){
+                for(int z = 0; z <ac+1; z++) {
+                    if(Integer.parseInt(Arr_Btn_Progress[z]) == 1) {
+                        if(z == ac) {
+                            Continue_index++;
+                            break;
+                        }
+                        if(Integer.parseInt(Arr_Btn_Progress[z+1]) == 1) Continue_index++;
+                    }
+                    else {
+                        if(Integer.parseInt(Arr_Btn_Progress[ac]) ==1) {
+                            Continue_index=0;
+                        }
                     }
                 }
             }
 
-            /*for(int z = 0; z <habitcount+1; z++) {
-                if(Integer.parseInt(Arr_Btn_Paint_Progress[z]) == 1) {
-                    if(z == habitcount) {
-                        Continue_index++;
-                        break;
-                    }
-                    if(Integer.parseInt(Arr_Btn_Paint_Progress[z+1]) == 1) Continue_index++;
+            if(habitcount == 0) { //오늘이 습관 생성한날
+                if(Integer.parseInt(Arr_Btn_Progress[0]) ==1) { //첫날 체크했다 1일째
+                    Continue_index = 1;
                 }
-                else {
-                    if(Integer.parseInt(Arr_Btn_Paint_Progress[habitcount]) ==1) {
-                        Continue_index=0;
-                    }
+                else { //체크 안했다. 0일째
+                    Continue_index = 0;
                 }
+
+            }
+            /*if(0 == habitcount) {
+                //오늘이 습관 생성한날이므로 누르면 1일쨰 되어야한다.
+                //일단 체크하기 전까지는 0일째 유지 체크하면 1일째 부여
+                if(Integer.parseInt(Arr_Btn_Progress[0]) == 1) Continue_index = 1;
             }*/
+
+            /*if(habitcount == 0) Continue_index = 0;
+            else {
+                for(int z = 0; z <habitcount-1; z++) {
+                    if(Integer.parseInt(Arr_Btn_Progress[z]) == 1) {
+                        if(z == habitcount-2) {
+                            Continue_index++;
+                            break;
+                        }
+                        if(Integer.parseInt(Arr_Btn_Progress[z+1]) == 1) Continue_index++;
+                    }
+                    else {
+                        if(Integer.parseInt(Arr_Btn_Progress[habitcount-2]) ==1) {
+                            Continue_index=0;
+                        }
+                    }
+                 }
+            }*/
+            //Continue_index+=1;
             Arr_TextView_continue_day[i].setText("연속 " + String.valueOf(Continue_index) + "일째");
             Arr_TextView_continue_day[i].setTypeface(typeface);
 
@@ -435,14 +572,23 @@ public class MainActivity extends AppCompatActivity {
             //습관 제목 텍스트뷰 Width, Height
             Arr_TextView_Habit_Name[i].setWidth(textView_width);
             Arr_TextView_Habit_Name[i].setHeight(textView_height);
+            //글씨 가운데로 이동
             Arr_TextView_Habit_Name[i].setGravity(Gravity.CENTER);
 
+            //편집 누르면 삭제 버튼 width,height
+            //DeleteButton[i].setWidth(DeleteButton_width);
+            //DeleteButton[i].setHeight(DeleteButton_height);
+            //DeleteButton[i].setGravity(Gravity.LEFT);
+
+            //DeleteButton[i].setX(X);
+            //DeleteButton[i].setY(Y);
 
             //연속 0일째 width,height
-            Arr_TextView_continue_day[i].setWidth(Continue_width);
-            Arr_TextView_continue_day[i].setHeight(Continue_height);
-            Arr_TextView_continue_day[i].setGravity(Gravity.CENTER);
-            Arr_TextView_continue_day[i].setCompoundDrawablesWithIntrinsicBounds(R.drawable.fire,0,0,0);
+            //Arr_TextView_continue_day[i].setWidth(Continue_width);
+            //Arr_TextView_continue_day[i].setHeight(Continue_height);
+            Arr_TextView_continue_day[i].setTextSize(fontSize);
+            //Arr_TextView_continue_day[i].setGravity(Gravity.CENTER);
+            //Arr_TextView_continue_day[i].setCompoundDrawablesWithIntrinsicBounds(R.drawable.fire,0,0,0);
 
             //습관 버튼 radius Drawable
             Arr_Btn_Habit[i].setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.radius));
@@ -451,15 +597,22 @@ public class MainActivity extends AppCompatActivity {
             if(DB_darkmode == 0) {
                 GradientDrawable bgShape = (GradientDrawable) Arr_Btn_Habit[i].getBackground().getCurrent(); //GradientDrawable 그대로 하면 오류남 마지막에 .getCurrent() 중요
                 bgShape.setColor(Color.parseColor("#fcfcfc"));
+                //status bar 색상
+                getWindow().setStatusBarColor(Color.parseColor("#FFEBD3"));
+                //status bar 글자 색상
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
             }
             else {
                 GradientDrawable bgShape = (GradientDrawable) Arr_Btn_Habit[i].getBackground().getCurrent(); //GradientDrawable 그대로 하면 오류남 마지막에 .getCurrent() 중요
                 bgShape.setColor(Color.parseColor("#414b5c"));
+                getWindow().setStatusBarColor(Color.parseColor("#272B36"));
             }
 
             //습관 제목 텍스트뷰 CSS
             Arr_TextView_Habit_Name[i].setBackground(ContextCompat.getDrawable(this, R.drawable.textview_custom_css));
             Arr_TextView_Habit_Name[i].setTextColor(Color.WHITE);
+            Arr_TextView_Habit_Name[i].setTextSize(20);
 
             //delete 버튼 이미지 씌움
             DeleteButton[i].setBackgroundResource(R.drawable.erase_button_dark);
@@ -480,6 +633,9 @@ public class MainActivity extends AppCompatActivity {
 
             //delete 버튼 기본 감춤
             DeleteButton[i].setVisibility(View.INVISIBLE);
+
+            //textview 연속 0일째
+            Arr_TextView_continue_day[i].setLayoutParams(Arr_TextView_continue_day_LinearParams);
 
             final int a = i; //final 에러 방지 로컬변수로 선언해서 사용함.
 
@@ -503,7 +659,55 @@ public class MainActivity extends AppCompatActivity {
             DeleteButton[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                    sweetAlertDialog = new SweetAlertDialog(MainActivity.this,SweetAlertDialog.WARNING_TYPE);
+                        sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                        sweetAlertDialog.setTitleText("삭제");
+                        sweetAlertDialog.setContentText("습관을 삭제하시겠습니까?");
+                        sweetAlertDialog.setConfirmText("확인");
+                        sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                try {
+                                    String uriString = "content://com.example.dotive/Habits";
+                                    Uri uri = new Uri.Builder().build().parse(uriString);
+
+                                    String selection = "id=?";
+                                    String[] selectionArgs = new String[] {Arr_ID[a]};
+
+                                    int count = getContentResolver().delete(uri, selection, selectionArgs);
+                                    Log.e("MainActivity.java", "delete 실행 : " + count);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                /*sweetAlertDialog.dismissWithAnimation();
+                                sweetAlertDialog.setTitleText("삭제!");
+                                sweetAlertDialog.setContentText("습관을 삭제했습니다.");
+                                sweetAlertDialog.setConfirmText("확인");
+                                sweetAlertDialog.setConfirmClickListener(null);
+                                sweetAlertDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
+                                */
+
+                                DynamicToast.makeSuccess(MainActivity.this, "습관을 삭제하였습니다!").show();
+                                //Toast myToast = Toast.makeText(getApplicationContext(),"습관을 삭제하였습니다", Toast.LENGTH_SHORT);
+                                //myToast.show();
+
+                                //액티비티 갱신 (db 업데이트 사항 적용)
+                                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                            }
+                        });
+                        sweetAlertDialog.setCancelText("취소");
+                        sweetAlertDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.cancel();
+                            }
+                        });
+                        sweetAlertDialog.show();
+
+                    /*AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                             builder.setTitle("삭제");
                             builder.setMessage("습관을 삭제하시겠습니까?");
                             builder.setCancelable(true); //뒤로가기 누르면 취소
@@ -539,13 +743,11 @@ public class MainActivity extends AppCompatActivity {
                                         return;
                                 }
                             });
-
                             AlertDialog dialog = builder.create();
-                            dialog.show();
+                            dialog.show();*/
                 }
             });
         }
-
 
         //습관 추가 버튼 (이 버튼은 동적 버튼 맨 아래에 위치해야 하므로 여기서 addView 했다.)
         //이 부분 버튼 가운데 정렬 필요 or 이미지 버튼이 아닌 css로 그리던지
@@ -616,7 +818,8 @@ public class MainActivity extends AppCompatActivity {
         android.os.Process.killProcess(android.os.Process.myPid());
     }
 
-    @Override
+    //액션바
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.main_menu, menu);
@@ -639,7 +842,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
+
     public void QUERY_Settings() {
         try {
             String uriString = "content://com.example.dotive/Settings";
@@ -764,27 +968,61 @@ public class MainActivity extends AppCompatActivity {
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
             float X, Y;
+            float fire_X,fire_Y;
+
+            /* float txt_X,txt_Y;
+
+            Resources res = getResources();
+            Bitmap[] image = new Bitmap[Habits_Table_Count-1];
+*/
+
+            Resources res = getResources();
+            Bitmap[] image= new Bitmap[Habits_Table_Count-1];
 
             for(int i = 0; i< Habits_Table_Count - 1; i++) {
-                Y = Arr_Btn_Habit[i].getY(); //버튼 Y좌표
+                Y = Arr_Btn_Habit[i].getY() + 20; //버튼 Y좌표
                 X = Arr_Btn_Habit[i].getX(); //버튼 X좌표
+
+                /*txt_X = Arr_TextView_Habit_Name[i].getX();
+                txt_Y = Arr_TextView_Habit_Name[i].getY();*/
+
+                fire_X = Arr_TextView_continue_day[i].getX();
+                fire_Y = Arr_TextView_continue_day[i].getY();
 
                 //버튼 width, height
                 int W = Arr_Btn_Habit[i].getWidth();
                 int H = Arr_Btn_Habit[i].getHeight();
 
+                /*int txt_W = Arr_TextView_Habit_Name[i].getWidth();
+                int txt_H = Arr_TextView_Habit_Name[i].getHeight();
+
+                //x 버튼 그리기
+                int w = 100;
+                int h = 100;
+                image[i] = BitmapFactory.decodeResource(res,R.drawable.erase_button_dark);
+                Bitmap resize = Bitmap.createScaledBitmap(image[i],w,h,true);
+                canvas.drawBitmap(resize,txt_X +txt_W+100,txt_Y+120,null);*/
+
+                //불타는 아이콘
+                int w = 100;
+                int h = 100;
+                image[i] = BitmapFactory.decodeResource(res,R.drawable.fire);
+                Bitmap resize = Bitmap.createScaledBitmap(image[i],w,h,true);
+                canvas.drawBitmap(resize,fire_X-150,fire_Y-10,null);
+
+
                 //목표일
                 int Object_Days = Integer.parseInt(Arr_edit_Habit_Day_Num[i]);
 
-                //////////////////////////////////
                 count = COUNT[i];
 
                 Log.e("테스트 마지막",COUNT[i] + "");
 
                 //원을 그린다.
 
-                int index_X = 0;
-                int index_Y = 0;
+                float index_X = 0;
+                float index_Y = 0;
+
 
                 //1일 ~ 4일 반지름 100
                 paint.setStyle(Paint.Style.FILL);
@@ -814,7 +1052,7 @@ public class MainActivity extends AppCompatActivity {
                 }*/
 
                 /////////////////////////
-                if(Object_Days < 5) {
+                if(Object_Days < 8) {
                     if(Object_Days == 1) {
 
                         for(int q = 0; q < Arr_Btn_Paint_Progress.length; q++) {
@@ -823,8 +1061,8 @@ public class MainActivity extends AppCompatActivity {
                                 if(DB_darkmode == 0) paint.setColor(Color.parseColor("#d6d6d6")); //다크모드 0;
                                 else paint.setColor(Color.parseColor("#7a8599"));
                             }
-                            if(q == 0) canvas.drawCircle(X + W/2, Y + H/2 , 100, paint);
-                            if(count == 0) canvas.drawCircle(X + W/2, Y + H/2 , 100, stroke);
+                            if(q == 0) canvas.drawCircle(X + W/2, Y + H/2 - standardSize_Y/5.5f, 100, paint);
+                            if(count == 0) canvas.drawCircle(X + W/2, Y + H/2 - standardSize_Y/5.5f, 100, stroke);
                         }
 
                     }
@@ -835,10 +1073,10 @@ public class MainActivity extends AppCompatActivity {
                                 if(DB_darkmode == 0) paint.setColor(Color.parseColor("#d6d6d6")); //다크모드 0;
                                 else paint.setColor(Color.parseColor("#7a8599"));
                             }
-                            if(q == 0) canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, paint);
-                            if(q == 1) canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, paint);
-                            if(count == 0) canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, stroke);
-                            if(count == 1) canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, stroke);
+                            if(q == 0) canvas.drawCircle(X + W/2 - standardSize_X/2.5f, Y + H/2 - standardSize_Y/5.5f, 100, paint);
+                            if(q == 1) canvas.drawCircle(X + W/2 + standardSize_X/2.5f, Y + H/2 - standardSize_Y/5.5f, 100, paint);
+                            if(count == 0) canvas.drawCircle(X + W/2 - standardSize_X/2.5f, Y + H/2 - standardSize_Y/5.5f, 100, stroke);
+                            if(count == 1) canvas.drawCircle(X + W/2 + standardSize_X/2.5f, Y + H/2 - standardSize_Y/5.5f, 100, stroke);
                         }
                     }
                     else if(Object_Days == 3) {
@@ -848,12 +1086,12 @@ public class MainActivity extends AppCompatActivity {
                                 if(DB_darkmode == 0) paint.setColor(Color.parseColor("#d6d6d6")); //다크모드 0;
                                 else paint.setColor(Color.parseColor("#7a8599"));
                             }
-                            if(q == 0) canvas.drawCircle(X + W/2 - 300, Y + H/2, 100, paint);
-                            if(q == 1) canvas.drawCircle(X + W/2, Y + H/2, 100, paint);
-                            if(q == 2) canvas.drawCircle(X + W/2 + 300, Y + H/2, 100, paint);
-                            if(count == 0) canvas.drawCircle(X + W/2 - 300, Y + H/2, 100, stroke);
-                            if(count == 1) canvas.drawCircle(X + W/2, Y + H/2, 100, stroke);
-                            if(count == 2) canvas.drawCircle(X + W/2 + 300, Y + H/2, 100, stroke);
+                            if(q == 0) canvas.drawCircle(X + W/2 - standardSize_X/1.2f, Y + H/2 - standardSize_Y/5.5f, 100, paint);
+                            if(q == 1) canvas.drawCircle(X + W/2, Y + H/2 - standardSize_Y/5.5f, 100, paint);
+                            if(q == 2) canvas.drawCircle(X + W/2 + standardSize_X/1.2f, Y + H/2 - standardSize_Y/5.5f, 100, paint);
+                            if(count == 0) canvas.drawCircle(X + W/2 - standardSize_X/1.2f, Y + H/2 - standardSize_Y/5.5f, 100, stroke);
+                            if(count == 1) canvas.drawCircle(X + W/2, Y + H/2 - standardSize_Y/5.5f, 100, stroke);
+                            if(count == 2) canvas.drawCircle(X + W/2 + standardSize_X/1.2f, Y + H/2 - standardSize_Y/5.5f, 100, stroke);
                         }
                     }
                     else if(Object_Days == 4) {
@@ -863,20 +1101,85 @@ public class MainActivity extends AppCompatActivity {
                                 if(DB_darkmode == 0) paint.setColor(Color.parseColor("#d6d6d6")); //다크모드 0;
                                 else paint.setColor(Color.parseColor("#7a8599"));
                             }
-                            if(q == 0) canvas.drawCircle(X + W/2 - 400, Y + H/2, 100, paint);
-                            if(q == 1) canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, paint);
-                            if(q == 2) canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, paint);
-                            if(q == 3) canvas.drawCircle(X + W/2 + 400, Y + H/2, 100, paint);
-                            if(count == 0) canvas.drawCircle(X + W/2 - 400, Y + H/2, 100, stroke);
-                            if(count == 1) canvas.drawCircle(X + W/2 - 135, Y + H/2, 100, stroke);
-                            if(count == 2) canvas.drawCircle(X + W/2 + 135, Y + H/2, 100, stroke);
-                            if(count == 3) canvas.drawCircle(X + W/2 + 400, Y + H/2, 100, stroke);
+                            if(q == 0) canvas.drawCircle(X + W/2 - standardSize_X/0.95f, Y + H/2 - standardSize_Y/5.5f, 100, paint);
+                            if(q == 1) canvas.drawCircle(X + W/2 - standardSize_X/2.8f, Y + H/2 - standardSize_Y/5.5f, 100, paint);
+                            if(q == 2) canvas.drawCircle(X + W/2 + standardSize_X/2.8f, Y + H/2 - standardSize_Y/5.5f, 100, paint);
+                            if(q == 3) canvas.drawCircle(X + W/2 + standardSize_X/0.95f, Y + H/2 - standardSize_Y/5.5f, 100, paint);
+                            if(count == 0) canvas.drawCircle(X + W/2 - standardSize_X/0.95f, Y + H/2 - standardSize_Y/5.5f, 100, stroke);
+                            if(count == 1) canvas.drawCircle(X + W/2 - standardSize_X/2.8f, Y + H/2 - standardSize_Y/5.5f, 100, stroke);
+                            if(count == 2) canvas.drawCircle(X + W/2 + standardSize_X/2.8f, Y + H/2 - standardSize_Y/5.5f, 100, stroke);
+                            if(count == 3) canvas.drawCircle(X + W/2 + standardSize_X/0.95f, Y + H/2 - standardSize_Y/5.5f, 100, stroke);
+                        }
+                    }
+                    else if(Object_Days == 5) {
+                        for(int q = 0; q<Arr_Btn_Paint_Progress.length; q++) {
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Integer.parseInt(Arr_Habit_Color[i]));
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) {
+                                if(DB_darkmode == 0) paint.setColor(Color.parseColor("#d6d6d6")); //다크모드 0;
+                                else paint.setColor(Color.parseColor("#7a8599"));
+                            }
+                            if(q == 0) canvas.drawCircle(X + W/2 - standardSize_X/0.90f, Y + H/2 - standardSize_Y/5.5f, 80, paint);
+                            if(q == 1) canvas.drawCircle(X + W/2 - standardSize_X/1.8f, Y + H/2 - standardSize_Y/5.5f, 80, paint);
+                            if(q == 2) canvas.drawCircle(X + W/2 , Y + H/2 - standardSize_Y/5.5f, 80, paint);
+                            if(q == 3) canvas.drawCircle(X + W/2 + standardSize_X/1.8f, Y + H/2 - standardSize_Y/5.5f, 80, paint);
+                            if(q == 4) canvas.drawCircle(X + W/2 + standardSize_X/0.90f, Y + H/2 - standardSize_Y/5.5f, 80, paint);
+                            if(count == 0) canvas.drawCircle(X + W/2 - standardSize_X/0.90f, Y + H/2 - standardSize_Y/5.5f, 80, stroke);
+                            if(count == 1) canvas.drawCircle(X + W/2 - standardSize_X/1.8f, Y + H/2 - standardSize_Y/5.5f, 80, stroke);
+                            if(count == 2) canvas.drawCircle(X + W/2 , Y + H/2 - standardSize_Y/5.5f, 80, paint);
+                            if(count == 3) canvas.drawCircle(X + W/2 + standardSize_X/1.8f, Y + H/2 - standardSize_Y/5.5f, 80, stroke);
+                            if(count == 4) canvas.drawCircle(X + W/2 + standardSize_X/0.90f, Y + H/2 - standardSize_Y/5.5f, 80, stroke);
+                        }
+                    }
+                    else if(Object_Days == 6) {
+                        for(int q = 0; q<Arr_Btn_Paint_Progress.length; q++) {
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Integer.parseInt(Arr_Habit_Color[i]));
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) {
+                                if(DB_darkmode == 0) paint.setColor(Color.parseColor("#d6d6d6")); //다크모드 0;
+                                else paint.setColor(Color.parseColor("#7a8599"));
+                            }
+                            if(q == 0) canvas.drawCircle(X + W/2 - standardSize_X/0.87f, Y + H/2 - standardSize_Y/5.5f, 65, paint);
+                            if(q == 1) canvas.drawCircle(X + W/2 - standardSize_X/1.45f, Y + H/2 - standardSize_Y/5.5f, 65, paint);
+                            if(q == 2) canvas.drawCircle(X + W/2 - standardSize_X/4.5f, Y + H/2 - standardSize_Y/5.5f, 65, paint);
+                            if(q == 3) canvas.drawCircle(X + W/2 + standardSize_X/4.5f, Y + H/2 - standardSize_Y/5.5f, 65, paint);
+                            if(q == 4) canvas.drawCircle(X + W/2 + standardSize_X/1.45f, Y + H/2 - standardSize_Y/5.5f, 65, paint);
+                            if(q == 5) canvas.drawCircle(X + W/2 + standardSize_X/0.87f, Y + H/2 - standardSize_Y/5.5f, 65, paint);
+                            if(count == 0) canvas.drawCircle(X + W/2 - standardSize_X/0.87f, Y + H/2 - standardSize_Y/5.5f, 65, stroke);
+                            if(count == 1) canvas.drawCircle(X + W/2 - standardSize_X/1.45f, Y + H/2 - standardSize_Y/5.5f, 65, stroke);
+                            if(count == 2) canvas.drawCircle(X + W/2 - standardSize_X/4.5f, Y + H/2 - standardSize_Y/5.5f, 65, stroke);
+                            if(count == 3) canvas.drawCircle(X + W/2 + standardSize_X/4.5f, Y + H/2 - standardSize_Y/5.5f, 65, stroke);
+                            if(count == 4) canvas.drawCircle(X + W/2 + standardSize_X/1.45f, Y + H/2 - standardSize_Y/5.5f, 65, stroke);
+                            if(count == 5) canvas.drawCircle(X + W/2 + standardSize_X/0.87f, Y + H/2 - standardSize_Y/5.5f, 65, stroke);
+                        }
+                    }
+                    else if(Object_Days == 7) {
+                        for(int q = 0; q<Arr_Btn_Paint_Progress.length; q++) {
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 1) paint.setColor(Integer.parseInt(Arr_Habit_Color[i]));
+                            if(Integer.parseInt(Arr_Btn_Paint_Progress[q]) == 0) {
+                                if(DB_darkmode == 0) paint.setColor(Color.parseColor("#d6d6d6")); //다크모드 0;
+                                else paint.setColor(Color.parseColor("#7a8599"));
+                            }
+                            if(q == 0) canvas.drawCircle(X + W/2 - standardSize_X*1.18f , Y + H/2 - standardSize_Y/5.5f, 55, paint);
+                            if(q == 1) canvas.drawCircle(X + W/2 - standardSize_X*1.18f + standardSize_X*0.39f, Y + H/2 - standardSize_Y/5.5f, 55, paint);
+                            if(q == 2) canvas.drawCircle(X + W/2 - standardSize_X*1.18f + standardSize_X*0.39f + standardSize_X*0.39f, Y + H/2 - standardSize_Y/5.5f, 55, paint);
+                            if(q == 3) canvas.drawCircle(X + W/2 - standardSize_X*1.18f + standardSize_X*0.39f + standardSize_X*0.39f + standardSize_X*0.39f, Y + H/2 - standardSize_Y/5.5f, 55, paint);
+                            if(q == 4) canvas.drawCircle(X + W/2 - standardSize_X*1.18f + standardSize_X*0.39f + standardSize_X*0.39f + standardSize_X*0.39f + standardSize_X*0.39f, Y + H/2 - standardSize_Y/5.5f, 55, paint);
+                            if(q == 5) canvas.drawCircle(X + W/2 - standardSize_X*1.18f + standardSize_X*0.39f + standardSize_X*0.39f + standardSize_X*0.39f + standardSize_X*0.39f + standardSize_X*0.39f, Y + H/2 - standardSize_Y/5.5f, 55, paint);
+                            if(q == 6) canvas.drawCircle(X + W/2 - standardSize_X*1.18f + standardSize_X*0.39f + standardSize_X*0.39f + standardSize_X*0.39f + standardSize_X*0.39f + standardSize_X*0.39f + standardSize_X*0.39f, Y + H/2 - standardSize_Y/5.5f, 55, paint);
+                            if(count == 0) canvas.drawCircle(X + W/2 - standardSize_X*1.18f, Y + H/2 - standardSize_Y/5.5f, 55, stroke);
+                            if(count == 1) canvas.drawCircle(X + W/2 - standardSize_X*1.18f + standardSize_X*0.39f, Y + H/2 - standardSize_Y/5.5f, 55, stroke);
+                            if(count == 2) canvas.drawCircle(X + W/2 - standardSize_X*1.18f + standardSize_X*0.39f + standardSize_X*0.39f, Y + H/2 - standardSize_Y/5.5f, 55, stroke);
+                            if(count == 3) canvas.drawCircle(X + W/2 - standardSize_X*1.18f + standardSize_X*0.39f + standardSize_X*0.39f + standardSize_X*0.39f , Y + H/2 - standardSize_Y/5.5f, 55, stroke);
+                            if(count == 4) canvas.drawCircle(X + W/2 - standardSize_X*1.18f + standardSize_X*0.39f + standardSize_X*0.39f + standardSize_X*0.39f + standardSize_X*0.39f , Y + H/2 - standardSize_Y/5.5f, 55, stroke);
+                            if(count == 5) canvas.drawCircle(X + W/2 - standardSize_X*1.18f + standardSize_X*0.39f + standardSize_X*0.39f + standardSize_X*0.39f + standardSize_X*0.39f + standardSize_X*0.39f , Y + H/2 - standardSize_Y/5.5f, 55, stroke);
+                            if(count == 6) canvas.drawCircle(X + W/2 - standardSize_X*1.18f + standardSize_X*0.39f + standardSize_X*0.39f + standardSize_X*0.39f + standardSize_X*0.39f + standardSize_X*0.39f + standardSize_X*0.39f , Y + H/2 - standardSize_Y/5.5f, 55, stroke);
                         }
                     }
                 }
 
-                index_X = -450;
-                if(Object_Days > 4 && Object_Days <15) { //목표일수 15일 이하
+                //index_X = -420;
+                index_X = -standardSize_X*1.18f;
+                index_Y = -standardSize_Y/3.5f;
+                if(Object_Days > 7 && Object_Days <15) { //목표일수 8이상 15일 이하
                     stroke.setStrokeWidth(12);
                     for(int b = 0; b<Object_Days; b++) { //목표일 수만큼 동그라미 반복해서 그림
                         if(Integer.parseInt(Arr_Btn_Paint_Progress[b]) == 1) paint.setColor(Integer.parseInt(Arr_Habit_Color[i]));
@@ -885,10 +1188,10 @@ public class MainActivity extends AppCompatActivity {
                             if(DB_darkmode == 0) paint.setColor(Color.parseColor("#d6d6d6")); //다크모드 0;
                             else paint.setColor(Color.parseColor("#7a8599"));
                         }
-                        canvas.drawCircle(X + W/2 + index_X, Y + H/2 - 140 + index_Y , 55, paint);
-                        if(count == b) canvas.drawCircle(X + W/2 + index_X, Y + H/2 - 140 + index_Y , 55, stroke);
-                        index_X +=150;
-                        if(b == 6) {index_X = -450; index_Y = 180;} //7개 이상부터 즉 8개부터 위치 변경
+                        canvas.drawCircle(X + W/2 + index_X, Y + H/2 + index_Y, 55, paint);
+                        if(count == b) canvas.drawCircle(X + W/2 + index_X, Y + H/2 + index_Y , 55, stroke);
+                        index_X +=standardSize_X*0.39f;
+                        if(b == 6) {index_X = -standardSize_X*1.18f; index_Y = standardSize_Y/30.0f;} //7개 이상부터 즉 8개부터 위치 변경
                     }
                 }
                 if(Object_Days >14) {
@@ -900,12 +1203,12 @@ public class MainActivity extends AppCompatActivity {
                             else paint.setColor(Color.parseColor("#7a8599"));
                         }
 
-                        canvas.drawCircle(X + W/2 + index_X, Y + H/2 - 140 + index_Y , 35, paint);
-                        if(count == b) canvas.drawCircle(X + W/2 + index_X, Y + H/2 - 140 + index_Y , 35, stroke);
-                        index_X +=100;
-                        if(b == 9) {index_X = -450; index_Y = 100;} //10개 이상부터 즉 11개부터 위치 변경
-                        if(b == 19) {index_X = -450; index_Y = 200;}
-                        if(b == 29) { index_X = -450; index_Y = 300; break;} //31일 이상부터 그리지마
+                        canvas.drawCircle(X + W/2 + index_X, Y + H/2 + index_Y , 35, paint);
+                        if(count == b) canvas.drawCircle(X + W/2 + index_X, Y + H/2 + index_Y , 35, stroke);
+                        index_X +=standardSize_X*0.263f;
+                        if(b == 9) {index_X = -standardSize_X*1.18f; index_Y = standardSize_Y*-0.1f;} //10개 이상부터 즉 11개부터 위치 변경
+                        if(b == 19) {index_X = -standardSize_X*1.18f; index_Y = standardSize_Y*0.08f;}
+                        //if(b == 29) { index_X = -450; index_Y = 300; break;} //31일 이상부터 그리지마
                     }
                 }
             }

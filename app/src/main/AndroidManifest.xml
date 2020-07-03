@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.dotive">
 
     <permission
@@ -15,8 +16,9 @@
         android:label="Dotive"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".SettingActivity"></activity>
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon,android:label">
+        <activity android:name=".SettingActivity" />
 
         <provider
             android:name=".Provider"
@@ -35,7 +37,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <meta-data android:name="android.max_aspect" android:value="2.1" />
+
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.1" />
     </application>
 
 </manifest>

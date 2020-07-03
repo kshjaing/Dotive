@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -7,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <RelativeLayout
             android:id="@+id/rlTopMenu"
             android:layout_width="match_parent"
@@ -70,7 +72,14 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout4"
+        android:id="@+id/linearLayout4"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout5"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -96,4 +105,5 @@
             android:scaleType="fitCenter" />
     </RelativeLayout>
     </LinearLayout>
+
 </ScrollView>

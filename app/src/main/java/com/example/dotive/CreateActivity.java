@@ -44,10 +44,14 @@ public class CreateActivity extends AppCompatActivity {
 
     String habit_progress = "";
 
+    //최초실행
+    private Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+        context = this;
 
         //객체 인스턴스 초기화
         btn_finish = (Button) findViewById(R.id.btn_finish); //앱 종료
@@ -95,11 +99,17 @@ public class CreateActivity extends AppCompatActivity {
                     intent.putExtra("Habit_Name",edit_Habit_Name.getText().toString()); //습관명
                     intent.putExtra("Habit_Color",Integer.toString(int_Color)); //습관 색깔
                     intent.putExtra("edit_Habit_Day_Num",edit_Habit_Day_Num.getText().toString()); //습관 목표일 수
-
-                    //세팅 값
-                    if(MainActivity.TotalHabit == 1)
-                        INSERT_Settings();
                     MainActivity.TotalHabit +=1; //습관 버튼 개수
+
+
+                    //Setting 테이블 최초 한번 실행
+                    String Settings_Check = PreferenceManager.getString(context,"최초");
+
+                    if(Settings_Check.equals("")) {
+                        PreferenceManager.setString(context,"최초","0");
+                        //최초 실행
+                        INSERT_Settings();
+                    }
 
                     //habits 테이블을 추가한다.
                     INSERT_Habits();
@@ -213,8 +223,8 @@ public class CreateActivity extends AppCompatActivity {
         Calendar CreateDay = Calendar.getInstance(); //현재 날짜 (=습관 생성 날짜)
         String create_day = simpleDateFormat.format(CreateDay.getTime());
 
-        //values.put("habitCreateDay", create_day);
-        values.put("habitCreateDay", "2020-06-27"); //테스트용
+        values.put("habitCreateDay", create_day);
+        //values.put("habitCreateDay", "2020-06-26"); //테스트용
         Log.e("CreateActivity.java", "습관 생성 날짜: " + create_day);
 
         uri = getContentResolver().insert(uri, values);
