@@ -237,43 +237,43 @@ public class MainActivity extends AppCompatActivity{
             //박스 관련 dp값 설정
             int btn_Height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.54f,
                     getResources().getDisplayMetrics());
-            int btn_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_Y * 0.057f,
+            int btn_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.057f,
                     getResources().getDisplayMetrics());
-            int btn_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_Y * 0.06f,
+            int btn_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.15f,
                     getResources().getDisplayMetrics());
 
             //습관제목 텍스트뷰 관련 dp값 설정
             int txt_Width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.48f,
                     getResources().getDisplayMetrics());
-            int txt_Height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_Y * 0.065f,
+            int txt_Height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.11f,
                     getResources().getDisplayMetrics());
             int txt_paddingSide = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,24,
                     getResources().getDisplayMetrics());
-            int txt_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_Y * 0.0255f,
+            int txt_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.002f,
                     getResources().getDisplayMetrics());
-            int txt_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.9f * 0.6f + standardSize_Y * 0.117f - standardSize_Y * 0.0255f - standardSize_Y * 0.065f,  //+5
+            int txt_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.54f + standardSize_X * 0.207f - standardSize_X * 0.11f,  //+5
                     getResources().getDisplayMetrics());
-            int erase_btn_size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.065f,
+            int erase_btn_size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.06f,
                     getResources().getDisplayMetrics());
-            int erase_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_Y * 0.057f + standardSize_Y * 0.065f / 2 - 5,
+            int erase_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.11f,
                     getResources().getDisplayMetrics());
             int erase_marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.83f,
                     getResources().getDisplayMetrics());
-            int erase_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.9f * 0.6f + standardSize_Y * 0.117f - (standardSize_Y * 0.057f + standardSize_Y * 0.065f / 2 - 5)- standardSize_X * 0.065f,
+            int erase_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.637f - standardSize_X * 0.06f,
                     getResources().getDisplayMetrics());
             int fire_size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.08f,
                     getResources().getDisplayMetrics());
             int fire_marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.35f,
                     getResources().getDisplayMetrics());
-            int fire_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_Y * 0.28f,
+            int fire_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.54f - standardSize_X * 0.055f,
                     getResources().getDisplayMetrics());
-            int fire_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.9f * 0.6f + standardSize_Y * 0.117f - standardSize_Y * 0.28f- standardSize_X * 0.08f,
+            int fire_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.262f - standardSize_X * 0.08f,
                     getResources().getDisplayMetrics());
-            int txtSeq_marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.435f,
+            int txtSeq_marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.43f,
                     getResources().getDisplayMetrics());
-            int txtSeq_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_Y * 0.29f,
+            int txtSeq_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.54f - standardSize_X * 0.0355f,
                     getResources().getDisplayMetrics());
-            int txtSeq_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.9f * 0.6f + standardSize_Y * 0.117f - standardSize_X * 0.07f - standardSize_Y * 0.29f,
+            int txtSeq_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.262f - standardSize_X * 0.0654f,
                     getResources().getDisplayMetrics());
             int txtSeq_fontSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.016f,
                     getResources().getDisplayMetrics());
@@ -294,7 +294,7 @@ public class MainActivity extends AppCompatActivity{
             LinearLayout.LayoutParams erasebtn_linearParams = new LinearLayout.LayoutParams(
                     erase_btn_size, erase_btn_size);
             LinearLayout.LayoutParams imgFire_linearParams = new LinearLayout.LayoutParams(
-                    fire_size, fire_size);
+                    fire_size, fire_size, 1);
             LinearLayout.LayoutParams txtSeq_linearParams = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -357,7 +357,7 @@ public class MainActivity extends AppCompatActivity{
                 }
                 txtSequence[i].setText("연속 "+ seqAmount +"일째!");
                 txtSequence[i].setTypeface(typeface);
-                txtSequence[i].setTextSize(txtSeq_fontSize);
+                txtSequence[i].setTextSize(18);
                 txtSequence[i].setLayoutParams(txtSeq_linearParams);
 
 

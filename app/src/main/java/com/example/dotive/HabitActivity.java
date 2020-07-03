@@ -39,6 +39,7 @@ import static com.example.dotive.MainActivity.isDarkmode;
 import static com.example.dotive.MainActivity.objectDays;
 import static com.example.dotive.MainActivity.oneCount;
 import static com.example.dotive.MainActivity.progressBuilderArr;
+import static com.example.dotive.MainActivity.standardSize_X;
 import static com.example.dotive.MainActivity.totalHabit;
 import static com.example.dotive.MainActivity.typeface;
 
@@ -104,11 +105,13 @@ public class HabitActivity extends Activity {
 
 
 
-        int btn_Height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,80,
+        int btn_Height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.18f,
+                getResources().getDisplayMetrics());
+        int btn_Width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, standardSize_X * 0.85f,
                 getResources().getDisplayMetrics());
 
         LinearLayout.LayoutParams btn_linearParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, btn_Height, 1);
+                btn_Width, btn_Height, 1);
         LinearLayout.LayoutParams txt_linearParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
