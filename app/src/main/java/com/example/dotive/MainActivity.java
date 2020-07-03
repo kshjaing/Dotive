@@ -104,6 +104,8 @@ public class MainActivity extends AppCompatActivity{
 
 
 
+
+
         //DB에서 '다크모드' 인수 가져와서 isDarkmode 변수에 삽입
         cursor = db.rawQuery("SELECT darkmode FROM Settings", null);
         while(cursor.moveToNext()) {
@@ -235,7 +237,7 @@ public class MainActivity extends AppCompatActivity{
             int fl_Height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,220,
                     getResources().getDisplayMetrics());
             //박스 관련 dp값 설정
-            int btn_Height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,220,
+            int btn_Height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.9f * 0.6f,
                     getResources().getDisplayMetrics());
             int btn_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_Y * 0.057f,
                     getResources().getDisplayMetrics());
@@ -243,7 +245,7 @@ public class MainActivity extends AppCompatActivity{
                     getResources().getDisplayMetrics());
 
             //습관제목 텍스트뷰 관련 dp값 설정
-            int txt_Width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.45f,
+            int txt_Width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.48f,
                     getResources().getDisplayMetrics());
             int txt_Height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_Y * 0.065f,
                     getResources().getDisplayMetrics());
@@ -251,29 +253,29 @@ public class MainActivity extends AppCompatActivity{
                     getResources().getDisplayMetrics());
             int txt_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_Y * 0.057f - standardSize_Y * 0.065f / 2,
                     getResources().getDisplayMetrics());
-            int txt_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_Y * 0.117f - standardSize_Y * 0.065f + 225,
+            int txt_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_Y * 0.117f - standardSize_Y * 0.065f + standardSize_X * 0.9f * 0.6f + 5,
                     getResources().getDisplayMetrics());
-            int erase_btn_size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,25,
+            int erase_btn_size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.065f,
                     getResources().getDisplayMetrics());
-            int erase_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,70,
+            int erase_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_Y * 0.08f,
                     getResources().getDisplayMetrics());
-            int erase_marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,310,
+            int erase_marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.83f,
                     getResources().getDisplayMetrics());
-            int erase_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,235,
+            int erase_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.9f * 0.6f + standardSize_Y * 0.065f * 0.503f,
                     getResources().getDisplayMetrics());
-            int fire_size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,32,
+            int fire_size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.08f,
                     getResources().getDisplayMetrics());
             int fire_marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.35f,
                     getResources().getDisplayMetrics());
-            int fire_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,230,
+            int fire_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_Y * 0.3f,
                     getResources().getDisplayMetrics());
-            int fire_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,65,
+            int fire_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.9f * 0.6f * 0.34f,
                     getResources().getDisplayMetrics());
             int txtSeq_marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.435f,
                     getResources().getDisplayMetrics());
-            int txtSeq_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,238,
+            int txtSeq_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_Y * 0.31f,
                     getResources().getDisplayMetrics());
-            int txtSeq_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,72,
+            int txtSeq_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.9f * 0.6f * 0.378f,
                     getResources().getDisplayMetrics());
 
 
