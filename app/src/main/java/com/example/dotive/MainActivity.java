@@ -235,7 +235,7 @@ public class MainActivity extends AppCompatActivity{
             int fl_Width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.9f,
                     getResources().getDisplayMetrics());
             //박스 관련 dp값 설정
-            int btn_Height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.9f * 0.6f,
+            int btn_Height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.54f,
                     getResources().getDisplayMetrics());
             int btn_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_Y * 0.057f,
                     getResources().getDisplayMetrics());
@@ -249,9 +249,9 @@ public class MainActivity extends AppCompatActivity{
                     getResources().getDisplayMetrics());
             int txt_paddingSide = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,24,
                     getResources().getDisplayMetrics());
-            int txt_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_Y * 0.0245f,
+            int txt_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_Y * 0.0255f,
                     getResources().getDisplayMetrics());
-            int txt_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.9f * 0.6f + standardSize_Y * 0.117f - standardSize_Y * 0.0245f - standardSize_Y * 0.065f,  //+5
+            int txt_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.9f * 0.6f + standardSize_Y * 0.117f - standardSize_Y * 0.0255f - standardSize_Y * 0.065f,  //+5
                     getResources().getDisplayMetrics());
             int erase_btn_size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.065f,
                     getResources().getDisplayMetrics());
@@ -277,6 +277,10 @@ public class MainActivity extends AppCompatActivity{
                     getResources().getDisplayMetrics());
             int txtSeq_fontSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.016f,
                     getResources().getDisplayMetrics());
+            float radius = (float) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.09f,
+                    getResources().getDisplayMetrics());
+
+
 
 
             typeface = Typeface.createFromAsset(getAssets(), "font/katuri.ttf");
@@ -284,9 +288,9 @@ public class MainActivity extends AppCompatActivity{
 
 
             LinearLayout.LayoutParams btn_linearParams = new LinearLayout.LayoutParams(
-                    fl_Width, btn_Height);
+                    fl_Width, btn_Height, 1);
             LinearLayout.LayoutParams txtView_linearParams = new LinearLayout.LayoutParams(
-                    txt_Width, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    txt_Width, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
             LinearLayout.LayoutParams erasebtn_linearParams = new LinearLayout.LayoutParams(
                     erase_btn_size, erase_btn_size);
             LinearLayout.LayoutParams imgFire_linearParams = new LinearLayout.LayoutParams(
