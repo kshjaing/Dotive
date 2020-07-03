@@ -29,6 +29,7 @@ import static com.example.dotive.MainActivity.dbHelper;
 import static com.example.dotive.MainActivity.habitProgressArr;
 import static com.example.dotive.MainActivity.isDarkmode;
 import static com.example.dotive.MainActivity.oneCount;
+import static com.example.dotive.MainActivity.standardSize_X;
 import static com.example.dotive.MainActivity.totalHabit;
 import static com.example.dotive.MainActivity.dateDiff;
 
@@ -39,17 +40,16 @@ public class DrawCircle extends View {
     Integer[] objectDays = new Integer[totalHabit];
     float btn_x, btn_y;
     String[] progressWord;
-    int[] progressLength;
     Calendar calendar;
     SimpleDateFormat dateFormat;
 
 
 
-    int btn_Width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,360,
+    int btn_Width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.9f,
             getResources().getDisplayMetrics());
-    int btn_Height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,220,
+    int btn_Height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.9f * 0.6f,
             getResources().getDisplayMetrics());
-    float radius = (float) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,36,
+    float radius = (float) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.09f,
             getResources().getDisplayMetrics());
 
     public DrawCircle(Context context) {

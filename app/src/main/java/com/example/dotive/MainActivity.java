@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity{
     public static float density;
     int eraseNum, boxNum1;
     int seqAmount;
+    float btn_x, btn_y;
 
     Date curDate;                      //현재날짜 Date변수
     long todayTimestamp;               //현재날짜 시간량
@@ -95,8 +96,8 @@ public class MainActivity extends AppCompatActivity{
         ibtnSettings = new ImageButton(this);
         ibtnEdit = new ImageButton(this);
 
-        ibtnSettings = findViewById(R.id.ibtnSettings);
-        ibtnEdit = findViewById(R.id.ibtnEdit);
+        ibtnSettings = (ImageButton) findViewById(R.id.ibtnSettings);
+        ibtnEdit = (ImageButton) findViewById(R.id.ibtnEdit);
 
         getScreenSize(this);
         getStandardSize();
@@ -162,14 +163,16 @@ public class MainActivity extends AppCompatActivity{
         ibtnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (int i = 0; i < totalHabit; i++) {
-                    if (ibtnErase[i].getVisibility() == View.VISIBLE) {
-                        ibtnErase[i].setVisibility(View.INVISIBLE);
+                if (totalHabit > 0) {
+                    for (int i = 0; i < totalHabit; i++) {
+                        if (ibtnErase[i].getVisibility() == View.VISIBLE) {
+                            ibtnErase[i].setVisibility(View.INVISIBLE);
+                        }
+                        else
+                            ibtnErase[i].setVisibility(View.VISIBLE);
                     }
-                    else
-                        ibtnErase[i].setVisibility(View.VISIBLE);
                 }
-                Log.d("array", boxBtnArr[0].getTag().toString());
+
             }
         });
 
@@ -192,6 +195,7 @@ public class MainActivity extends AppCompatActivity{
         ll4 = findViewById(R.id.ll4);
         ll5 = findViewById(R.id.ll5);
         //ll3.setBackgroundColor(Color.BLACK);
+
 
 
 
@@ -226,26 +230,28 @@ public class MainActivity extends AppCompatActivity{
 
 
             //px을 dp로 변환
+            int fl_Width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.9f,
+                    getResources().getDisplayMetrics());
+            int fl_Height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,220,
+                    getResources().getDisplayMetrics());
             //박스 관련 dp값 설정
             int btn_Height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,220,
                     getResources().getDisplayMetrics());
-            int btn_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,57,
+            int btn_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_Y * 0.057f,
                     getResources().getDisplayMetrics());
-            int btn_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,42,
+            int btn_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_Y * 0.06f,
                     getResources().getDisplayMetrics());
 
             //습관제목 텍스트뷰 관련 dp값 설정
-            int txt_Width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.5f,
+            int txt_Width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.45f,
                     getResources().getDisplayMetrics());
-            int txt_Height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,46,
+            int txt_Height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_Y * 0.065f,
                     getResources().getDisplayMetrics());
             int txt_paddingSide = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,24,
                     getResources().getDisplayMetrics());
-            int txt_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,34,
+            int txt_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_Y * 0.057f - standardSize_Y * 0.065f / 2,
                     getResources().getDisplayMetrics());
-            int txt_marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,75,
-                    getResources().getDisplayMetrics());
-            int txt_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,250,
+            int txt_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_Y * 0.117f - standardSize_Y * 0.065f + 225,
                     getResources().getDisplayMetrics());
             int erase_btn_size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,25,
                     getResources().getDisplayMetrics());
@@ -257,13 +263,13 @@ public class MainActivity extends AppCompatActivity{
                     getResources().getDisplayMetrics());
             int fire_size = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,32,
                     getResources().getDisplayMetrics());
-            int fire_marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,115,
+            int fire_marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.35f,
                     getResources().getDisplayMetrics());
             int fire_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,230,
                     getResources().getDisplayMetrics());
             int fire_marginBottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,65,
                     getResources().getDisplayMetrics());
-            int txtSeq_marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,150,
+            int txtSeq_marginLeft = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.435f,
                     getResources().getDisplayMetrics());
             int txtSeq_marginTop = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,238,
                     getResources().getDisplayMetrics());
@@ -276,7 +282,7 @@ public class MainActivity extends AppCompatActivity{
 
 
             LinearLayout.LayoutParams btn_linearParams = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+                    fl_Width, fl_Height, 1);
             LinearLayout.LayoutParams txtView_linearParams = new LinearLayout.LayoutParams(
                     txt_Width, LinearLayout.LayoutParams.WRAP_CONTENT);
             LinearLayout.LayoutParams erasebtn_linearParams = new LinearLayout.LayoutParams(
@@ -288,12 +294,26 @@ public class MainActivity extends AppCompatActivity{
 
             //박스 마진 설정
             btn_linearParams.setMargins(0, btn_marginTop, 0, btn_marginBottom);
+            btn_linearParams.gravity= Gravity.CENTER_HORIZONTAL;
+
             erasebtn_linearParams.setMargins(erase_marginLeft, erase_marginTop, 0, erase_marginBottom);
             imgFire_linearParams.setMargins(fire_marginLeft, fire_marginTop, 0, fire_marginBottom);
             txtSeq_linearParams.setMargins(txtSeq_marginLeft, txtSeq_marginTop, 0, txtSeq_marginBottom);
 
             //습관제목 텍스트뷰 마진 설정
-            txtView_linearParams.setMargins(txt_marginLeft, txt_marginTop, 0, txt_marginBottom);
+            txtView_linearParams.setMargins(0, txt_marginTop, 0, txt_marginBottom);
+            txtView_linearParams.gravity = Gravity.CENTER_HORIZONTAL;
+/*
+            LinearLayout.LayoutParams ibtnEdit_relativeParams = new LinearLayout.LayoutParams(
+                    ibtnEditSetting_size, ibtnEditSetting_size);
+            LinearLayout.LayoutParams ibtnSetting_relativeParams = new LinearLayout.LayoutParams(
+                    ibtnEditSetting_size, ibtnEditSetting_size);
+            ibtnEdit_relativeParams.setMargins(ibtnEditSetting_marginSide, ibtnEditSetting_marginTop, 0, 0);
+            ibtnSetting_relativeParams.setMargins(0, ibtnEditSetting_marginTop, ibtnEditSetting_marginSide, 0);
+
+            ibtnSetting_relativeParams.gravity = Gravity.RIGHT;
+            ibtnEdit.setLayoutParams(ibtnEdit_relativeParams);
+            ibtnEdit.setLayoutParams(ibtnSetting_relativeParams);*/
 
 
             //습관 수만큼 박스 및 습관제목 텍스트뷰 생성
@@ -311,6 +331,8 @@ public class MainActivity extends AppCompatActivity{
                 imgFire[i] = new ImageView(this);
                 imgFire[i].setBackgroundResource(R.drawable.fire);
                 imgFire[i].setLayoutParams(imgFire_linearParams);
+                btn_x = boxBtnArr[i].getX();
+                btn_y = boxBtnArr[i].getY();
 
                 //연속일수 표시 로직
                 txtSequence[i] = new TextView(this);

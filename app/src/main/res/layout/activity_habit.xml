@@ -47,7 +47,7 @@
 
             <FrameLayout
                 android:id="@+id/fl_habit"
-                android:layout_width="360dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true">
 
