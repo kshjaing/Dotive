@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity{
     long[] createDateTimestamp;        //습관생성날짜 시간량
 
     Cursor cursor;
-    ImageButton ibtnSettings, ibtnEdit;
+    ImageButton ibtnSettings, ibtnDelete;
     ImageButton[] ibtnErase;
     ImageView[] imgFire;
     TextView[] txtSequence;
@@ -94,10 +94,10 @@ public class MainActivity extends AppCompatActivity{
         View view = getWindow().getDecorView();
 
         ibtnSettings = new ImageButton(this);
-        ibtnEdit = new ImageButton(this);
+        ibtnDelete = new ImageButton(this);
 
         ibtnSettings = (ImageButton) findViewById(R.id.ibtnSettings);
-        ibtnEdit = (ImageButton) findViewById(R.id.ibtnEdit);
+        ibtnDelete = (ImageButton) findViewById(R.id.ibtnDelete);
 
         getScreenSize(this);
         getStandardSize();
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity{
         });
 
         //편집버튼 클릭이벤트 부여
-        ibtnEdit.setOnClickListener(new View.OnClickListener() {
+        ibtnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (totalHabit > 0) {
@@ -206,18 +206,18 @@ public class MainActivity extends AppCompatActivity{
             sv.setBackgroundColor(Color.parseColor("#FFEBD3"));
             getWindow().setStatusBarColor(Color.parseColor("#FFEBD3"));
             view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-            ibtnEdit.setBackgroundResource(R.drawable.edit_dark);
+            ibtnDelete.setBackgroundResource(R.drawable.delete_dark);
             ibtnSettings.setBackgroundResource(R.drawable.settings_dark);
-            ibtnEdit.setAlpha(0);
+            ibtnDelete.setAlpha(0);
             ibtnSettings.setAlpha(0);
         }
 
         else {
             sv.setBackgroundColor(Color.parseColor("#272B36"));
             getWindow().setStatusBarColor(Color.parseColor("#272B36"));
-            ibtnEdit.setBackgroundResource(R.drawable.edit);
+            ibtnDelete.setBackgroundResource(R.drawable.delete);
             ibtnSettings.setBackgroundResource(R.drawable.settings);
-            ibtnEdit.setAlpha(0);
+            ibtnDelete.setAlpha(0);
             ibtnSettings.setAlpha(0);
         }
 
@@ -493,9 +493,9 @@ public class MainActivity extends AppCompatActivity{
         //메인액티비티로 돌아왔을 때 다크모드 체크
         if (isDarkmode == 0) {
             sv.setBackgroundColor(Color.parseColor("#FFEBD3"));
-            ibtnEdit.setBackgroundResource(R.drawable.edit_dark);
+            ibtnDelete.setBackgroundResource(R.drawable.delete_dark);
             ibtnSettings.setBackgroundResource(R.drawable.settings_dark);
-            ibtnEdit.setAlpha(0);
+            ibtnDelete.setAlpha(0);
             ibtnSettings.setAlpha(0);
             for (int i = 0; i < totalHabit; i++) {
                 boxBtnArr[i].setBackgroundResource(R.drawable.custom_mainbox);
@@ -505,9 +505,9 @@ public class MainActivity extends AppCompatActivity{
 
         else {
             sv.setBackgroundColor(Color.parseColor("#272B36"));
-            ibtnEdit.setBackgroundResource(R.drawable.edit);
+            ibtnDelete.setBackgroundResource(R.drawable.delete);
             ibtnSettings.setBackgroundResource(R.drawable.settings);
-            ibtnEdit.setAlpha(0);
+            ibtnDelete.setAlpha(0);
             ibtnSettings.setAlpha(0);
             for (int i = 0; i < totalHabit; i++) {
                 boxBtnArr[i].setBackgroundResource(R.drawable.custom_mainbox_dark);

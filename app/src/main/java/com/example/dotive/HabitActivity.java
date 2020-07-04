@@ -47,8 +47,7 @@ public class HabitActivity extends Activity {
     public static int dayIndex = 0;
     public static int[] oneIndex;                         //진행도 문자열에서 1이 어느 인덱스에 있는지 담는 배열
     Button[] boxHabitArr;                   //목표일수만큼 버튼 생성
-    ImageButton ibtnBack;          //뒤로가기 버튼
-    androidx.appcompat.widget.Toolbar toolbar;
+    ImageButton ibtnBack, ibtnEdit;          //뒤로가기 버튼, 편집버튼
     TextView txtHabitName, txtObjectDays, txtDate;         //습관명, 버튼 속 날짜 텍스트
     SimpleDateFormat dateFormat;
     Calendar calendar;
@@ -73,11 +72,22 @@ public class HabitActivity extends Activity {
         txtObjectDays = new TextView(this);
         dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일 (E)", Locale.KOREAN);
         ibtnBack = new ImageButton(this);
-        toolbar = new Toolbar(this);
+        ibtnEdit = new ImageButton(this);
+
 
         ibtnBack = findViewById(R.id.ibtnBack);
-        toolbar = findViewById(R.id.toolbar);
+        ibtnEdit = findViewById(R.id.ibtnEdit);
         View view = getWindow().getDecorView();
+
+
+        //편집버튼 클릭이벤트
+        ibtnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HabitActivity.this, EditActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
 
@@ -137,7 +147,7 @@ public class HabitActivity extends Activity {
             txtHabitName.setTextColor(Color.BLACK);
             txtObjectDays.setTextColor(Color.BLACK);
             ibtnBack.setBackgroundResource(R.drawable.arrow_back_dark);
-            toolbar.setBackgroundResource(R.drawable.actionbar_dark);
+            ibtnEdit.setBackgroundResource(R.drawable.edit_dark);
         }
 
         else {
@@ -146,7 +156,7 @@ public class HabitActivity extends Activity {
             txtHabitName.setTextColor(Color.WHITE);
             txtObjectDays.setTextColor(Color.WHITE);
             ibtnBack.setBackgroundResource(R.drawable.arrow_back);
-            toolbar.setBackgroundResource(R.drawable.actionbar);
+            ibtnEdit.setBackgroundResource(R.drawable.edit);
         }
 
 
@@ -376,7 +386,7 @@ public class HabitActivity extends Activity {
             txtHabitName.setTextColor(Color.BLACK);
             txtObjectDays.setTextColor(Color.BLACK);
             ibtnBack.setBackgroundResource(R.drawable.arrow_back_dark);
-            toolbar.setBackgroundResource(R.drawable.actionbar_dark);
+            ibtnEdit.setBackgroundResource(R.drawable.edit_dark);
         }
 
         else {
@@ -384,7 +394,7 @@ public class HabitActivity extends Activity {
             txtHabitName.setTextColor(Color.WHITE);
             txtObjectDays.setTextColor(Color.WHITE);
             ibtnBack.setBackgroundResource(R.drawable.arrow_back);
-            toolbar.setBackgroundResource(R.drawable.actionbar);
+            ibtnEdit.setBackgroundResource(R.drawable.edit);
         }
 
     }
