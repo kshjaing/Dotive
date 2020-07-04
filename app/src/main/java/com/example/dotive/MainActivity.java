@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity { //AppCompatActivity
     LinearLayout linearLayout5; //연속 일 수 옆에 불 모양 아이콘
 
     //습관 개수에따라 버튼 증가
-    static int TotalHabit = 1;
+    static int TotalHabit = 0;
 
     //습관 테이블 개수 (0이면 값이 존재하지 않음)
     int Habits_Table_Count = 0;
@@ -536,7 +536,17 @@ public class MainActivity extends AppCompatActivity { //AppCompatActivity
                 else { //체크 안했다. 0일째
                     Continue_index = 0;
                 }
+            }
 
+            if(Continue_index ==0) {
+                if(habitcount == 1) { //어제 생성한날 (예외처리)
+                    if(Integer.parseInt(Arr_Btn_Progress[0]) == 1) {
+                        Continue_index = 1;
+                    }
+                    else {
+                        Continue_index = 0;
+                    }
+                }
             }
             /*if(0 == habitcount) {
                 //오늘이 습관 생성한날이므로 누르면 1일쨰 되어야한다.

@@ -39,6 +39,8 @@ public class CreateActivity extends AppCompatActivity {
     EditText edit_Habit_Day_Num; //습관 목표일 수 (ex: 30일 목표 공부하기, -> 30일 동그라미 배열 생성)
     TextView Warning_Habit_Name; //습관명 비어있을 경우 경고
     TextView Warning_Habit_Num; //습관 목표일 수 비어있을 경우 경고
+    //db에서 다크모드 값 , 언어 값
+    public int DB_darkmode = 3; // 1 = > 다크 , 기본값 : 0
 
     static String[] Arr_habit_progress; //습관 진행도 배열로 저장
 
@@ -103,13 +105,17 @@ public class CreateActivity extends AppCompatActivity {
 
 
                     //Setting 테이블 최초 한번 실행
-                    String Settings_Check = PreferenceManager.getString(context,"최초");
+                    /*String Settings_Check = PreferenceManager.getString(context,"최초");
 
                     if(Settings_Check.equals("")) {
                         PreferenceManager.setString(context,"최초","0");
                         //최초 실행
                         INSERT_Settings();
-                    }
+                    }*/
+
+                    QUERY_Settings();
+                    if(DB_darkmode ==3)
+                        INSERT_Settings();
 
                     //habits 테이블을 추가한다.
                     INSERT_Habits();
@@ -224,13 +230,35 @@ public class CreateActivity extends AppCompatActivity {
         String create_day = simpleDateFormat.format(CreateDay.getTime());
 
         values.put("habitCreateDay", create_day);
-        //values.put("habitCreateDay", "2020-06-26"); //테스트용
+        //values.put("habitCreateDay", "2020-07-2"); //테스트용
         Log.e("CreateActivity.java", "습관 생성 날짜: " + create_day);
 
         uri = getContentResolver().insert(uri, values);
         Log.e("CreateActivity.java", "INSERT 결과 : " + uri.toString());
     }
 
+    public void QUERY_Settings() {
+        try {
+            String uriString = "content://com.example.dotive/Settings";
+            Uri uri = new Uri.Builder().build().parse(uriString);
+
+            String[] columns = new String[] {"darkmode","language"};
+            Cursor cursor = getContentResolver().query(uri, columns, null, null, null);
+            Log.e("MainActivity.java", "QUERY 결과 (Settings) : " + cursor.getCount());
+
+            while (cursor.moveToNext()) {
+                int darkmode = cursor.getInt(cursor.getColumnIndex(columns[0]));
+                //String language = cursor.getString(cursor.getColumnIndex(columns[1]));
+
+                DB_darkmode = darkmode;
+                //DB_language = language;
+
+                Log.e("MainActivity.java", "Settings 레코드 " + darkmode + ", ");
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
     public void openColorPicker() {
