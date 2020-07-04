@@ -256,38 +256,60 @@ public class HabitActivity extends AppCompatActivity {
             Habit_Buttons[i] = new Button(this);
             ll_habit.addView(Habit_Buttons[i]);
             Habit_Buttons[i].setText(a);//DateCount[index]
-
             Habit_Buttons[i].setLayoutParams(textView_LinearParams);
             Habit_Buttons[i].setTypeface(typeface);
             Habit_Buttons[i].setTextSize(testSize3);
             Habit_Buttons[i].setPadding(habit_padding_Left_Right,habit_padding_Top_Bottom,habit_padding_Left_Right,habit_padding_Top_Bottom);
 
-            if(DB_darkmode == 0) Habit_Buttons[i].setTextColor(Color.BLACK);
-            else Habit_Buttons[i].setTextColor(Color.WHITE);
+
+
 
 
             if(Integer.parseInt(Arr_Progress[index]) == 1)
             {
-                if(DB_darkmode == 0) Habit_Buttons[i].setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
-                else Habit_Buttons[i].setBackgroundResource(R.drawable.habitbtn_border_round);
+                if(DB_darkmode == 0) {
+                    Habit_Buttons[i].setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
+                    Habit_Buttons[i].setTextColor(Color.WHITE);
+                }
+                else {
+                    Habit_Buttons[i].setBackgroundResource(R.drawable.habitbtn_border_round);
+                    Habit_Buttons[i].setTextColor(Color.BLACK);
+                }
 
                 Habit_Buttons[i].setTag("1");
-                Habit_Buttons[i].setTextColor(Color.BLACK);
+
             }
             else
             {
-                if(DB_darkmode == 0) Habit_Buttons[i].setBackgroundResource(R.drawable.habitbtn_border_round_dark);
-                else Habit_Buttons[i].setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+                if(DB_darkmode == 0) {
+                    Habit_Buttons[i].setBackgroundResource(R.drawable.habitbtn_border_round);
+                    Habit_Buttons[i].setTextColor(Color.BLACK);
+                }
+                else {
+                    Habit_Buttons[i].setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+                    Habit_Buttons[i].setTextColor(Color.WHITE);
+                }
                 Habit_Buttons[i].setTag("0");
-                Habit_Buttons[i].setTextColor(Color.WHITE);
+
             }
 
+            //오늘 날짜 버튼 관련
             if(index == 0) {
                 a = DateCount[i];
                 a = a.replace("-",".");
+
                 Habit_Buttons[index].setText(a + " (오늘)");
-                if(DB_darkmode == 0) Habit_Buttons[index].setBackgroundResource(R.drawable.habitbtn_border_round_stroke);
-                else Habit_Buttons[index].setBackgroundResource(R.drawable.habitbtn_border_round_stroke_dark);
+
+                if(DB_darkmode == 0) {
+                    Habit_Buttons[index].setBackgroundResource(R.drawable.habitbtn_border_round_stroke);
+                    Habit_Buttons[index].setTextColor(Color.BLACK);
+                }
+
+                else {
+                    Habit_Buttons[index].setBackgroundResource(R.drawable.habitbtn_border_round_stroke_dark);
+                    Habit_Buttons[index].setTextColor(Color.WHITE);
+                }
+
 
                 Habit_Buttons[index].setLayoutParams(textView_LinearParams);
                 Habit_Buttons[index].setTypeface(typeface);
@@ -296,7 +318,15 @@ public class HabitActivity extends AppCompatActivity {
 
                 if(Integer.parseInt(Arr_Progress[i]) == 1)
                 {
-                    Habit_Buttons[index].setBackgroundResource(R.drawable.habitbtn_border_round);
+                    if(DB_darkmode == 0) {
+                        Habit_Buttons[index].setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
+                        Habit_Buttons[index].setTextColor(Color.WHITE);
+                    }
+                    else {
+                        Habit_Buttons[index].setBackgroundResource(R.drawable.habitbtn_border_round);
+                        Habit_Buttons[index].setTextColor(Color.BLACK);
+                    }
+
                     Habit_Buttons[index].setTag("1");
                 }
             }
@@ -316,16 +346,31 @@ public class HabitActivity extends AppCompatActivity {
                         ///
 
                         if(Habit_Buttons[q].getText().toString().contains("(오늘)")) {
-                            if(DB_darkmode == 0) Habit_Buttons[q].setBackgroundResource(R.drawable.habitbtn_border_round_stroke);
-                            else Habit_Buttons[q].setBackgroundResource(R.drawable.habitbtn_border_round_stroke_dark);
+                            if(DB_darkmode == 0) {
+                                Habit_Buttons[q].setBackgroundResource(R.drawable.habitbtn_border_round_stroke);
+                                Habit_Buttons[q].setTextColor(Color.BLACK);
+                            }
+                            else {
+                                Habit_Buttons[q].setBackgroundResource(R.drawable.habitbtn_border_round_stroke_dark);
+                                Habit_Buttons[q].setTextColor(Color.WHITE);
+                            }
                         }
                         else {
-                            if(DB_darkmode == 0) Habit_Buttons[q].setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
-                            else Habit_Buttons[q].setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+                            if(DB_darkmode == 0) {
+                                Habit_Buttons[q].setBackgroundResource(R.drawable.habitbtn_border_round);
+                                Habit_Buttons[q].setTextColor(Color.BLACK);
+                            }
+                            else {
+                                Habit_Buttons[q].setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+                                Habit_Buttons[q].setTextColor(Color.WHITE);
+                            }
+
+
                         }
 
-                        Habit_Buttons[q].setTextColor(Color.WHITE);
+
                         Habit_Buttons[q].setTag("0");
+
                         //UPDATE_Habits2();
 
                         for(int j = 0; j<Integer.parseInt(objdays); j++){
@@ -340,8 +385,30 @@ public class HabitActivity extends AppCompatActivity {
                         Arr_Progress[b] = "1"; //변환된 값
 
                         ///
-                        Habit_Buttons[q].setBackgroundResource(R.drawable.habitbtn_border_round);
-                        Habit_Buttons[q].setTextColor(Color.BLACK);
+                        if(Habit_Buttons[q].getText().toString().contains("(오늘)")) {
+                            if(DB_darkmode == 0) {
+                                Habit_Buttons[q].setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
+                                Habit_Buttons[q].setTextColor(Color.WHITE);
+
+                            }
+                            else {
+                                Habit_Buttons[q].setBackgroundResource(R.drawable.habitbtn_border_round);
+                                Habit_Buttons[q].setTextColor(Color.BLACK);
+                            }
+                        }
+                        else {
+                            if(DB_darkmode == 0) {
+                                Habit_Buttons[q].setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
+                                Habit_Buttons[q].setTextColor(Color.WHITE);
+                            }
+                            else {
+                                Habit_Buttons[q].setBackgroundResource(R.drawable.habitbtn_border_round);
+                                Habit_Buttons[q].setTextColor(Color.BLACK);
+                            }
+                        }
+
+
+
                         Habit_Buttons[q].setTag("1");
                         //UPDATE_Habits2();
                         for(int j = 0; j<Integer.parseInt(objdays); j++){

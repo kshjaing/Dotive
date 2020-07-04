@@ -1,5 +1,6 @@
 package com.example.dotive;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -13,11 +14,14 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.OrientationHelper;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -52,6 +56,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -59,20 +64,30 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
+
+import com.applikeysolutions.cosmocalendar.settings.appearance.ConnectedDayIconPosition;
+import com.applikeysolutions.cosmocalendar.settings.lists.DisabledDaysCriteria;
+import com.applikeysolutions.cosmocalendar.settings.lists.DisabledDaysCriteriaType;
+import com.applikeysolutions.cosmocalendar.settings.lists.connected_days.ConnectedDays;
+import com.applikeysolutions.cosmocalendar.utils.SelectionType;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeInfoDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeSuccessDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeWarningDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 import com.pranavpandey.android.dynamic.toasts.DynamicToast;
 
-import org.w3c.dom.Text;
+
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.TreeSet;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import petrov.kristiyan.colorpicker.CustomDialog;
 
 /*
  * 20200703 수정
@@ -88,7 +103,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class MainActivity extends AppCompatActivity { //AppCompatActivity
 
-    private AppBarConfiguration mAppBarConfiguration;
+    //private AppBarConfiguration mAppBarConfiguration;
 
     //얼럿
     SweetAlertDialog sweetAlertDialog;
@@ -108,7 +123,10 @@ public class MainActivity extends AppCompatActivity { //AppCompatActivity
 
     LinearLayout linearLayout4; //연속 일 수 레이아웃
     TextView[] Arr_TextView_continue_day;
-    LinearLayout linearLayout5; //연속 일 수 옆에 불 모양 아이콘
+    //LinearLayout linearLayout5; //연속 일 수 옆에 불 모양 아이콘
+
+
+    LinearLayout linear1;
 
     //습관 개수에따라 버튼 증가
     static int TotalHabit = 0;
@@ -168,6 +186,10 @@ public class MainActivity extends AppCompatActivity { //AppCompatActivity
 
     //불타는 아이콘
     //ImageView imageView;
+    CustomDialog customDialog;
+
+    //calendarView
+    com.applikeysolutions.cosmocalendar.view.CalendarView calendarView;
 
     public Point getScreenSize(Activity activity) {
         Display display = activity.getWindowManager().getDefaultDisplay();
@@ -264,6 +286,11 @@ public class MainActivity extends AppCompatActivity { //AppCompatActivity
         //불타는 아이콘
         //linearLayout5 = (LinearLayout) view_main.findViewById(R.id.linearLayout5);
 
+        //calendarView
+        calendarView = (com.applikeysolutions.cosmocalendar.view.CalendarView) view_main.findViewById(R.id.calendar_view);
+
+        linear1 = (LinearLayout) view_main.findViewById(R.id.linear1);
+
         Day();
         Painting_Circle1 painting_circle = new Painting_Circle1(this); //CustomView.java 파일을 불러와 실행
 
@@ -286,7 +313,7 @@ public class MainActivity extends AppCompatActivity { //AppCompatActivity
 
 
         //java 코드로 폰트 설정 (xml 에서 fontFamily)
-        Typeface typeface = Typeface.createFromAsset(getAssets(), "font/katuri.ttf");
+        final Typeface typeface = Typeface.createFromAsset(getAssets(), "font/katuri.ttf");
 
 
         //이렇게 안하면 픽셀로 값이 저장되기에 dp로 계산하는 것. value 에서 원하는 숫자로 고치면 됨.
@@ -382,51 +409,6 @@ public class MainActivity extends AppCompatActivity { //AppCompatActivity
         //마진값 dp로 설정. (연속 0일째)
         Arr_TextView_continue_day_LinearParams.setMargins(Continue_margin_left,Continue_margin_top,0,Continue_margin_bottom);
 
-        /*//margin 설정을 위해 (margin을 Layout에서 부모값을 정하고 그곳에 마진을 아까 dp 계산한 int 값으로 지정.)
-        LinearLayout.LayoutParams Button_LinearParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-
-        //margin 설정 2 (textview 설정 (물 1L 마시기)
-        LinearLayout.LayoutParams textView_LinearParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-
-        //margin 설정 3 (delete 버튼 위치 (x 버튼))
-        LinearLayout.LayoutParams DeleteButton_LinearParams = new LinearLayout.LayoutParams(
-                DeleteButton_width,
-                DeleteButton_height
-        );
-
-        //margin 설정 4 (연속 0일째)
-        LinearLayout.LayoutParams Arr_TextView_continue_day_LinearParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-
-        //margin 값 dp로 설정해주는중. 버튼에 적용
-        Button_LinearParams.leftMargin = btn_margin_left; //size
-        Button_LinearParams.bottomMargin = btn_margin_bottom;
-        Button_LinearParams.topMargin = btn_margin_top;
-
-        //margin 값 dp로 설정해주는중. textview 적용 (물 1L 마시기)
-        textView_LinearParams.leftMargin = textView_btn_margin_left; //size
-        textView_LinearParams.bottomMargin = textView_btn_margin_bottom;
-        textView_LinearParams.topMargin = textView_btn_margin_top;
-
-        //margin 값 dp로 설정해주는중. delete 버튼 적용
-        DeleteButton_LinearParams.setMargins(delete_marin_left,delete_margin_top,0,delete_margin_bottom);
-
-        //delete 버튼 크기를 위해
-        //delete 버튼 width, height
-        DeleteButton_LinearParams.width = 100;
-        DeleteButton_LinearParams.height = 100;
-
-        //마진값 dp로 설정. (연속 0일째)
-        Arr_TextView_continue_day_LinearParams.setMargins(Continue_magin_left,Continue_magin_top,0,Continue_magin_bottom);
-*/
 
         Table_Count = Habits_Table_Count;
         Arr_Btn_Habit = new Button[Table_Count - 1];
@@ -668,57 +650,116 @@ public class MainActivity extends AppCompatActivity { //AppCompatActivity
                 }
             });
 
+            final int q = i; //색깔 값을 위해 i를 전역변수로 변경
             //편집 삭제 버튼 리스너
             DeleteButton[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    sweetAlertDialog = new SweetAlertDialog(MainActivity.this,SweetAlertDialog.WARNING_TYPE);
-                        sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
-                        sweetAlertDialog.setTitleText("삭제");
-                        sweetAlertDialog.setContentText("습관을 삭제하시겠습니까?");
-                        sweetAlertDialog.setConfirmText("확인");
-                        sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                try {
-                                    String uriString = "content://com.example.dotive/Habits";
-                                    Uri uri = new Uri.Builder().build().parse(uriString);
+                    new AwesomeSuccessDialog(MainActivity.this)
+                            .setTitle(R.string._dialog_name)
+                            .setMessage(R.string._dialog_Message)
+                            //.setDialogBodyBackgroundColor(R.color._dialog_background_Dark)
+                            .setDialogIconAndColor(R.drawable.ic_dialog_warning,R.color._dialogColor)
+                            .setColoredCircle(R.color._dialog_background_Dark)
+                            .setCancelable(true)
+                            .setPositiveButtonText(getString(R.string._dialog_yes_button))
+                            .setNegativeButtonText(getString(R.string._dialog_no_button))
+                            .setNegativeButtonbackgroundColor(R.color._dialog_cancel)
+                            .setPositiveButtonClick(new Closure() {
+                                @Override
+                                public void exec() {
+                                    try {
+                                        String uriString = "content://com.example.dotive/Habits";
+                                        Uri uri = new Uri.Builder().build().parse(uriString);
 
-                                    String selection = "id=?";
-                                    String[] selectionArgs = new String[] {Arr_ID[a]};
+                                        String selection = "id=?";
+                                        String[] selectionArgs = new String[] {Arr_ID[a]};
 
-                                    int count = getContentResolver().delete(uri, selection, selectionArgs);
-                                    Log.e("MainActivity.java", "delete 실행 : " + count);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                                        int count = getContentResolver().delete(uri, selection, selectionArgs);
+                                        Log.e("MainActivity.java", "delete 실행 : " + count);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    int tintColor;
+                                    int backgroundColor;
+                                    backgroundColor = Integer.parseInt(Arr_Habit_Color[q]);
+                                    if(DB_darkmode == 0) tintColor = Color.BLACK;
+                                    else tintColor = Color.WHITE;
+
+                                    DynamicToast.Config.getInstance()
+                                            .setIconSize(50)
+                                            .setTextSize(50)
+                                            .setTextTypeface(typeface);
+
+                                    DynamicToast.make(getApplicationContext(),"습관을 삭제하였습니다",tintColor,backgroundColor).show();
+
+                                    //액티비티 갱신 (db 업데이트 사항 적용)
+                                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    startActivity(intent);
                                 }
-                                /*sweetAlertDialog.dismissWithAnimation();
-                                sweetAlertDialog.setTitleText("삭제!");
-                                sweetAlertDialog.setContentText("습관을 삭제했습니다.");
-                                sweetAlertDialog.setConfirmText("확인");
-                                sweetAlertDialog.setConfirmClickListener(null);
-                                sweetAlertDialog.changeAlertType(SweetAlertDialog.SUCCESS_TYPE);
-                                */
+                            })
+                            .setNegativeButtonClick(new Closure() {
+                                @Override
+                                public void exec() {
 
-                                DynamicToast.makeSuccess(MainActivity.this, "습관을 삭제하였습니다!").show();
-                                //Toast myToast = Toast.makeText(getApplicationContext(),"습관을 삭제하였습니다", Toast.LENGTH_SHORT);
-                                //myToast.show();
+                                }
+                            })
+                            .show();
 
-                                //액티비티 갱신 (db 업데이트 사항 적용)
-                                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
+                    /*sweetAlertDialog = new SweetAlertDialog(MainActivity.this,SweetAlertDialog.WARNING_TYPE);
+                    sweetAlertDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+                    sweetAlertDialog.setTitleText("삭제");
+                    sweetAlertDialog.setContentText("습관을 삭제하시겠습니까?");
+                    sweetAlertDialog.setConfirmText("확인");
+                    sweetAlertDialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            try {
+                                String uriString = "content://com.example.dotive/Habits";
+                                Uri uri = new Uri.Builder().build().parse(uriString);
+
+                                String selection = "id=?";
+                                String[] selectionArgs = new String[] {Arr_ID[a]};
+
+                                int count = getContentResolver().delete(uri, selection, selectionArgs);
+                                Log.e("MainActivity.java", "delete 실행 : " + count);
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                        });
-                        sweetAlertDialog.setCancelText("취소");
-                        sweetAlertDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                            @Override
-                            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                sweetAlertDialog.cancel();
-                            }
-                        });
-                        sweetAlertDialog.show();
+
+                            int tintColor;
+                            int backgroundColor;
+                            backgroundColor = Integer.parseInt(Arr_Habit_Color[q]);
+                            if(DB_darkmode == 0) tintColor = Color.BLACK;
+                            else tintColor = Color.WHITE;
+
+                            DynamicToast.Config.getInstance()
+                                    .setIconSize(50)
+                                    .setTextSize(50)
+                                    .setTextTypeface(typeface);
+
+                            DynamicToast.make(getApplicationContext(),"습관을 삭제하였습니다",tintColor,backgroundColor).show();
+                            //DynamicToast.makeSuccess(MainActivity.this, "습관을 삭제하였습니다!").show();
+                            //Toast myToast = Toast.makeText(getApplicationContext(),"습관을 삭제하였습니다", Toast.LENGTH_SHORT);
+                            //myToast.show();
+
+                            //액티비티 갱신 (db 업데이트 사항 적용)
+                            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        }
+                    });
+                    sweetAlertDialog.setCancelText("취소");
+                    sweetAlertDialog.setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.cancel();
+                        }
+                    });
+                    sweetAlertDialog.show();*/
 
                     /*AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                             builder.setTitle("삭제");
@@ -777,6 +818,7 @@ public class MainActivity extends AppCompatActivity { //AppCompatActivity
         Btn_Habit_Add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //calendarView
                 Intent intent1 = new Intent(MainActivity.this, CreateActivity.class);
                 startActivity(intent1);
             }
@@ -798,7 +840,6 @@ public class MainActivity extends AppCompatActivity { //AppCompatActivity
 
         //설정 버튼 (다크모드 등)
         ibtnSettings = (ImageButton) view_main.findViewById(R.id.ibtnSettings);
-
         ibtnSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -811,18 +852,20 @@ public class MainActivity extends AppCompatActivity { //AppCompatActivity
 
         //db에서 다크모드 여부 확인 하고 변경
         if (DB_darkmode == 0) {
-            scrollView.setBackgroundColor(Color.parseColor("#FFEBD3")); //뒷 배경 설정
+            //scrollView.setBackgroundColor(Color.parseColor("#FFEBD3")); //뒷 배경 설정
+            linear1.setBackgroundColor(Color.parseColor("#FFEBD3"));
             ibtnEdit.setBackgroundResource(R.drawable.delete_dark);
             ibtnSettings.setBackgroundResource(R.drawable.settings_dark);
         }
         else {
-            scrollView.setBackgroundColor(Color.parseColor("#272B36")); //뒷 배경 설정
+            //scrollView.setBackgroundColor(Color.parseColor("#272B36")); //뒷 배경 설정
+            linear1.setBackgroundColor(Color.parseColor("#272B36"));
             ibtnEdit.setBackgroundResource(R.drawable.delete);
             ibtnSettings.setBackgroundResource(R.drawable.settings);
         }
 
         //제일 위에 있는것을 뿌려야 차례대로 child view 들이 보인다. (중간꺼든 다른거 넣으면 페이탈 에러)
-        setContentView(scrollView);
+        setContentView(linear1);
     }
 
     @Override
@@ -1226,7 +1269,6 @@ public class MainActivity extends AppCompatActivity { //AppCompatActivity
                 }
             }
         }
-
         private void init(Context context) {
             paint = new Paint();
             stroke = new Paint();

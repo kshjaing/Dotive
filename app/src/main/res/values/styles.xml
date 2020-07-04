@@ -21,4 +21,11 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <style name="ColorPickerDialog.Dark" parent="Theme.AppCompat.Dialog">
+        <item name="redColor">#FF5252</item>
+        <item name="greenColor">#FF5252</item>
+        <item name="blueColor">#536DFE</item>
+        <item name="neutralColor">#FFFFFF</item>
+    </style>
+
 </resources>

@@ -21,6 +21,8 @@ import androidx.annotation.ColorRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.pranavpandey.android.dynamic.toasts.DynamicToast;
+
 import org.w3c.dom.Text;
 
 public class SettingsActivity extends Activity {
@@ -143,7 +145,9 @@ public class SettingsActivity extends Activity {
             @Override
             public void onClick(View v) {
                 truncateHabits();
-                Toast.makeText(SettingsActivity.this, "모든 습관을 삭제했습니다.", Toast.LENGTH_SHORT).show();
+
+                DynamicToast.makeWarning(getApplicationContext(),"모든 습관을 삭제했습니다").show();
+                //Toast.makeText(SettingsActivity.this, "모든 습관을 삭제했습니다.", Toast.LENGTH_SHORT).show();
             }
         });
     }

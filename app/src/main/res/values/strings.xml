@@ -12,4 +12,10 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+
+    <!--dialog-->
+    <string name="_dialog_name">삭제</string>
+    <string name="_dialog_Message">습관을 삭제하시겠습니까?</string>
+    <string name="_dialog_yes_button">확인</string>
+    <string name="_dialog_no_button">취소</string>
 </resources>

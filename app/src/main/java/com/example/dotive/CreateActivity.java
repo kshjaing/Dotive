@@ -1,7 +1,10 @@
 package com.example.dotive;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
 import android.content.ContentUris;
@@ -25,6 +28,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import io.karn.notify.Notify;
+import io.karn.notify.NotifyCreator;
+import io.karn.notify.entities.NotifyConfig;
+import me.jfenn.colorpickerdialog.dialogs.ColorPickerDialog;
+import me.jfenn.colorpickerdialog.interfaces.OnColorPickedListener;
 import petrov.kristiyan.colorpicker.ColorPicker;
 
 public class CreateActivity extends AppCompatActivity {
@@ -93,7 +101,8 @@ public class CreateActivity extends AppCompatActivity {
         btn_Color_Picker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openColorPicker();
+                Color();
+                //openColorPicker();
             }
         });
 
@@ -120,7 +129,8 @@ public class CreateActivity extends AppCompatActivity {
                     }
                     Intent intent = new Intent(CreateActivity.this, MainActivity.class);
                     intent.putExtra("Habit_Name",edit_Habit_Name.getText().toString()); //습관명
-                    intent.putExtra("Habit_Color",Integer.toString(int_Color)); //습관 색깔
+                    //intent.putExtra("Habit_Color",Integer.toString(int_Color)); //습관 색깔
+                    intent.putExtra("Habit_Color",Get_intColor);
                     intent.putExtra("edit_Habit_Day_Num",edit_Habit_Day_Num.getText().toString()); //습관 목표일 수
                     MainActivity.TotalHabit +=1; //습관 버튼 개수
 
@@ -140,6 +150,7 @@ public class CreateActivity extends AppCompatActivity {
 
                     //habits 테이블을 추가한다.
                     INSERT_Habits();
+
 
 
                     startActivity(intent);
@@ -250,8 +261,8 @@ public class CreateActivity extends AppCompatActivity {
         Calendar CreateDay = Calendar.getInstance(); //현재 날짜 (=습관 생성 날짜)
         String create_day = simpleDateFormat.format(CreateDay.getTime());
 
-        //values.put("habitCreateDay", create_day);
-        values.put("habitCreateDay", "2020-06-26"); //테스트용
+        values.put("habitCreateDay", create_day);
+        //values.put("habitCreateDay", "2020-06-26"); //테스트용
         Log.e("CreateActivity.java", "습관 생성 날짜: " + create_day);
 
         uri = getContentResolver().insert(uri, values);
@@ -281,6 +292,88 @@ public class CreateActivity extends AppCompatActivity {
         }
     }
 
+    public void Color() {
+        new ColorPickerDialog()
+                .withTheme(R.style.ColorPickerDialog_Dark)
+                .withCornerRadius(30)
+                .withTitle("습관 색상 선택")
+                .withAlphaEnabled(false)
+                .withColor(Color.parseColor("#b39ddb")) //default color
+                .withPresets(
+                        Color.parseColor("#ffab91"),
+                        Color.parseColor("#F48FB1"),
+                        Color.parseColor("#ce93d8"),
+                        Color.parseColor("#b39ddb"),
+                        Color.parseColor("#9fa8da"),
+                        Color.parseColor("#90caf9"),
+                        Color.parseColor("#81d4fa"),
+                        Color.parseColor("#80deea"),
+                        Color.parseColor("#80cbc4"),
+                        Color.parseColor("#c5e1a5"),
+                        Color.parseColor("#e6ee9c"),
+                        Color.parseColor("#fff59d"),
+                        Color.parseColor("#ffe082"),
+                        Color.parseColor("#bcaaa4"),
+
+                        Color.parseColor("#ffebee"),
+                        Color.parseColor("#fce4ec"),
+                        Color.parseColor("#f3e5f5"),
+                        Color.parseColor("#ede7f6"),
+                        Color.parseColor("#e8eaf6"),
+                        Color.parseColor("#e3f2fd"),
+                        Color.parseColor("#e1f5fe"),
+                        Color.parseColor("#e0f7fa"),
+                        Color.parseColor("#e0f2f1"),
+                        Color.parseColor("#e8f5e9"),
+                        Color.parseColor("#f1f8e9"),
+                        Color.parseColor("#f9fbe7"),
+                        Color.parseColor("#fffde7"),
+                        Color.parseColor("#fff3e0"),
+                        Color.parseColor("#fbe9e7"),
+                        Color.parseColor("#efebe9"),
+                        Color.parseColor("#fafafa"),
+                        Color.parseColor("#eceff1"),
+
+                        Color.parseColor("#f44336"),
+                        Color.parseColor("#e91e63"),
+                        Color.parseColor("#9c27b0"),
+                        Color.parseColor("#673ab7"),
+                        Color.parseColor("#3f51b5"),
+                        Color.parseColor("#2196f3"),
+                        Color.parseColor("#03a9f4"),
+                        Color.parseColor("#00bcd4"),
+                        Color.parseColor("#009688"),
+                        Color.parseColor("#4caf50"),
+                        Color.parseColor("#8bc34a"),
+                        Color.parseColor("#cddc39"),
+                        Color.parseColor("#ffeb3b"),
+                        Color.parseColor("#ffc107"),
+                        Color.parseColor("#ff9800"),
+                        Color.parseColor("#ff5722"),
+                        Color.parseColor("#795548"),
+                        Color.parseColor("#9e9e9e"),
+                        Color.parseColor("#607d8b"),
+                        Color.parseColor("#ffffff"),
+                        Color.parseColor("#000000")
+                )
+                .withListener(new OnColorPickedListener<ColorPickerDialog>() {
+                    @Override
+                    public void onColorPicked(@Nullable ColorPickerDialog pickerView, int color) {
+                        //layout.setBackgroundColor(color);//목표색 배경에 뿌림 (test 용)
+                        //View_Color_Pick.setText(Integer.toString(color)); //컬러값 int로 전달 (ex : -21615)
+                        int_Color = color; //intent 할 변수
+                        String hexColor = String.format("#%06X", (0xFFFFFFF & color)); //습관 색 int - > hex 변환
+                        View_Color_Pick.setText(hexColor);
+                        Log.e("습관컬러 hex 변환",View_Color_Pick.getText().toString());
+                        Get_intColor = color;
+
+                        if(Get_intColor != 0)
+                            btn_Color_Picker.setBackgroundColor(color);
+                    }
+                })
+                .show(getSupportFragmentManager(), "Color Picker");
+
+    }
 
     public void openColorPicker() {
         final ColorPicker colorPicker = new ColorPicker(this); //ColorPicker 객체 생성
@@ -317,6 +410,7 @@ public class CreateActivity extends AppCompatActivity {
                         int_Color = color; //intent 할 변수
                         String hexColor = String.format("#%06X", (0xFFFFFFF & color)); //습관 색 int - > hex 변환
                         View_Color_Pick.setText(hexColor);
+                        Log.e("습관컬러 int 값 ",String.valueOf(color));
                         Log.e("습관컬러 hex 변환",View_Color_Pick.getText().toString());
                         Get_intColor = color;
 
