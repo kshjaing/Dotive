@@ -24,11 +24,10 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="18dp"
-                android:src="@drawable/arrow_back_dark"
                 android:scaleType="centerInside"
                 android:background="@android:color/transparent"/>
 
-            <ImageButton
+            <!--<ImageButton
                 android:id="@+id/ibtnEdit"
                 android:layout_width="45dp"
                 android:layout_height="45dp"
@@ -38,7 +37,7 @@
                 android:scaleType="centerInside"
                 android:src="@drawable/edit_dark"
                 android:background="@android:color/transparent">
-            </ImageButton>
+            </ImageButton> -->
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/rlDays"

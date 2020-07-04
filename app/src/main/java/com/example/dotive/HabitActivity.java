@@ -16,6 +16,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -54,6 +56,8 @@ public class HabitActivity extends AppCompatActivity {
     //db에서 다크모드 값 , 언어 값
     public int DB_darkmode = 0; // 1 = > 다크 , 기본값 : 0
 
+    ScrollView sv_habit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +83,8 @@ public class HabitActivity extends AppCompatActivity {
 
         txtHabitName = (TextView) view_habit.findViewById(R.id.txtHabitName);
         txtObjDays = (TextView) view_habit.findViewById(R.id.txtObjDays);
+
+        sv_habit = (ScrollView) view_habit.findViewById(R.id.sv_habit);
 
         long Long_Get_Count = 0;
         Intent intent = getIntent(); //데이터 받아옴
@@ -143,10 +149,16 @@ public class HabitActivity extends AppCompatActivity {
         if(DB_darkmode == 0) {
             txtHabitName.setTextColor(Color.BLACK);
             txtObjDays.setTextColor(Color.BLACK);
+            sv_habit.setBackgroundColor(Color.parseColor("#FFEBD3"));
+            ibtnBack.setBackgroundResource(R.drawable.arrow_back_dark);
+            getWindow().setStatusBarColor(Color.parseColor("#FFEBD3"));
         }
         else {
             txtHabitName.setTextColor(Color.WHITE);
             txtObjDays.setTextColor(Color.WHITE);
+            sv_habit.setBackgroundColor(Color.parseColor("#272B36"));
+            ibtnBack.setBackgroundResource(R.drawable.arrow_back);
+            getWindow().setStatusBarColor(Color.parseColor("#272B36"));
         }
 
         //들어온 습관 수 ex : 5일을 목표로 한다면
@@ -224,19 +236,23 @@ public class HabitActivity extends AppCompatActivity {
             Habit_Buttons[i].setTextSize(testSize3);
             Habit_Buttons[i].setPadding(habit_padding_Left_Right,habit_padding_Top_Bottom,habit_padding_Left_Right,habit_padding_Top_Bottom);
 
+            if(DB_darkmode == 0) Habit_Buttons[i].setTextColor(Color.BLACK);
+            else Habit_Buttons[i].setTextColor(Color.WHITE);
 
 
             if(Integer.parseInt(Arr_Progress[index]) == 1)
             {
                 if(DB_darkmode == 0) Habit_Buttons[i].setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
-                else Habit_Buttons[i].setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+                else Habit_Buttons[i].setBackgroundResource(R.drawable.habitbtn_border_round);
 
                 Habit_Buttons[i].setTag("1");
+                Habit_Buttons[i].setTextColor(Color.BLACK);
             }
             else
             {
-                Habit_Buttons[i].setBackgroundResource(R.drawable.habitbtn_border_round);
+                Habit_Buttons[i].setBackgroundResource(R.drawable.habitbtn_border_round_dark);
                 Habit_Buttons[i].setTag("0");
+                Habit_Buttons[i].setTextColor(Color.WHITE);
             }
 
             if(index == 0) {
@@ -253,7 +269,7 @@ public class HabitActivity extends AppCompatActivity {
 
                 if(Integer.parseInt(Arr_Progress[i]) == 1)
                 {
-                    Habit_Buttons[index].setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
+                    Habit_Buttons[index].setBackgroundResource(R.drawable.habitbtn_border_round);
                     Habit_Buttons[index].setTag("1");
                 }
             }
@@ -272,10 +288,16 @@ public class HabitActivity extends AppCompatActivity {
 
                         ///
 
-                        if(Habit_Buttons[q].getText().toString().contains("(오늘)"))
-                            Habit_Buttons[q].setBackgroundResource(R.drawable.habitbtn_border_round_stroke);
-                        else
-                            Habit_Buttons[q].setBackgroundResource(R.drawable.habitbtn_border_round);
+                        if(Habit_Buttons[q].getText().toString().contains("(오늘)")) {
+                            if(DB_darkmode == 0) Habit_Buttons[q].setBackgroundResource(R.drawable.habitbtn_border_round_stroke);
+                            else Habit_Buttons[q].setBackgroundResource(R.drawable.habitbtn_border_round_stroke_dark);
+                        }
+                        else {
+                            if(DB_darkmode == 0) Habit_Buttons[q].setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
+                            else Habit_Buttons[q].setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+                        }
+
+                        Habit_Buttons[q].setTextColor(Color.WHITE);
                         Habit_Buttons[q].setTag("0");
                         //UPDATE_Habits2();
 
@@ -291,7 +313,8 @@ public class HabitActivity extends AppCompatActivity {
                         Arr_Progress[b] = "1"; //변환된 값
 
                         ///
-                        Habit_Buttons[q].setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
+                        Habit_Buttons[q].setBackgroundResource(R.drawable.habitbtn_border_round);
+                        Habit_Buttons[q].setTextColor(Color.BLACK);
                         Habit_Buttons[q].setTag("1");
                         //UPDATE_Habits2();
                         for(int j = 0; j<Integer.parseInt(objdays); j++){
