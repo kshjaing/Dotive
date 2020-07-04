@@ -2,15 +2,18 @@ package com.example.dotive;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -57,6 +60,24 @@ public class HabitActivity extends AppCompatActivity {
     public int DB_darkmode = 0; // 1 = > 다크 , 기본값 : 0
 
     ScrollView sv_habit;
+
+    int standardSize_X, standardSize_Y;
+    float density;
+
+    public Point getScreenSize(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        return size;
+    }
+    public void getStandardSize() {
+        Point ScreenSize =getScreenSize(this);
+        density = getResources().getDisplayMetrics().density;
+
+        standardSize_X = (int) (ScreenSize.x / density);
+        standardSize_Y = (int) (ScreenSize.y / density);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +156,10 @@ public class HabitActivity extends AppCompatActivity {
         int habit_Margin_Top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, getResources().getDisplayMetrics());
         int habit_Margin_Bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, getResources().getDisplayMetrics());
 
+        //습관 크기
+        int Width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, standardSize_X * 0.18f , getResources().getDisplayMetrics());
+        int Height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, standardSize_X * 0.85f, getResources().getDisplayMetrics());
+
         Typeface typeface = Typeface.createFromAsset(getAssets(), "font/katuri.ttf");
         QUERY_Settings();
 
@@ -191,13 +216,14 @@ public class HabitActivity extends AppCompatActivity {
 
         //margin 설정
         LinearLayout.LayoutParams textView_LinearParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
 
         //textView_LinearParams.weight = 1.0f; //일정한 비율을 맞춘다.
-        textView_LinearParams.gravity = Gravity.CENTER;
+       // textView_LinearParams.gravity = Gravity.CENTER;
         textView_LinearParams.setMargins(0,habit_Margin_Top,0,habit_Margin_Bottom);
+
         //반복해서 버튼 추가
         for(int i = 0; i<ButtonCount; i++)
         {
@@ -250,7 +276,8 @@ public class HabitActivity extends AppCompatActivity {
             }
             else
             {
-                Habit_Buttons[i].setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+                if(DB_darkmode == 0) Habit_Buttons[i].setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+                else Habit_Buttons[i].setBackgroundResource(R.drawable.habitbtn_border_round_dark);
                 Habit_Buttons[i].setTag("0");
                 Habit_Buttons[i].setTextColor(Color.WHITE);
             }
