@@ -1,11 +1,13 @@
 package com.example.dotive;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,12 +23,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import org.w3c.dom.Text;
 
-import static com.example.dotive.MainActivity.context_main;
-import static com.example.dotive.MainActivity.db;
-import static com.example.dotive.MainActivity.dbHelper;
-import static com.example.dotive.MainActivity.isDarkmode;
-import static com.example.dotive.MainActivity.totalHabit;
-
 public class SettingsActivity extends Activity {
 
     Context context_settings;
@@ -36,12 +32,18 @@ public class SettingsActivity extends Activity {
     Integer intDarkmodeCount;
     TextView txtSettingLetters;
     Cursor cursor = null;
-
-
+    public int new_darkmode = 0; //이제 변할 값.
+    public int old_darkmode = 0; //MainActivity 에서 받아온 값
+    public int darkmode = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        Intent intent2 = getIntent();
+        old_darkmode = intent2.getIntExtra("DARK_MODE",3);
+        darkmode = old_darkmode;
+        Log.e("SettingActivity.java", "다크모드 값 : " + old_darkmode);
 
         cl = new ConstraintLayout(this);
         sv = new ScrollView(this);
@@ -62,96 +64,26 @@ public class SettingsActivity extends Activity {
         btnConfirm = findViewById(R.id.btn_confirm);
         txtSettingLetters = findViewById(R.id.txtSettingLetters);
 
-        dbHelper.getWritableDatabase();
-        //db.execSQL("DELETE FROM Settings");
-
-        //설정 테이블에 자료가 있는지 판단할수있는 count 변수
-        cursor = db.rawQuery("SELECT COUNT(darkmode) FROM Settings", null);
-        while(cursor.moveToNext()) {
-            intDarkmodeCount = Integer.parseInt(cursor.getString(0));
+        if (darkmode == 1) {
+            btnDarkmode.setText("라이트모드로 전환");
+            sv.setBackgroundColor(Color.parseColor("#272B36"));
+            cl.setBackgroundColor(Color.parseColor("#272B36"));
+            getWindow().setStatusBarColor(Color.parseColor("#272B36"));
+            txtSettingLetters.setTextColor(Color.WHITE);
+            btnDarkmode.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+            btnLanguage.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+            btnRating.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+            btnContact.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+            btnReset.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+            btnConfirm.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+            btnDarkmode.setTextColor(Color.WHITE);
+            btnLanguage.setTextColor(Color.WHITE);
+            btnRating.setTextColor(Color.WHITE);
+            btnContact.setTextColor(Color.WHITE);
+            btnReset.setTextColor(Color.WHITE);
+            btnConfirm.setTextColor(Color.WHITE);
         }
-
-        //테이블에 아무런 내용이 없을때, 즉 처음에만 insert문 실행
-        if (intDarkmodeCount == 0) {
-            insertSettings();
-        }
-
-        cursor = db.rawQuery("SELECT darkmode FROM Settings", null);
-        while(cursor.moveToNext()) {
-            isDarkmode = Integer.parseInt(cursor.getString(0));
-        }
-
-        btnDarkmode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isDarkmode == 0) {
-                    isDarkmode = 1;
-                    ((Button) v).setText("라이트모드로 전환");
-                    sv.setBackgroundColor(Color.parseColor("#272B36"));
-                    cl.setBackgroundColor(Color.parseColor("#272B36"));
-                    getWindow().setStatusBarColor(Color.parseColor("#272B36"));
-                    txtSettingLetters.setTextColor(Color.WHITE);
-                    btnDarkmode.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
-                    btnLanguage.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
-                    btnRating.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
-                    btnContact.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
-                    btnReset.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
-                    btnConfirm.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
-                    btnDarkmode.setTextColor(Color.WHITE);
-                    btnLanguage.setTextColor(Color.WHITE);
-                    btnRating.setTextColor(Color.WHITE);
-                    btnContact.setTextColor(Color.WHITE);
-                    btnReset.setTextColor(Color.WHITE);
-                    btnConfirm.setTextColor(Color.WHITE);
-                }
-                else {
-                    View view = getWindow().getDecorView();
-                    isDarkmode = 0;
-                    ((Button) v).setText("다크모드로 전환");
-                    sv.setBackgroundColor(Color.parseColor("#FFEBD3"));
-                    cl.setBackgroundColor(Color.parseColor("#FFEBD3"));
-                    getWindow().setStatusBarColor(Color.parseColor("#FFEBD3"));
-                    view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-                    txtSettingLetters.setTextColor(Color.BLACK);
-                    btnDarkmode.setBackgroundResource(R.drawable.habitbtn_border_round);
-                    btnLanguage.setBackgroundResource(R.drawable.habitbtn_border_round);
-                    btnRating.setBackgroundResource(R.drawable.habitbtn_border_round);
-                    btnContact.setBackgroundResource(R.drawable.habitbtn_border_round);
-                    btnReset.setBackgroundResource(R.drawable.habitbtn_border_round);
-                    btnConfirm.setBackgroundResource(R.drawable.habitbtn_border_round);
-                    btnDarkmode.setTextColor(Color.BLACK);
-                    btnLanguage.setTextColor(Color.BLACK);
-                    btnRating.setTextColor(Color.BLACK);
-                    btnContact.setTextColor(Color.BLACK);
-                    btnReset.setTextColor(Color.BLACK);
-                    btnConfirm.setTextColor(Color.BLACK);
-                }
-            }
-        });
-
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateSettings();
-                Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        btnReset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                totalHabit = 0;
-                truncateHabits();
-                Toast.makeText(SettingsActivity.this, "모든 것이 잿더미가 됐어요!", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    protected void onStart() {
-        super.onStart();
-
-        if (isDarkmode == 0) {
+        else {
             View view = getWindow().getDecorView();
             btnDarkmode.setText("다크모드로 전환");
             sv.setBackgroundColor(Color.parseColor("#FFEBD3"));
@@ -173,7 +105,51 @@ public class SettingsActivity extends Activity {
             btnConfirm.setTextColor(Color.BLACK);
         }
 
-        else {
+        btnDarkmode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(old_darkmode == 0) new_darkmode = 1;
+                else new_darkmode = 0;
+
+
+                String uriString = "content://com.example.dotive/Settings";
+                Uri uri = new Uri.Builder().build().parse(uriString);
+
+                //String selection = "darkmode = ?";
+                //String[] selectionArgs = new String[] {String.valueOf(new_darkmode)};
+                ContentValues updateValue = new ContentValues();
+                updateValue.put("darkmode",new_darkmode);
+                int count = getContentResolver().update(uri,updateValue,null,null);
+                Log.e("SettingActivity.java", "다크모드 변경 : "+ old_darkmode + " - > " + new_darkmode);
+
+                if(new_darkmode == 0) old_darkmode = 0;
+                else old_darkmode = 1;
+
+                darkmode = new_darkmode;
+                setDarkmode();
+            }
+        });
+
+        btnConfirm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                truncateHabits();
+                Toast.makeText(SettingsActivity.this, "모든 습관을 삭제했습니다.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void setDarkmode() {
+        if (darkmode == 1) {
             btnDarkmode.setText("라이트모드로 전환");
             sv.setBackgroundColor(Color.parseColor("#272B36"));
             cl.setBackgroundColor(Color.parseColor("#272B36"));
@@ -192,18 +168,30 @@ public class SettingsActivity extends Activity {
             btnReset.setTextColor(Color.WHITE);
             btnConfirm.setTextColor(Color.WHITE);
         }
+        else {
+            View view = getWindow().getDecorView();
+            btnDarkmode.setText("다크모드로 전환");
+            sv.setBackgroundColor(Color.parseColor("#FFEBD3"));
+            cl.setBackgroundColor(Color.parseColor("#FFEBD3"));
+            getWindow().setStatusBarColor(Color.parseColor("#FFEBD3"));
+            view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            txtSettingLetters.setTextColor(Color.BLACK);
+            btnDarkmode.setBackgroundResource(R.drawable.habitbtn_border_round);
+            btnLanguage.setBackgroundResource(R.drawable.habitbtn_border_round);
+            btnRating.setBackgroundResource(R.drawable.habitbtn_border_round);
+            btnContact.setBackgroundResource(R.drawable.habitbtn_border_round);
+            btnReset.setBackgroundResource(R.drawable.habitbtn_border_round);
+            btnConfirm.setBackgroundResource(R.drawable.habitbtn_border_round);
+            btnDarkmode.setTextColor(Color.BLACK);
+            btnLanguage.setTextColor(Color.BLACK);
+            btnRating.setTextColor(Color.BLACK);
+            btnContact.setTextColor(Color.BLACK);
+            btnReset.setTextColor(Color.BLACK);
+            btnConfirm.setTextColor(Color.BLACK);
+        }
     }
-
-    protected void onDestroy() {
-        super.onDestroy();
-        db.close();
-        dbHelper.close();
-        cursor.close();
-    }
-
     @Override
     public void onBackPressed() {
-        updateSettings();
         Intent intent = new Intent(SettingsActivity.this, MainActivity.class);
         startActivity(intent);
     }
@@ -211,19 +199,14 @@ public class SettingsActivity extends Activity {
 
     //Habits 테이블의 모든 데이터 지우기
     public void truncateHabits() {
-        MainActivity.dbHelper.getWritableDatabase();
-        db.execSQL("DROP TABLE Habits");
-        db.execSQL("CREATE TABLE Habits (id INTEGER PRIMARY KEY AUTOINCREMENT, habitName TEXT, habitColor TEXT," +
-                "objDays INTEGER, habitProgress TEXT, createDate TEXT)");
-    }
+        try {
+            String uriString = "content://com.example.dotive/Habits";
+            Uri uri = new Uri.Builder().build().parse(uriString);
 
-    public void insertSettings() {
-        MainActivity.dbHelper.getWritableDatabase();
-        db.execSQL("INSERT INTO Settings (darkmode, habitStrength, language) Values('" + isDarkmode + "', '기본', '한국어')");
-    }
-
-    public void updateSettings() {
-        MainActivity.dbHelper.getWritableDatabase();
-        db.execSQL("UPDATE Settings SET darkmode = '" + isDarkmode +"', habitStrength = '기본', language = '한국어'");
+            int count = getContentResolver().delete(uri, null, null);
+            Log.e("SettingsActivity.java", "delete 실행 : " + count);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

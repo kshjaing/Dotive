@@ -19,7 +19,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon,android:label">
         <activity android:name=".SettingActivity" />
-
+        <activity android:name=".SettingsActivity" />
         <provider
             android:name=".Provider"
             android:authorities="com.example.dotive"

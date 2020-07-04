@@ -799,7 +799,7 @@ public class MainActivity extends AppCompatActivity { //AppCompatActivity
         ibtnSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 intent.putExtra("DARK_MODE", DB_darkmode); //습관 id 증가 값.
                 Log.e("MainActivity.java","다크모드 값 전달 : " + DB_darkmode);
                 startActivity(intent);
