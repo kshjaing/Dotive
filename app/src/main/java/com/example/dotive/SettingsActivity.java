@@ -32,9 +32,9 @@ public class SettingsActivity extends Activity {
     Context context_settings;
     ConstraintLayout cl;
     ScrollView sv;
-    Button btnDarkmode, btnLanguage, btnRating, btnContact, btnReset, btnConfirm;
+    Button btnDarkmode, btnLanguage, btnRating, btnReset, btnConfirm;
     Integer intDarkmodeCount;
-    TextView txtSettingLetters;
+    TextView txtSettingLetters, txtDev, txtDotive;
     Cursor cursor = null;
 
 
@@ -48,19 +48,22 @@ public class SettingsActivity extends Activity {
         btnDarkmode = new Button(this);
         btnLanguage = new Button(this);
         btnRating  = new Button(this);
-        btnContact = new Button(this);
         btnReset = new Button(this);
         btnConfirm = new Button(this);
         txtSettingLetters = new TextView(this);
+        txtDotive = new TextView(this);
+        txtDev = new TextView(this);
+
         cl = findViewById(R.id.clSettings);
         sv = findViewById(R.id.svSettings);
         btnDarkmode = findViewById(R.id.btn_darkmode);
         btnLanguage = findViewById(R.id.btn_language);
         btnRating = findViewById(R.id.btn_rating);
-        btnContact = findViewById(R.id.btn_contact);
         btnReset = findViewById(R.id.btn_reset);
         btnConfirm = findViewById(R.id.btn_confirm);
         txtSettingLetters = findViewById(R.id.txtSettingLetters);
+        txtDotive = findViewById(R.id.txtDotive);
+        txtDev = findViewById(R.id.txtDev);
 
         dbHelper.getWritableDatabase();
         //db.execSQL("DELETE FROM Settings");
@@ -91,16 +94,16 @@ public class SettingsActivity extends Activity {
                     cl.setBackgroundColor(Color.parseColor("#272B36"));
                     getWindow().setStatusBarColor(Color.parseColor("#272B36"));
                     txtSettingLetters.setTextColor(Color.WHITE);
+                    txtDotive.setTextColor(Color.WHITE);
+                    txtDev.setTextColor(Color.WHITE);
                     btnDarkmode.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
                     btnLanguage.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
                     btnRating.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
-                    btnContact.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
                     btnReset.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
                     btnConfirm.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
                     btnDarkmode.setTextColor(Color.WHITE);
                     btnLanguage.setTextColor(Color.WHITE);
                     btnRating.setTextColor(Color.WHITE);
-                    btnContact.setTextColor(Color.WHITE);
                     btnReset.setTextColor(Color.WHITE);
                     btnConfirm.setTextColor(Color.WHITE);
                 }
@@ -113,16 +116,16 @@ public class SettingsActivity extends Activity {
                     getWindow().setStatusBarColor(Color.parseColor("#FFEBD3"));
                     view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                     txtSettingLetters.setTextColor(Color.BLACK);
+                    txtDotive.setTextColor(Color.BLACK);
+                    txtDev.setTextColor(Color.parseColor("#737373"));
                     btnDarkmode.setBackgroundResource(R.drawable.habitbtn_border_round);
                     btnLanguage.setBackgroundResource(R.drawable.habitbtn_border_round);
                     btnRating.setBackgroundResource(R.drawable.habitbtn_border_round);
-                    btnContact.setBackgroundResource(R.drawable.habitbtn_border_round);
                     btnReset.setBackgroundResource(R.drawable.habitbtn_border_round);
                     btnConfirm.setBackgroundResource(R.drawable.habitbtn_border_round);
                     btnDarkmode.setTextColor(Color.BLACK);
                     btnLanguage.setTextColor(Color.BLACK);
                     btnRating.setTextColor(Color.BLACK);
-                    btnContact.setTextColor(Color.BLACK);
                     btnReset.setTextColor(Color.BLACK);
                     btnConfirm.setTextColor(Color.BLACK);
                 }
@@ -159,16 +162,16 @@ public class SettingsActivity extends Activity {
             getWindow().setStatusBarColor(Color.parseColor("#FFEBD3"));
             view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             txtSettingLetters.setTextColor(Color.BLACK);
+            txtDotive.setTextColor(Color.BLACK);
+            txtDev.setTextColor(Color.parseColor("#a3a3a3"));
             btnDarkmode.setBackgroundResource(R.drawable.habitbtn_border_round);
             btnLanguage.setBackgroundResource(R.drawable.habitbtn_border_round);
             btnRating.setBackgroundResource(R.drawable.habitbtn_border_round);
-            btnContact.setBackgroundResource(R.drawable.habitbtn_border_round);
             btnReset.setBackgroundResource(R.drawable.habitbtn_border_round);
             btnConfirm.setBackgroundResource(R.drawable.habitbtn_border_round);
             btnDarkmode.setTextColor(Color.BLACK);
             btnLanguage.setTextColor(Color.BLACK);
             btnRating.setTextColor(Color.BLACK);
-            btnContact.setTextColor(Color.BLACK);
             btnReset.setTextColor(Color.BLACK);
             btnConfirm.setTextColor(Color.BLACK);
         }
@@ -179,16 +182,16 @@ public class SettingsActivity extends Activity {
             cl.setBackgroundColor(Color.parseColor("#272B36"));
             getWindow().setStatusBarColor(Color.parseColor("#272B36"));
             txtSettingLetters.setTextColor(Color.WHITE);
+            txtDotive.setTextColor(Color.WHITE);
+            txtDev.setTextColor(Color.WHITE);
             btnDarkmode.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
             btnLanguage.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
             btnRating.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
-            btnContact.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
             btnReset.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
             btnConfirm.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
             btnDarkmode.setTextColor(Color.WHITE);
             btnLanguage.setTextColor(Color.WHITE);
             btnRating.setTextColor(Color.WHITE);
-            btnContact.setTextColor(Color.WHITE);
             btnReset.setTextColor(Color.WHITE);
             btnConfirm.setTextColor(Color.WHITE);
         }

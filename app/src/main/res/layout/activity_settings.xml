@@ -2,6 +2,7 @@
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
@@ -9,6 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clSettings"
             android:layout_width="match_parent"
@@ -19,7 +21,7 @@
                 android:id="@+id/txtSettingLetters"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="80dp"
+                android:layout_marginTop="70dp"
                 android:fontFamily="@font/katuri"
                 android:text="설정"
                 android:textColor="#000000"
@@ -32,7 +34,7 @@
                 android:id="@+id/btn_rating"
                 android:layout_width="360dp"
                 android:layout_height="60dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="24dp"
                 android:background="@drawable/button_border_round"
                 android:fontFamily="@font/katuri"
                 android:paddingStart="60dp"
@@ -44,33 +46,19 @@
                 app:layout_constraintTop_toBottomOf="@+id/btn_language" />
 
             <Button
-                android:id="@+id/btn_contact"
-                android:layout_width="360dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/button_border_round"
-                android:fontFamily="@font/katuri"
-                android:paddingStart="60dp"
-                android:text="문의는 메일로 주세요!"
-                android:textAlignment="textStart"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_rating" />
-
-            <Button
                 android:id="@+id/btn_confirm"
                 android:layout_width="100dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="48dp"
-                android:layout_marginBottom="50dp"
+                android:layout_marginTop="60dp"
+                android:layout_marginBottom="12dp"
                 android:background="@drawable/button_border_round"
                 android:fontFamily="@font/katuri"
                 android:text="확인"
                 android:textAlignment="center"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/imageView"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btn_reset" />
 
@@ -78,7 +66,7 @@
                 android:id="@+id/btn_reset"
                 android:layout_width="360dp"
                 android:layout_height="60dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="24dp"
                 android:background="@drawable/button_border_round"
                 android:fontFamily="@font/katuri"
                 android:paddingStart="60dp"
@@ -86,8 +74,9 @@
                 android:textAlignment="textStart"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.509"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_contact" />
+                app:layout_constraintTop_toBottomOf="@+id/btn_rating" />
 
             <Button
                 android:id="@+id/btn_language"
@@ -108,7 +97,7 @@
                 android:id="@+id/btn_darkmode"
                 android:layout_width="360dp"
                 android:layout_height="60dp"
-                android:layout_marginTop="64dp"
+                android:layout_marginTop="60dp"
                 android:background="@drawable/button_border_round"
                 android:fontFamily="@font/katuri"
                 android:paddingStart="60dp"
@@ -118,6 +107,49 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtSettingLetters" />
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="64dp"
+                android:background="@drawable/dotive_icon"
+                android:scaleType="centerInside"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.36"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_confirm" />
+
+            <TextView
+                android:id="@+id/txtDotive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="75dp"
+                android:fontFamily="@font/katuri"
+                android:text="Dotive"
+                android:textColor="#535353"
+                android:textColorHint="#353535"
+                android:textSize="25sp"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toBottomOf="@+id/btn_confirm" />
+
+            <TextView
+                android:id="@+id/txtDev"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="142dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="142dp"
+                android:layout_marginBottom="120dp"
+                android:fontFamily="@font/katuri"
+                android:text="Developed by 김성훈"
+                android:textColor="#737373"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtDotive"
+                app:layout_constraintVertical_bias="1.0" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
