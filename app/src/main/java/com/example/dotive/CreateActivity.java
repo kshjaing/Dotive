@@ -74,7 +74,7 @@ public class CreateActivity extends AppCompatActivity {
         txtObjdays = (TextView) findViewById(R.id.txtObjdays);
 
         QUERY_Settings();
-        if(DB_darkmode == 0) {
+        if(DB_darkmode == 0 || DB_darkmode == 3) {
             layout.setBackgroundColor(Color.rgb(255,235,211));
             getWindow().setStatusBarColor(Color.parseColor("#FFEBD3"));
             txtHabit.setTextColor(Color.BLACK);
@@ -250,8 +250,8 @@ public class CreateActivity extends AppCompatActivity {
         Calendar CreateDay = Calendar.getInstance(); //현재 날짜 (=습관 생성 날짜)
         String create_day = simpleDateFormat.format(CreateDay.getTime());
 
-        values.put("habitCreateDay", create_day);
-        //values.put("habitCreateDay", "2020-07-2"); //테스트용
+        //values.put("habitCreateDay", create_day);
+        values.put("habitCreateDay", "2020-06-26"); //테스트용
         Log.e("CreateActivity.java", "습관 생성 날짜: " + create_day);
 
         uri = getContentResolver().insert(uri, values);

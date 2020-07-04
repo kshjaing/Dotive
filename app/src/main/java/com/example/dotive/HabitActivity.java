@@ -4,9 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -45,6 +50,10 @@ public class HabitActivity extends AppCompatActivity {
 
     TextView txtHabitName;
     TextView txtObjDays;
+
+    //db에서 다크모드 값 , 언어 값
+    public int DB_darkmode = 0; // 1 = > 다크 , 기본값 : 0
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,10 +114,40 @@ public class HabitActivity extends AppCompatActivity {
 
         //DB에서 습관 진행도 0000에서 변환된 값은 1로 변환시킨다.
         //DB 변환은 여기서 업데이트를 한 후  값만 넘긴다.
+        //습관명
+        int textSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 12, getResources().getDisplayMetrics());
+        //습관 목표일 수
+        int testSize2 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics());
+        //습관 각 요일
+        int testSize3 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
 
+        //습관 각 요일 패딩 좌우
+        int habit_padding_Left_Right = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 15, getResources().getDisplayMetrics());
+        int habit_padding_Top_Bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, getResources().getDisplayMetrics());
+
+        //습관 각 요일 마진 탑 바텀
+        int habit_Margin_Top = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, getResources().getDisplayMetrics());
+        int habit_Margin_Bottom = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 25, getResources().getDisplayMetrics());
+
+        Typeface typeface = Typeface.createFromAsset(getAssets(), "font/katuri.ttf");
+        QUERY_Settings();
+
+        txtHabitName.setTextSize(textSize);
+        txtObjDays.setTextSize(testSize2);
+        txtHabitName.setTypeface(typeface);
+        txtObjDays.setTypeface(typeface);
         txtHabitName.setText(name);
         txtObjDays.setText("(목표 "+ objdays+"일)");
 
+
+        if(DB_darkmode == 0) {
+            txtHabitName.setTextColor(Color.BLACK);
+            txtObjDays.setTextColor(Color.BLACK);
+        }
+        else {
+            txtHabitName.setTextColor(Color.WHITE);
+            txtObjDays.setTextColor(Color.WHITE);
+        }
 
         //들어온 습관 수 ex : 5일을 목표로 한다면
         //그중 오늘 날짜 위치만큼 버튼을 생성한다.
@@ -138,6 +177,15 @@ public class HabitActivity extends AppCompatActivity {
 
         Arr_Progress = progress.split(","); //습관 진행도 값 (Ex: 0,0,0,0,0 ) 잘라 배열에 저장.
 
+        //margin 설정
+        LinearLayout.LayoutParams textView_LinearParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+
+        //textView_LinearParams.weight = 1.0f; //일정한 비율을 맞춘다.
+        textView_LinearParams.gravity = Gravity.CENTER;
+        textView_LinearParams.setMargins(0,habit_Margin_Top,0,habit_Margin_Bottom);
         //반복해서 버튼 추가
         for(int i = 0; i<ButtonCount; i++)
         {
@@ -171,9 +219,18 @@ public class HabitActivity extends AppCompatActivity {
             ll_habit.addView(Habit_Buttons[i]);
             Habit_Buttons[i].setText(a);//DateCount[index]
 
+            Habit_Buttons[i].setLayoutParams(textView_LinearParams);
+            Habit_Buttons[i].setTypeface(typeface);
+            Habit_Buttons[i].setTextSize(testSize3);
+            Habit_Buttons[i].setPadding(habit_padding_Left_Right,habit_padding_Top_Bottom,habit_padding_Left_Right,habit_padding_Top_Bottom);
+
+
+
             if(Integer.parseInt(Arr_Progress[index]) == 1)
             {
-                Habit_Buttons[i].setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
+                if(DB_darkmode == 0) Habit_Buttons[i].setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
+                else Habit_Buttons[i].setBackgroundResource(R.drawable.habitbtn_border_round_dark);
+
                 Habit_Buttons[i].setTag("1");
             }
             else
@@ -186,7 +243,14 @@ public class HabitActivity extends AppCompatActivity {
                 a = DateCount[i];
                 a = a.replace("-",".");
                 Habit_Buttons[index].setText(a + " (오늘)");
-                Habit_Buttons[index].setBackgroundResource(R.drawable.habitbtn_border_round_stroke);
+                if(DB_darkmode == 0) Habit_Buttons[index].setBackgroundResource(R.drawable.habitbtn_border_round_stroke);
+                else Habit_Buttons[index].setBackgroundResource(R.drawable.habitbtn_border_round_stroke_dark);
+
+                Habit_Buttons[index].setLayoutParams(textView_LinearParams);
+                Habit_Buttons[index].setTypeface(typeface);
+                Habit_Buttons[index].setTextSize(testSize3);
+                Habit_Buttons[index].setPadding(habit_padding_Left_Right,habit_padding_Top_Bottom,habit_padding_Left_Right,habit_padding_Top_Bottom);
+
                 if(Integer.parseInt(Arr_Progress[i]) == 1)
                 {
                     Habit_Buttons[index].setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
@@ -273,6 +337,29 @@ public class HabitActivity extends AppCompatActivity {
         updateValue.put("habitProgress", New_Progress); //습관 진행도 (오늘날짜 변경됨)
         int count = getContentResolver().update(uri, updateValue, selection, selectionArgs);
         Log.e("HabitActivity.java","습관 변경한 레코드:"+ count);
+    }
+
+    public void QUERY_Settings() {
+        try {
+            String uriString = "content://com.example.dotive/Settings";
+            Uri uri = new Uri.Builder().build().parse(uriString);
+
+            String[] columns = new String[] {"darkmode","language"};
+            Cursor cursor = getContentResolver().query(uri, columns, null, null, null);
+            Log.e("MainActivity.java", "QUERY 결과 (Settings) : " + cursor.getCount());
+
+            while (cursor.moveToNext()) {
+                int darkmode = cursor.getInt(cursor.getColumnIndex(columns[0]));
+                //String language = cursor.getString(cursor.getColumnIndex(columns[1]));
+
+                DB_darkmode = darkmode;
+                //DB_language = language;
+
+                Log.e("MainActivity.java", "Settings 레코드 " + darkmode + ", ");
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /*public void UPDATE_Habits() {

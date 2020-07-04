@@ -23,23 +23,22 @@
                 android:layout_alignParentLeft="true"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="18dp"
                 android:src="@drawable/arrow_back_dark"
                 android:scaleType="centerInside"
                 android:background="@android:color/transparent"/>
 
             <ImageButton
-                android:id="@+id/ibtnBar"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:id="@+id/ibtnEdit"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="12dp"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/actionbar_dark"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
                 android:scaleType="centerInside"
-                android:background="@android:color/transparent"/>
+                android:src="@drawable/edit_dark"
+                android:background="@android:color/transparent">
+            </ImageButton>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/rlDays"
@@ -49,30 +48,9 @@
 
             <FrameLayout
                 android:id="@+id/fl_habit"
-                android:layout_width="360dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/txtHabitName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="습관 제목" />
-                    <TextView
-                        android:id="@+id/txtObjDays"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="습관일로부터 오늘" />
-
-                </LinearLayout>
-
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/sv_habit_Add">
                 <LinearLayout
                     android:id="@+id/ll_habit"
                     android:layout_width="match_parent"
@@ -80,8 +58,21 @@
                     android:orientation="vertical"
                     android:layout_marginTop="50dp"
                     android:layout_marginBottom="60dp">
+                    <TextView
+                        android:id="@+id/txtHabitName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:layout_marginBottom="25dp"
+                        android:text="습관 제목" />
+                    <TextView
+                        android:id="@+id/txtObjDays"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:text="습관일로부터 오늘" />
+
                 </LinearLayout>
-                </ScrollView>
             </FrameLayout>
         </RelativeLayout>
     </LinearLayout>
