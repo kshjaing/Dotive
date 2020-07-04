@@ -6,8 +6,9 @@
     <color name="Habit_Color"></color>
 
     <color name="_dialogColor">#FFFFFF</color>
+    <color name="black">#000000</color>
     <color name="background_Dark">#272B36</color>
-    <color name="_dialog_background_Dark">#78909c</color>
+    <color name="_dialog_background_Dark">#414b5c</color>
     <color name="background_white">#FFEBD3</color>
     <color name="_dialog_cancel">#d6d6d6</color>
 </resources>

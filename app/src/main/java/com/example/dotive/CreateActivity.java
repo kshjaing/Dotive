@@ -296,8 +296,11 @@ public class CreateActivity extends AppCompatActivity {
     }
 
     public void Color() {
+        int a;
+        if(DB_darkmode == 0) a = R.style.ColorPickerDialog;
+        else a = R.style.ColorPickerDialog_Dark;
         new ColorPickerDialog()
-                .withTheme(R.style.ColorPickerDialog_Dark)
+                .withTheme(a)
                 .withCornerRadius(30)
                 .withTitle("습관 색상 선택")
                 .withAlphaEnabled(false)
@@ -378,7 +381,7 @@ public class CreateActivity extends AppCompatActivity {
 
     }
 
-    public void openColorPicker() {
+    /*public void openColorPicker() {
         final ColorPicker colorPicker = new ColorPicker(this); //ColorPicker 객체 생성
 
         final ArrayList<String> colors = new ArrayList<>(); //배열에 원하는 색 담아둔다.
@@ -426,5 +429,5 @@ public class CreateActivity extends AppCompatActivity {
                         //취소할때
                     }
                 }).show();
-    }
+    }*/
 }

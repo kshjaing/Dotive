@@ -655,17 +655,30 @@ public class MainActivity extends AppCompatActivity { //AppCompatActivity
             DeleteButton[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    int back,back2,back3;
+                    if(DB_darkmode == 0) {
+                        back = R.color.background_white;
+                        back2 = R.color._dialogColor; //white;
+                        back3 = R.color.black;
+                    }
+                    else {
+                        back = R.color.background_Dark;
+                        back2 = R.color._dialog_background_Dark;
+                        back3 = R.color._dialogColor;
+                    }
                     new AwesomeSuccessDialog(MainActivity.this)
                             .setTitle(R.string._dialog_name)
                             .setMessage(R.string._dialog_Message)
-                            //.setDialogBodyBackgroundColor(R.color._dialog_background_Dark)
+                            .setDialogBodyBackgroundColor(back2)
                             .setDialogIconAndColor(R.drawable.ic_dialog_warning,R.color._dialogColor)
-                            .setColoredCircle(R.color._dialog_background_Dark)
+                            .setColoredCircle(back)
                             .setCancelable(true)
                             .setPositiveButtonText(getString(R.string._dialog_yes_button))
+                            .setPositiveButtonbackgroundColor(back)
                             .setNegativeButtonText(getString(R.string._dialog_no_button))
                             .setNegativeButtonbackgroundColor(R.color._dialog_cancel)
+                            .setNegativeButtonTextColor(back3)
+                            .setPositiveButtonTextColor(back3)
                             .setPositiveButtonClick(new Closure() {
                                 @Override
                                 public void exec() {
