@@ -88,6 +88,7 @@ public class SettingsActivity extends Activity {
                     isDarkmode = 1;
                     ((Button) v).setText("라이트모드로 전환");
                     sv.setBackgroundColor(Color.parseColor("#272B36"));
+                    cl.setBackgroundColor(Color.parseColor("#272B36"));
                     getWindow().setStatusBarColor(Color.parseColor("#272B36"));
                     txtSettingLetters.setTextColor(Color.WHITE);
                     btnDarkmode.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
@@ -108,6 +109,7 @@ public class SettingsActivity extends Activity {
                     isDarkmode = 0;
                     ((Button) v).setText("다크모드로 전환");
                     sv.setBackgroundColor(Color.parseColor("#FFEBD3"));
+                    cl.setBackgroundColor(Color.parseColor("#FFEBD3"));
                     getWindow().setStatusBarColor(Color.parseColor("#FFEBD3"));
                     view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
                     txtSettingLetters.setTextColor(Color.BLACK);
@@ -153,6 +155,7 @@ public class SettingsActivity extends Activity {
             View view = getWindow().getDecorView();
             btnDarkmode.setText("다크모드로 전환");
             sv.setBackgroundColor(Color.parseColor("#FFEBD3"));
+            cl.setBackgroundColor(Color.parseColor("#FFEBD3"));
             getWindow().setStatusBarColor(Color.parseColor("#FFEBD3"));
             view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             txtSettingLetters.setTextColor(Color.BLACK);
@@ -173,6 +176,7 @@ public class SettingsActivity extends Activity {
         else {
             btnDarkmode.setText("라이트모드로 전환");
             sv.setBackgroundColor(Color.parseColor("#272B36"));
+            cl.setBackgroundColor(Color.parseColor("#272B36"));
             getWindow().setStatusBarColor(Color.parseColor("#272B36"));
             txtSettingLetters.setTextColor(Color.WHITE);
             btnDarkmode.setBackgroundResource(R.drawable.habitbtn_border_round_dark);

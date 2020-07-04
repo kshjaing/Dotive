@@ -3,120 +3,125 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="800dp"
+    android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
     android:id="@+id/svSettings">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clSettings"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="800dp"
-        android:layout_gravity="center_horizontal">
+        android:layout_height="match_parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clSettings"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal">
 
-        <TextView
-            android:id="@+id/txtSettingLetters"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            android:fontFamily="@font/katuri"
-            android:text="설정"
-            android:textColor="#000000"
-            android:textSize="35sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/txtSettingLetters"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp"
+                android:fontFamily="@font/katuri"
+                android:text="설정"
+                android:textColor="#000000"
+                android:textSize="35sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/btn_rating"
-            android:layout_width="360dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="32dp"
-            android:background="@drawable/button_border_round"
-            android:fontFamily="@font/katuri"
-            android:paddingStart="60dp"
-            android:text="앱을 평가해주세요!"
-            android:textAlignment="textStart"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_language" />
+            <Button
+                android:id="@+id/btn_rating"
+                android:layout_width="360dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/button_border_round"
+                android:fontFamily="@font/katuri"
+                android:paddingStart="60dp"
+                android:text="앱을 평가해주세요!"
+                android:textAlignment="textStart"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_language" />
 
-        <Button
-            android:id="@+id/btn_contact"
-            android:layout_width="360dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/button_border_round"
-            android:fontFamily="@font/katuri"
-            android:paddingStart="60dp"
-            android:text="문의는 메일로 주세요!"
-            android:textAlignment="textStart"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_rating" />
+            <Button
+                android:id="@+id/btn_contact"
+                android:layout_width="360dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/button_border_round"
+                android:fontFamily="@font/katuri"
+                android:paddingStart="60dp"
+                android:text="문의는 메일로 주세요!"
+                android:textAlignment="textStart"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_rating" />
 
-        <Button
-            android:id="@+id/btn_confirm"
-            android:layout_width="100dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="48dp"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/button_border_round"
-            android:fontFamily="@font/katuri"
-            android:text="확인"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_reset" />
+            <Button
+                android:id="@+id/btn_confirm"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="48dp"
+                android:layout_marginBottom="50dp"
+                android:background="@drawable/button_border_round"
+                android:fontFamily="@font/katuri"
+                android:text="확인"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_reset" />
 
-        <Button
-            android:id="@+id/btn_reset"
-            android:layout_width="360dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="32dp"
-            android:background="@drawable/button_border_round"
-            android:fontFamily="@font/katuri"
-            android:paddingStart="60dp"
-            android:text="데이터 전체 초기화"
-            android:textAlignment="textStart"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_contact" />
+            <Button
+                android:id="@+id/btn_reset"
+                android:layout_width="360dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="32dp"
+                android:background="@drawable/button_border_round"
+                android:fontFamily="@font/katuri"
+                android:paddingStart="60dp"
+                android:text="데이터 전체 초기화"
+                android:textAlignment="textStart"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_contact" />
 
-        <Button
-            android:id="@+id/btn_language"
-            android:layout_width="360dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/button_border_round"
-            android:fontFamily="@font/katuri"
-            android:paddingStart="60dp"
-            android:text="언어"
-            android:textAlignment="textStart"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_darkmode" />
+            <Button
+                android:id="@+id/btn_language"
+                android:layout_width="360dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/button_border_round"
+                android:fontFamily="@font/katuri"
+                android:paddingStart="60dp"
+                android:text="언어"
+                android:textAlignment="textStart"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btn_darkmode" />
 
-        <Button
-            android:id="@+id/btn_darkmode"
-            android:layout_width="360dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="64dp"
-            android:background="@drawable/button_border_round"
-            android:fontFamily="@font/katuri"
-            android:paddingStart="60dp"
-            android:text="다크모드로 전환"
-            android:textAlignment="textStart"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtSettingLetters" />
+            <Button
+                android:id="@+id/btn_darkmode"
+                android:layout_width="360dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="64dp"
+                android:background="@drawable/button_border_round"
+                android:fontFamily="@font/katuri"
+                android:paddingStart="60dp"
+                android:text="다크모드로 전환"
+                android:textAlignment="textStart"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtSettingLetters" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+
 </ScrollView>
