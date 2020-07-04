@@ -612,11 +612,14 @@ public class MainActivity extends AppCompatActivity { //AppCompatActivity
                 //status bar 글자 색상
                 getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
+                Arr_TextView_continue_day[i].setTextColor(Color.BLACK);
             }
             else {
                 GradientDrawable bgShape = (GradientDrawable) Arr_Btn_Habit[i].getBackground().getCurrent(); //GradientDrawable 그대로 하면 오류남 마지막에 .getCurrent() 중요
                 bgShape.setColor(Color.parseColor("#414b5c"));
                 getWindow().setStatusBarColor(Color.parseColor("#272B36"));
+
+                Arr_TextView_continue_day[i].setTextColor(Color.WHITE);
             }
 
             //습관 제목 텍스트뷰 CSS

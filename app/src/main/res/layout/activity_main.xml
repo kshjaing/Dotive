@@ -25,8 +25,7 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginRight="20dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/settings" />
+                android:scaleType="fitCenter" />
 
             <ImageButton
                 android:id="@+id/ibtnEdit"
@@ -37,7 +36,6 @@
                 android:layout_marginTop="18dp"
                 android:layout_alignParentStart="true"
                 android:layout_marginStart="20dp"
-                android:src="@drawable/edit"
                 android:scaleType="fitCenter"/>
         </RelativeLayout>
         <RelativeLayout

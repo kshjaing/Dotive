@@ -39,6 +39,9 @@ public class CreateActivity extends AppCompatActivity {
     EditText edit_Habit_Day_Num; //습관 목표일 수 (ex: 30일 목표 공부하기, -> 30일 동그라미 배열 생성)
     TextView Warning_Habit_Name; //습관명 비어있을 경우 경고
     TextView Warning_Habit_Num; //습관 목표일 수 비어있을 경우 경고
+    TextView txtHabit;
+    TextView txtObjdays;
+
     //db에서 다크모드 값 , 언어 값
     public int DB_darkmode = 3; // 1 = > 다크 , 기본값 : 0
 
@@ -67,16 +70,21 @@ public class CreateActivity extends AppCompatActivity {
         edit_Habit_Day_Num = (EditText) findViewById(R.id.edit_Habit_Day_Num); //습관 목표일 수
         Warning_Habit_Name = (TextView) findViewById(R.id.Warning_Habit_Name); //습관명 비어있을 경우 경고
         Warning_Habit_Num = (TextView) findViewById(R.id.Warning_Habit_Num); //습관 목표일 수 비었을 경우 경고
+        txtHabit = (TextView) findViewById(R.id.txtHabit);
+        txtObjdays = (TextView) findViewById(R.id.txtObjdays);
 
         QUERY_Settings();
         if(DB_darkmode == 0) {
             layout.setBackgroundColor(Color.rgb(255,235,211));
             getWindow().setStatusBarColor(Color.parseColor("#FFEBD3"));
-
+            txtHabit.setTextColor(Color.BLACK);
+            txtObjdays.setTextColor(Color.BLACK);
         }
         else {
             layout.setBackgroundColor(Color.rgb(39,43,54));
             getWindow().setStatusBarColor(Color.parseColor("#272B36"));
+            txtHabit.setTextColor(Color.WHITE);
+            txtObjdays.setTextColor(Color.WHITE);
         }
 
         //버튼 클릭리스너
