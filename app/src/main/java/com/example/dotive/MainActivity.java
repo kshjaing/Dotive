@@ -812,12 +812,12 @@ public class MainActivity extends AppCompatActivity { //AppCompatActivity
         //db에서 다크모드 여부 확인 하고 변경
         if (DB_darkmode == 0) {
             scrollView.setBackgroundColor(Color.parseColor("#FFEBD3")); //뒷 배경 설정
-            ibtnEdit.setBackgroundResource(R.drawable.edit_dark);
+            ibtnEdit.setBackgroundResource(R.drawable.delete_dark);
             ibtnSettings.setBackgroundResource(R.drawable.settings_dark);
         }
         else {
             scrollView.setBackgroundColor(Color.parseColor("#272B36")); //뒷 배경 설정
-            ibtnEdit.setBackgroundResource(R.drawable.edit);
+            ibtnEdit.setBackgroundResource(R.drawable.delete);
             ibtnSettings.setBackgroundResource(R.drawable.settings);
         }
 
