@@ -10,85 +10,29 @@
         android:id="@+id/edtHabit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="106dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="96dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/edt_border_round"
         android:ems="18"
         android:fontFamily="@font/katuri"
         android:inputType="text"
         android:minHeight="45dp"
         android:nextFocusDown="@id/edtObjDays"
-        android:paddingLeft="12dp"
+        android:paddingStart="12dp"
         android:textCursorDrawable="@drawable/cursor_color"
         android:textSize="19sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.532"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtHabit" />
-
-    <ImageButton
-        android:id="@+id/btncolorBluegray"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="55dp"
-        android:background="@drawable/colorbutton_bluegray"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/btncolorPurple"
-        app:layout_constraintTop_toBottomOf="@+id/edtObjDays" />
-
-    <TextView
-        android:id="@+id/txtHabit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="116dp"
-        android:layout_marginTop="232dp"
-        android:fontFamily="@font/katuri"
-        android:text="어떤 습관을 만드실건가요?"
-        android:textColor="#000000"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/edtObjDays"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="12dp"
-        android:background="@drawable/edt_border_round"
-        android:ems="2"
-        android:fontFamily="@font/katuri"
-        android:hint="1"
-        android:inputType="number"
-        android:minHeight="45dp"
-        android:paddingLeft="12dp"
-        android:paddingRight="3dp"
-        android:textAlignment="viewEnd"
-        android:textCursorDrawable="@drawable/cursor_color"
-        android:textSize="19sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtHabit" />
-
-    <ImageButton
-        android:id="@+id/btncolorGreen"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="28dp"
-        android:background="@drawable/colorbutton_green"
-        app:layout_constraintStart_toEndOf="@+id/btncolorOrange"
-        app:layout_constraintTop_toBottomOf="@+id/edtObjDays" />
 
     <TextView
         android:id="@+id/txtObjdays"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="33dp"
         android:fontFamily="@font/katuri"
         android:text="일동안 (최대 30일)"
         android:textColor="#000000"
@@ -96,46 +40,45 @@
         app:layout_constraintStart_toEndOf="@+id/edtObjDays"
         app:layout_constraintTop_toBottomOf="@+id/edtHabit" />
 
-    <ImageButton
-        android:id="@+id/btncolorBlue"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="28dp"
-        android:background="@drawable/colorbutton_blue"
-        app:layout_constraintStart_toEndOf="@+id/btncolorGreen"
-        app:layout_constraintTop_toBottomOf="@+id/edtObjDays" />
+    <EditText
+        android:id="@+id/edtObjDays"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="137dp"
+        android:layout_marginTop="21dp"
+        android:background="@drawable/edt_border_round"
+        android:ems="2"
+        android:fontFamily="@font/katuri"
+        android:hint="1"
+        android:inputType="number"
+        android:minHeight="45dp"
+        android:paddingRight="7dp"
+        android:textAlignment="viewEnd"
+        android:textCursorDrawable="@drawable/cursor_color"
+        android:textSize="19sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edtHabit" />
 
     <ImageButton
         android:id="@+id/btncolorRed"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="52dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/colorbutton_red_pressed"
         app:layout_constraintEnd_toStartOf="@+id/btncolorOrange"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edtObjDays" />
 
     <ImageButton
-        android:id="@+id/btncolorOrange"
+        android:id="@+id/btncolorBlue"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="28dp"
-        android:background="@drawable/colorbutton_orange"
-        app:layout_constraintStart_toEndOf="@+id/btncolorRed"
-        app:layout_constraintTop_toBottomOf="@+id/edtObjDays" />
-
-    <ImageButton
-        android:id="@+id/btncolorPurple"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="28dp"
-        android:background="@drawable/colorbutton_purple"
-        app:layout_constraintStart_toEndOf="@+id/btncolorBlue"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/colorbutton_blue"
+        app:layout_constraintStart_toEndOf="@+id/btncolorGreen"
         app:layout_constraintTop_toBottomOf="@+id/edtObjDays" />
 
     <Button
@@ -149,13 +92,74 @@
         android:background="@drawable/button_border_round"
         android:fontFamily="@font/katuri"
         android:minHeight="45dp"
-        android:text="수정"
+        android:text="추가"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btncolorBlue"
-        app:layout_constraintVertical_bias="0.75" />
+        app:layout_constraintVertical_bias="0.15" />
+
+    <ImageButton
+        android:id="@+id/btncolorGreen"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/colorbutton_green"
+        app:layout_constraintStart_toEndOf="@+id/btncolorOrange"
+        app:layout_constraintTop_toBottomOf="@+id/edtObjDays" />
+
+    <ImageButton
+        android:id="@+id/btncolorOrange"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/colorbutton_orange"
+        app:layout_constraintStart_toEndOf="@+id/btncolorRed"
+        app:layout_constraintTop_toBottomOf="@+id/edtObjDays" />
+
+    <TextView
+        android:id="@+id/txtHabit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="115dp"
+        android:layout_marginTop="253dp"
+        android:layout_marginEnd="115dp"
+        android:layout_marginBottom="24dp"
+        android:fontFamily="@font/katuri"
+        android:text="어떤 습관을 만드실건가요?"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/edtHabit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btncolorPurple"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/colorbutton_purple"
+        app:layout_constraintStart_toEndOf="@+id/btncolorBlue"
+        app:layout_constraintTop_toBottomOf="@+id/edtObjDays" />
+
+    <ImageButton
+        android:id="@+id/btncolorBluegray"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="55dp"
+        android:background="@drawable/colorbutton_bluegray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/btncolorPurple"
+        app:layout_constraintTop_toBottomOf="@+id/edtObjDays" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
