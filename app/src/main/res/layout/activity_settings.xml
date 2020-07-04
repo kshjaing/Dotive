@@ -111,10 +111,10 @@
                 android:layout_marginTop="64dp"
                 android:background="@drawable/button_border_round"
                 android:fontFamily="@font/katuri"
+                android:textSize="18sp"
+                android:textAlignment="textStart"
                 android:paddingStart="60dp"
                 android:text="다크모드로 전환"
-                android:textAlignment="textStart"
-                android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtSettingLetters" />

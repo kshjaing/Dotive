@@ -29,7 +29,7 @@ import petrov.kristiyan.colorpicker.ColorPicker;
 
 public class CreateActivity extends AppCompatActivity {
 
-    Button btn_finish; //앱 종료
+    //Button btn_finish; //앱 종료
     Button btn_OK; //확인 버튼
     private Button btn_Color_Picker; //색 선택
     private ConstraintLayout layout;
@@ -46,6 +46,8 @@ public class CreateActivity extends AppCompatActivity {
 
     String habit_progress = "";
 
+    int Get_intColor = 0;
+
     //최초실행
     private Context context;
 
@@ -56,7 +58,7 @@ public class CreateActivity extends AppCompatActivity {
         context = this;
 
         //객체 인스턴스 초기화
-        btn_finish = (Button) findViewById(R.id.btn_finish); //앱 종료
+        //btn_finish = (Button) findViewById(R.id.btn_finish); //앱 종료
         btn_Color_Picker = (Button) findViewById(R.id.btn_Color_Picker); //컬러 선택 버튼
         View_Color_Pick = (TextView) findViewById(R.id.View_Color_Pick); //컬러 선택 값 (int)
         layout = (ConstraintLayout) findViewById(R.id.layout); //레이아웃
@@ -65,6 +67,17 @@ public class CreateActivity extends AppCompatActivity {
         edit_Habit_Day_Num = (EditText) findViewById(R.id.edit_Habit_Day_Num); //습관 목표일 수
         Warning_Habit_Name = (TextView) findViewById(R.id.Warning_Habit_Name); //습관명 비어있을 경우 경고
         Warning_Habit_Num = (TextView) findViewById(R.id.Warning_Habit_Num); //습관 목표일 수 비었을 경우 경고
+
+        QUERY_Settings();
+        if(DB_darkmode == 0) {
+            layout.setBackgroundColor(Color.rgb(255,235,211));
+            getWindow().setStatusBarColor(Color.parseColor("#FFEBD3"));
+
+        }
+        else {
+            layout.setBackgroundColor(Color.rgb(39,43,54));
+            getWindow().setStatusBarColor(Color.parseColor("#272B36"));
+        }
 
         //버튼 클릭리스너
 
@@ -77,12 +90,12 @@ public class CreateActivity extends AppCompatActivity {
         });
 
         //앱 종료
-        btn_finish.setOnClickListener(new View.OnClickListener() {
+        /*btn_finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish(); //앱 종료
             }
-        });
+        });*/
 
         //확인 버튼
         btn_OK.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +126,7 @@ public class CreateActivity extends AppCompatActivity {
                         INSERT_Settings();
                     }*/
 
-                    QUERY_Settings();
+                    //QUERY_Settings();
                     if(DB_darkmode ==3)
                         INSERT_Settings();
 
@@ -291,12 +304,16 @@ public class CreateActivity extends AppCompatActivity {
                     @Override
                     public void onChooseColor(int position, int color) {
 
-                        layout.setBackgroundColor(color);//목표색 배경에 뿌림 (test 용)
+                        //layout.setBackgroundColor(color);//목표색 배경에 뿌림 (test 용)
                         //View_Color_Pick.setText(Integer.toString(color)); //컬러값 int로 전달 (ex : -21615)
                         int_Color = color; //intent 할 변수
                         String hexColor = String.format("#%06X", (0xFFFFFFF & color)); //습관 색 int - > hex 변환
                         View_Color_Pick.setText(hexColor);
                         Log.e("습관컬러 hex 변환",View_Color_Pick.getText().toString());
+                        Get_intColor = color;
+
+                        if(Get_intColor != 0)
+                            btn_Color_Picker.setBackgroundColor(Get_intColor);
                     }
 
                     @Override
