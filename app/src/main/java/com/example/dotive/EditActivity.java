@@ -2,6 +2,7 @@ package com.example.dotive;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -16,7 +17,9 @@ import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import static com.example.dotive.HabitActivity.boxNum;
 import static com.example.dotive.MainActivity.db;
+import static com.example.dotive.MainActivity.dbHelper;
 import static com.example.dotive.MainActivity.isDarkmode;
 
 public class EditActivity extends Activity {
@@ -28,24 +31,28 @@ public class EditActivity extends Activity {
     Integer objectDays = 1;
     String curColor = "red";
     InputMethodManager imm;
+    Cursor cursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
-
-
-        imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-
-    }
-
-    protected  void onStart() {
-        super.onStart();
         cl = new ConstraintLayout(this);
         cl = findViewById(R.id.cl);
         edtHabitName = findViewById(R.id.edtHabit);
         edtObjectDays = findViewById(R.id.edtObjDays);
+
+        imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+
         View view = getWindow().getDecorView();
+        db = dbHelper.getWritableDatabase();
+        cursor = db.rawQuery("SELECT habitName FROM Habits", null);
+        cursor.moveToPosition(boxNum);
+        edtHabitName.setText(cursor.getString(0));
+
+        cursor = db.rawQuery("SELECT objDays FROM Habits", null);
+        cursor.moveToPosition(boxNum);
+        edtObjectDays.setText(cursor.getString(0));
 
         //화면 터치시 키보드내림
         cl.setOnClickListener(new View.OnClickListener() {
@@ -223,11 +230,19 @@ public class EditActivity extends Activity {
                 Intent intent = new Intent(EditActivity.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
                 MainActivity.isCreatePressed = true;
-                //EditHabits(edtHabitName.getText().toString(), curColor, objectDays, progressString);
+                editHabits(edtHabitName.getText().toString(), curColor, objectDays);
                 db.close();
                 startActivity(intent);
             }
         });
+
+
+
+    }
+
+    protected  void onStart() {
+        super.onStart();
+
     }
 
     @Override
@@ -236,4 +251,9 @@ public class EditActivity extends Activity {
         startActivity(intent);
     }
 
+    //Habits 테이블에 습관 update
+    public void editHabits(String habitName, String habitColor, Integer objDays) {
+        MainActivity.dbHelper.getWritableDatabase();
+        db.execSQL("UPDATE Habits SET habitName = '"+ habitName +"', habitColor = '"+ habitColor +"', objDays = "+ objDays +"  WHERE ROWID ="+ (boxNum + 1) +"");
+    }
 }

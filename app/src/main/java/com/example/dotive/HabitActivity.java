@@ -54,7 +54,7 @@ public class HabitActivity extends Activity {
     Date curDate;
     String habitName;
     String progressString;
-    int boxNum;
+    public static int boxNum;
     String objectDate;                                //최종목표날짜
 
     Cursor cursor;
@@ -80,14 +80,7 @@ public class HabitActivity extends Activity {
         View view = getWindow().getDecorView();
 
 
-        //편집버튼 클릭이벤트
-        ibtnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HabitActivity.this, EditActivity.class);
-                startActivity(intent);
-            }
-        });
+
 
 
 
@@ -99,6 +92,16 @@ public class HabitActivity extends Activity {
 
         db = dbHelper.getWritableDatabase();
 
+
+        //편집버튼 클릭이벤트
+        ibtnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HabitActivity.this, EditActivity.class);
+                intent.putExtra("boxnumber", boxNum);
+                startActivity(intent);
+            }
+        });
 
 
         //DB에서 습관명을 받아와 txtHabitName 에 삽입, 목표일수도 받아와 txtObjectDays 에 삽입
@@ -199,6 +202,7 @@ public class HabitActivity extends Activity {
                         String dayNum = v.getTag().toString().substring(obj_index + 1);
                         dayIndex = Integer.parseInt(dayNum);
                         //Toast.makeText(HabitActivity.this, String.valueOf(dayIndex), Toast.LENGTH_SHORT).show();
+
 
 
                         //클릭한 뷰의 백그라운드와 drawable 파일과의 비교
