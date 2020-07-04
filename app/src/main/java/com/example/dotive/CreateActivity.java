@@ -87,10 +87,13 @@ public class CreateActivity extends AppCompatActivity {
             getWindow().setStatusBarColor(Color.parseColor("#FFEBD3"));
             txtHabit.setTextColor(Color.BLACK);
             txtObjdays.setTextColor(Color.BLACK);
+            //status bar 글자 색상
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
         else {
             layout.setBackgroundColor(Color.rgb(39,43,54));
             getWindow().setStatusBarColor(Color.parseColor("#272B36"));
+
             txtHabit.setTextColor(Color.WHITE);
             txtObjdays.setTextColor(Color.WHITE);
         }

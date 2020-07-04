@@ -27,16 +27,14 @@ import org.w3c.dom.Text;
 
 public class SettingsActivity extends Activity {
 
-    Context context_settings;
     ConstraintLayout cl;
     ScrollView sv;
     Button btnDarkmode, btnLanguage, btnRating, btnContact, btnReset, btnConfirm;
-    Integer intDarkmodeCount;
-    TextView txtSettingLetters;
-    Cursor cursor = null;
     public int new_darkmode = 0; //이제 변할 값.
     public int old_darkmode = 0; //MainActivity 에서 받아온 값
     public int darkmode = 0;
+    TextView txtDotive;
+    TextView txtDev;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,23 +53,26 @@ public class SettingsActivity extends Activity {
         btnContact = new Button(this);
         btnReset = new Button(this);
         btnConfirm = new Button(this);
-        txtSettingLetters = new TextView(this);
+        txtDev = new TextView(this);
+        txtDotive = new TextView(this);
+
         cl = findViewById(R.id.clSettings);
-        sv = findViewById(R.id.svSettings);
         btnDarkmode = findViewById(R.id.btn_darkmode);
         btnLanguage = findViewById(R.id.btn_language);
         btnRating = findViewById(R.id.btn_rating);
         btnContact = findViewById(R.id.btn_contact);
         btnReset = findViewById(R.id.btn_reset);
         btnConfirm = findViewById(R.id.btn_confirm);
-        txtSettingLetters = findViewById(R.id.txtSettingLetters);
+        txtDotive = findViewById(R.id.txtDotive);
+        txtDev = findViewById(R.id.txtDev);
 
         if (darkmode == 1) {
             btnDarkmode.setText("라이트모드로 전환");
             sv.setBackgroundColor(Color.parseColor("#272B36"));
             cl.setBackgroundColor(Color.parseColor("#272B36"));
             getWindow().setStatusBarColor(Color.parseColor("#272B36"));
-            txtSettingLetters.setTextColor(Color.WHITE);
+            txtDev.setTextColor(Color.WHITE);
+            txtDotive.setTextColor(Color.WHITE);
             btnDarkmode.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
             btnLanguage.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
             btnRating.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
@@ -92,7 +93,10 @@ public class SettingsActivity extends Activity {
             cl.setBackgroundColor(Color.parseColor("#FFEBD3"));
             getWindow().setStatusBarColor(Color.parseColor("#FFEBD3"));
             view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-            txtSettingLetters.setTextColor(Color.BLACK);
+            //status bar 글자 색상
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            txtDotive.setTextColor(Color.BLACK);
+            txtDev.setTextColor(Color.BLACK);
             btnDarkmode.setBackgroundResource(R.drawable.habitbtn_border_round);
             btnLanguage.setBackgroundResource(R.drawable.habitbtn_border_round);
             btnRating.setBackgroundResource(R.drawable.habitbtn_border_round);
@@ -118,8 +122,6 @@ public class SettingsActivity extends Activity {
                 String uriString = "content://com.example.dotive/Settings";
                 Uri uri = new Uri.Builder().build().parse(uriString);
 
-                //String selection = "darkmode = ?";
-                //String[] selectionArgs = new String[] {String.valueOf(new_darkmode)};
                 ContentValues updateValue = new ContentValues();
                 updateValue.put("darkmode",new_darkmode);
                 int count = getContentResolver().update(uri,updateValue,null,null);
@@ -158,7 +160,10 @@ public class SettingsActivity extends Activity {
             sv.setBackgroundColor(Color.parseColor("#272B36"));
             cl.setBackgroundColor(Color.parseColor("#272B36"));
             getWindow().setStatusBarColor(Color.parseColor("#272B36"));
-            txtSettingLetters.setTextColor(Color.WHITE);
+            txtDev.setTextColor(Color.WHITE);
+            txtDotive.setTextColor(Color.WHITE);
+            //status bar 글자 색상
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             btnDarkmode.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
             btnLanguage.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
             btnRating.setBackgroundResource(R.drawable.habitbtn_border_round_dark);
@@ -179,7 +184,9 @@ public class SettingsActivity extends Activity {
             cl.setBackgroundColor(Color.parseColor("#FFEBD3"));
             getWindow().setStatusBarColor(Color.parseColor("#FFEBD3"));
             view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-            txtSettingLetters.setTextColor(Color.BLACK);
+
+            txtDotive.setTextColor(Color.BLACK);
+            txtDev.setTextColor(Color.BLACK);
             btnDarkmode.setBackgroundResource(R.drawable.habitbtn_border_round);
             btnLanguage.setBackgroundResource(R.drawable.habitbtn_border_round);
             btnRating.setBackgroundResource(R.drawable.habitbtn_border_round);

@@ -1,21 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/clSettings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
-    android:id="@+id/svSettings">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/clSettings"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center_horizontal">
+    app:layout_constraintBottom_toBottomOf="@+id/btn_darkmode"
+    app:layout_constraintTop_toBottomOf="@+id/btn_darkmode"
+    app:layout_constraintVertical_bias="0.309"
+    tools:layout_editor_absoluteX="0dp">
 
-            <TextView
+    <!-- <TextView
                 android:id="@+id/txtSettingLetters"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -26,102 +22,154 @@
                 android:textSize="35sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/btn_rating"
-                android:layout_width="360dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="32dp"
-                android:background="@drawable/button_border_round"
-                android:fontFamily="@font/katuri"
-                android:paddingStart="60dp"
-                android:text="앱을 평가해주세요!"
-                android:textAlignment="textStart"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_language" />
-
-            <Button
-                android:id="@+id/btn_contact"
-                android:layout_width="360dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/button_border_round"
-                android:fontFamily="@font/katuri"
-                android:paddingStart="60dp"
-                android:text="문의는 메일로 주세요!"
-                android:textAlignment="textStart"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_rating" />
-
-            <Button
-                android:id="@+id/btn_confirm"
-                android:layout_width="100dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="48dp"
-                android:layout_marginBottom="50dp"
-                android:background="@drawable/button_border_round"
-                android:fontFamily="@font/katuri"
-                android:text="확인"
-                android:textAlignment="center"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_reset" />
-
-            <Button
-                android:id="@+id/btn_reset"
-                android:layout_width="360dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="32dp"
-                android:background="@drawable/button_border_round"
-                android:fontFamily="@font/katuri"
-                android:paddingStart="60dp"
-                android:text="데이터 전체 초기화"
-                android:textAlignment="textStart"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_contact" />
-
-            <Button
-                android:id="@+id/btn_language"
-                android:layout_width="360dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/button_border_round"
-                android:fontFamily="@font/katuri"
-                android:paddingStart="60dp"
-                android:text="언어"
-                android:textAlignment="textStart"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_darkmode" />
-
-            <Button
-                android:id="@+id/btn_darkmode"
-                android:layout_width="360dp"
-                android:layout_height="60dp"
-                android:layout_marginTop="64dp"
-                android:background="@drawable/button_border_round"
-                android:fontFamily="@font/katuri"
-                android:textSize="18sp"
-                android:textAlignment="textStart"
-                android:paddingStart="60dp"
-                android:text="다크모드로 전환"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtSettingLetters" />
+                app:layout_constraintTop_toTopOf="parent" />-->
 
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </LinearLayout>
+    <Button
+        android:id="@+id/btn_darkmode"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/button_border_round"
+        android:fontFamily="@font/katuri"
+        android:paddingStart="60dp"
+        android:text="다크모드로 전환"
+        android:textAlignment="textStart"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_contact"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtDotive" />
 
+    <Button
+        android:id="@+id/btn_rating"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="13dp"
+        android:background="@drawable/button_border_round"
+        android:fontFamily="@font/katuri"
+        android:paddingStart="60dp"
+        android:text="앱을 평가해주세요!"
+        android:textAlignment="textStart"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_language"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_contact" />
 
-</ScrollView>
+    <TextView
+        android:id="@+id/txtDotive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="25dp"
+        android:fontFamily="@font/katuri"
+        android:text="Dotive"
+        android:textColor="#535353"
+        android:textColorHint="#353535"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_darkmode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="58dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/dotive_icon"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toTopOf="@+id/txtDotive"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btn_reset"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="36dp"
+        android:background="@drawable/button_border_round"
+        android:fontFamily="@font/katuri"
+        android:paddingStart="60dp"
+        android:text="데이터 전체 초기화"
+        android:textAlignment="textStart"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_confirm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_language" />
+
+    <TextView
+        android:id="@+id/txtDev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="92dp"
+        android:fontFamily="@font/katuri"
+        android:text="Developed by 김태훈"
+        android:textColor="#737373"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_confirm" />
+
+    <Button
+        android:id="@+id/btn_contact"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="17dp"
+        android:background="@drawable/button_border_round"
+        android:fontFamily="@font/katuri"
+        android:paddingStart="60dp"
+        android:text="문의는 메일로 주세요!"
+        android:textAlignment="textStart"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_rating"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_darkmode" />
+
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="100dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="38dp"
+        android:background="@drawable/button_border_round"
+        android:fontFamily="@font/katuri"
+        android:text="확인"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/txtDev"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_reset" />
+
+    <Button
+        android:id="@+id/btn_language"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="13dp"
+        android:background="@drawable/button_border_round"
+        android:fontFamily="@font/katuri"
+        android:paddingStart="60dp"
+        android:text="언어"
+        android:textAlignment="textStart"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_reset"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_rating" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
