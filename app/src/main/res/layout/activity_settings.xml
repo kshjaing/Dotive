@@ -32,10 +32,10 @@
 
             <Button
                 android:id="@+id/btn_rating"
-                android:layout_width="360dp"
+                android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/button_border_round"
+                android:layout_marginTop="40dp"
+                android:background="@color/white"
                 android:fontFamily="@font/katuri"
                 android:paddingStart="60dp"
                 android:text="앱을 평가해주세요!"
@@ -64,10 +64,10 @@
 
             <Button
                 android:id="@+id/btn_reset"
-                android:layout_width="360dp"
+                android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/button_border_round"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
                 android:fontFamily="@font/katuri"
                 android:paddingStart="60dp"
                 android:text="데이터 전체 초기화"
@@ -80,10 +80,10 @@
 
             <Button
                 android:id="@+id/btn_language"
-                android:layout_width="360dp"
+                android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_marginTop="24dp"
-                android:background="@drawable/button_border_round"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
                 android:fontFamily="@font/katuri"
                 android:paddingStart="60dp"
                 android:text="언어"
@@ -95,10 +95,10 @@
 
             <Button
                 android:id="@+id/btn_darkmode"
-                android:layout_width="360dp"
+                android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="60dp"
-                android:background="@drawable/button_border_round"
+                android:background="@color/white"
                 android:fontFamily="@font/katuri"
                 android:paddingStart="60dp"
                 android:text="다크모드로 전환"
