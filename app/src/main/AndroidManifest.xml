@@ -23,8 +23,8 @@
             android:name=".Provider"
             android:authorities="com.example.dotive"
             android:exported="true"
-            android:readPermission="com.example.sampleprovider.READ_DATABASE"
-            android:writePermission="com.example.sampleprovider.WRITE_DATABASE" />
+            android:readPermission=".Provider.READ_DATABASE"
+            android:writePermission=".Provider.WRITE_DATABASE" />
 
         <activity android:name=".SettingActivity" />
         <activity android:name=".SettingsActivity" />
