@@ -309,17 +309,6 @@ public class MainActivity extends AppCompatActivity{
             //습관제목 텍스트뷰 마진 설정
             txtView_linearParams.setMargins(0, txt_marginTop, 0, txt_marginBottom);
             txtView_linearParams.gravity = Gravity.CENTER_HORIZONTAL;
-/*
-            LinearLayout.LayoutParams ibtnEdit_relativeParams = new LinearLayout.LayoutParams(
-                    ibtnEditSetting_size, ibtnEditSetting_size);
-            LinearLayout.LayoutParams ibtnSetting_relativeParams = new LinearLayout.LayoutParams(
-                    ibtnEditSetting_size, ibtnEditSetting_size);
-            ibtnEdit_relativeParams.setMargins(ibtnEditSetting_marginSide, ibtnEditSetting_marginTop, 0, 0);
-            ibtnSetting_relativeParams.setMargins(0, ibtnEditSetting_marginTop, ibtnEditSetting_marginSide, 0);
-
-            ibtnSetting_relativeParams.gravity = Gravity.RIGHT;
-            ibtnEdit.setLayoutParams(ibtnEdit_relativeParams);
-            ibtnEdit.setLayoutParams(ibtnSetting_relativeParams);*/
 
 
             //습관 수만큼 박스 및 습관제목 텍스트뷰 생성
@@ -343,18 +332,29 @@ public class MainActivity extends AppCompatActivity{
                 //연속일수 표시 로직
                 txtSequence[i] = new TextView(this);
                 seqAmount = 0;
-                if (habitProgressArr[i].length() >= Integer.parseInt(dateDiff[i])) {
-                    if (Integer.parseInt(String.valueOf(habitProgressArr[i].charAt(Integer.parseInt(dateDiff[i])))) == 1){
-                        seqAmount = habitProgressArr[i].lastIndexOf("1", Integer.parseInt(dateDiff[i])) - habitProgressArr[i].lastIndexOf("0", habitProgressArr[i].lastIndexOf("1", Integer.parseInt(dateDiff[i])) - 1);
-                    }
-                    else {
-                        if (habitProgressArr[i].indexOf("0") > 0) {
-                            if (Integer.parseInt(String.valueOf(habitProgressArr[i].charAt(Integer.parseInt(dateDiff[i]) - 1))) == 1) {
-                                seqAmount = habitProgressArr[i].lastIndexOf("1", Integer.parseInt(dateDiff[i]) - 1) - habitProgressArr[i].lastIndexOf("0", habitProgressArr[i].lastIndexOf("1", Integer.parseInt(dateDiff[i])) - 1);
-                            }
+                int intDateDiff = Integer.parseInt(dateDiff[i]);                     //오늘과 습관만든날짜의 차이값
+
+                if (intDateDiff > 0) {
+                    int todayNum = Integer.parseInt(String.valueOf(habitProgressArr[i].charAt(intDateDiff)));
+                    int yesterdayNum = Integer.parseInt(String.valueOf(habitProgressArr[i].charAt(intDateDiff - 1)));
+
+                    if (habitProgressArr[i].length() > intDateDiff) {
+                        if (todayNum == 1){
+                            seqAmount = intDateDiff - habitProgressArr[i].lastIndexOf("0", intDateDiff);
+                        }
+                        else if (yesterdayNum == 1) {
+                            seqAmount = habitProgressArr[i].lastIndexOf("1", intDateDiff - 1)
+                                    - habitProgressArr[i].lastIndexOf("0", habitProgressArr[i].lastIndexOf("1", intDateDiff - 1));
                         }
                     }
                 }
+
+                else if (intDateDiff == 0) {
+                    if (Integer.parseInt(String.valueOf(habitProgressArr[i].charAt(0))) == 1) {
+                        seqAmount = 1;
+                    }
+                }
+
                 txtSequence[i].setText("연속 "+ seqAmount +"일째!");
                 txtSequence[i].setTypeface(typeface);
                 txtSequence[i].setTextSize(18);
