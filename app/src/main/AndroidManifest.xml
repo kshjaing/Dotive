@@ -16,10 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateActivity"></activity>
-        <activity android:name=".SettingsActivity"></activity>
-        <activity android:name=".HabitActivity"></activity>
-        <activity android:name=".EditActivity"></activity>
+        <activity android:name=".CreateActivity" />
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".HabitActivity" />
+        <activity android:name=".EditActivity" />
     </application>
 
 </manifest>
