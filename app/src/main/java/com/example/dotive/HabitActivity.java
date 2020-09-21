@@ -35,6 +35,7 @@ import static com.example.dotive.MainActivity.dateDiff;
 import static com.example.dotive.MainActivity.db;
 import static com.example.dotive.MainActivity.dbHelper;
 import static com.example.dotive.MainActivity.habitProgressArr;
+import static com.example.dotive.MainActivity.intDateDiff;
 import static com.example.dotive.MainActivity.isDarkmode;
 import static com.example.dotive.MainActivity.objectDays;
 import static com.example.dotive.MainActivity.oneCount;
@@ -175,12 +176,12 @@ public class HabitActivity extends Activity {
 
 
 
-        if (Integer.parseInt(dateDiff[boxNum]) < obj) {
+        if (intDateDiff[boxNum] < obj) {
             curDate = new Date();
             calendar = Calendar.getInstance();
             calendar.setTime(curDate);
 
-            for (int i = 0; i < (Integer.parseInt(dateDiff[boxNum]) + 1); i++) {
+            for (int i = 0; i < (intDateDiff[boxNum] + 1); i++) {
                 curDateString = dateFormat.format(calendar.getTime());
                 calendar.add(Calendar.DATE, -1);
 
@@ -188,7 +189,7 @@ public class HabitActivity extends Activity {
                 boxHabitArr[i] = new Button(this);
                 boxHabitArr[i].setLayoutParams(btn_linearParams);
                 boxHabitArr[i].setBackgroundResource(R.drawable.habitbtn_border_round);
-                boxHabitArr[i].setTag("dateBox_" + (Integer.parseInt(dateDiff[boxNum]) - i));
+                boxHabitArr[i].setTag("dateBox_" + (intDateDiff[boxNum] - i));
                 boxHabitArr[i].setText(curDateString);
                 boxHabitArr[i].setTypeface(typeface);
                 boxHabitArr[i].setTextSize(20);
@@ -279,11 +280,11 @@ public class HabitActivity extends Activity {
                 curDateString = dateFormat.format(calendar.getTime());
                 calendar.add(Calendar.DATE, -1);
 
-                boxHabitArr = new Button[i + 1];
+                boxHabitArr = new Button[obj];
                 boxHabitArr[i] = new Button(this);
                 boxHabitArr[i].setLayoutParams(btn_linearParams);
                 boxHabitArr[i].setBackgroundResource(R.drawable.habitbtn_border_round);
-                boxHabitArr[i].setTag("dateBox_" + (Integer.parseInt(dateDiff[boxNum]) - i));
+                boxHabitArr[i].setTag("dateBox_" + (intDateDiff[boxNum] - i));
                 boxHabitArr[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
