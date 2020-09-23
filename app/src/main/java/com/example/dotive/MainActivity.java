@@ -335,16 +335,16 @@ public class MainActivity extends AppCompatActivity{
                 seqAmount = 0;                     //오늘과 습관만든날짜의 차이값
 
                 if (intDateDiff[i] > 0 && intDateDiff[i] <= habitProgressArr[i].length()) {
-                    int todayNum = Integer.parseInt(String.valueOf(habitProgressArr[i].charAt(intDateDiff[i] - 1)));
-                    int yesterdayNum = Integer.parseInt(String.valueOf(habitProgressArr[i].charAt(intDateDiff[i] - 2)));
+                    int todayNum = Integer.parseInt(String.valueOf(habitProgressArr[i].charAt(intDateDiff[i])));
+                    int yesterdayNum = Integer.parseInt(String.valueOf(habitProgressArr[i].charAt(intDateDiff[i] - 1)));
 
                     if (habitProgressArr[i].length() > intDateDiff[i]) {
                         if (todayNum == 1){
-                            seqAmount = intDateDiff[i] - habitProgressArr[i].lastIndexOf("0", intDateDiff[i] - 1);
+                            seqAmount = intDateDiff[i] - habitProgressArr[i].lastIndexOf("0", intDateDiff[i]);
                         }
                         else if (yesterdayNum == 1) {
-                            seqAmount = habitProgressArr[i].lastIndexOf("1", intDateDiff[i] - 2)
-                                    - habitProgressArr[i].lastIndexOf("0", habitProgressArr[i].lastIndexOf("1", intDateDiff[i] - 1));
+                            seqAmount = habitProgressArr[i].lastIndexOf("1", intDateDiff[i] - 1)
+                                    - habitProgressArr[i].lastIndexOf("0", habitProgressArr[i].lastIndexOf("1", intDateDiff[i]));
                         }
                     }
                 }
