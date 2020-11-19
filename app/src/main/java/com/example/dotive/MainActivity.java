@@ -576,10 +576,7 @@ public class MainActivity extends AppCompatActivity{
 
                 for (int i = 0; i < totalHabit; i++) {
                     cursor.moveToPosition(i);
-                    Date test = dateFormat2.parse(cursor.getString(0));
                     createDateArr[i] = dateFormat2.parse(cursor.getString(0));
-
-                    createDateString = dateFormat.format(test);
                     createDateTimestamp[i] = dateFormat.parse(createDateString).getTime();
 
                     //현재날짜와 습관생성날짜 두 시간량을 뺀 시간량을 calDate 에 저장
