@@ -560,9 +560,11 @@ public class MainActivity extends AppCompatActivity{
             //날짜 형식 지정
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+            //한국 시간대 설정
             TimeZone korea;
-            dateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
             korea = TimeZone.getTimeZone("Asia/Seoul");
+            dateFormat.setTimeZone(korea);
             dateFormat2.setTimeZone(korea);
 
             try {
@@ -577,6 +579,7 @@ public class MainActivity extends AppCompatActivity{
                 for (int i = 0; i < totalHabit; i++) {
                     cursor.moveToPosition(i);
                     createDateArr[i] = dateFormat2.parse(cursor.getString(0));
+                    createDateString = dateFormat.format(createDateArr[i]);
                     createDateTimestamp[i] = dateFormat.parse(createDateString).getTime();
 
                     //현재날짜와 습관생성날짜 두 시간량을 뺀 시간량을 calDate 에 저장
