@@ -360,10 +360,11 @@ public class MainActivity extends AppCompatActivity{
                 }
 
                 else if (endDateTimestamp[i] < todayTimestamp) {
-                    txtSequence[i].setText("완료된 습관");
+                    txtSequence[i].setText("지난 습관");
                 }
-
-
+                else {
+                    txtSequence[i].setText("연속 "+ seqAmount +"일째!");
+                }
                 txtSequence[i].setTypeface(typeface);
                 txtSequence[i].setTextSize(18);
                 txtSequence[i].setLayoutParams(txtSeq_linearParams);
