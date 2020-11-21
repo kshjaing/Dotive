@@ -144,9 +144,23 @@ public class SettingsActivity extends Activity {
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                totalHabit = 0;
-                truncateHabits();
-                Toast.makeText(SettingsActivity.this, "모든 것이 잿더미가 됐어요!", Toast.LENGTH_SHORT).show();
+                AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this);
+                builder.setTitle("주의");
+                builder.setMessage("정말 발사하시겠습니까?");
+                builder.setPositiveButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                builder.setNegativeButton("발사", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        totalHabit = 0;
+                        truncateHabits();
+                        Toast.makeText(SettingsActivity.this, "모든 것이 잿더미가 됐어요!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                builder.create().show();
             }
         });
     }
