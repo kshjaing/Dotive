@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity{
     public static Context context_main;
     public static int totalHabit = 0;               //총 습관 개수
     public static Boolean isCreatePressed = false;  //습관생성 버튼클릭여부
+    public static Boolean isPassed = false;         //습관종료날짜가 지났는지 여부
     public static Integer isDarkmode = 0;           //다크모드 여부, 0이 false, 1이 true
     public static SQLiteDatabase db = null;
     public static DBHelper dbHelper;
@@ -551,6 +552,8 @@ public class MainActivity extends AppCompatActivity{
 
     //현재날짜와 습관 생성날짜 차이 계산 메서드
     public void calDateDiff() {
+        Date createDateCopy[] = new Date[totalHabit];
+        Date endDate[] = new Date[totalHabit];
         createDateTimestamp = new long[totalHabit];
         endDateTimestamp = new long[totalHabit];
         createDateArr = new Date[totalHabit];
@@ -571,6 +574,7 @@ public class MainActivity extends AppCompatActivity{
             try {
                 //날짜 객체 생성해서 현재날짜 입력
                 Calendar calendar = Calendar.getInstance();
+                Calendar calendar2 = Calendar.getInstance();         //목표종료날짜 계산을 위한 캘린더 변수
                 curDate = new Date(calendar.getTimeInMillis());
                 curDateString = dateFormat.format(curDate);
 
@@ -581,6 +585,16 @@ public class MainActivity extends AppCompatActivity{
                 for (int i = 0; i < totalHabit; i++) {
                     cursor.moveToPosition(i);
                     createDateArr[i] = dateFormat2.parse(cursor.getString(0));
+
+                    //목표종료날짜 계산 (습관생성날짜에 습관진행도 길이 -1을 더해줌)
+                    createDateCopy[i] = createDateArr[i];
+                    calendar2.setTime(createDateCopy[i]);
+                    calendar2.add(Calendar.DATE, habitProgressArr[i].length() - 1);
+                    endDate[i] = new Date(calendar2.getTimeInMillis());
+                    endDateString = dateFormat.format(endDate[i]);
+                    endDateTimestamp[i] = dateFormat.parse(endDateString).getTime();
+                    //-----------------------------------------------------------------------
+
                     createDateString = dateFormat.format(createDateArr[i]);
                     createDateTimestamp[i] = dateFormat.parse(createDateString).getTime();
 
@@ -589,6 +603,13 @@ public class MainActivity extends AppCompatActivity{
                     dateDiff[i] = String.valueOf(calDate[i] / (24*60*60*1000));
                     if (Integer.parseInt(dateDiff[i]) <= habitProgressArr[i].length()) {
                         intDateDiff[i] = Integer.parseInt(dateDiff[i]);
+                    }
+
+                    if (todayTimestamp > endDateTimestamp[i]) {
+                        isPassed = true;
+                    }
+                    else {
+                        isPassed = false;
                     }
                 }
             }
