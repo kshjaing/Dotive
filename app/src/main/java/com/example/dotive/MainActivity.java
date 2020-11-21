@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity{
     public static StringBuilder[] progressBuilderArr;
     public static Typeface typeface;
     public static int[] objectDays;                 //각 습관의 목표일수를 담는 변수
-    public static String curDateString, createDateString;
+    public static String curDateString, createDateString, endDateString;
     public static long[] calDate;      //현재날짜 시간량 - 습관생성날짜 시간량
     public static String[] dateDiff;   //calDate의 시간량을 숫자로 변환
     public static Date[] createDateArr, objectDateArr;
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity{
 
     Date curDate;                      //현재날짜 Date변수
     long todayTimestamp;               //현재날짜 시간량
-    long[] createDateTimestamp;        //습관생성날짜 시간량
+    long[] createDateTimestamp, endDateTimestamp;        //습관생성날짜, 끝나는날짜 시간량
 
     Cursor cursor;
     ImageButton ibtnSettings, ibtnDelete;
@@ -552,6 +552,7 @@ public class MainActivity extends AppCompatActivity{
     //현재날짜와 습관 생성날짜 차이 계산 메서드
     public void calDateDiff() {
         createDateTimestamp = new long[totalHabit];
+        endDateTimestamp = new long[totalHabit];
         createDateArr = new Date[totalHabit];
         calDate = new long[totalHabit];
         dateDiff = new String[totalHabit];
@@ -572,6 +573,7 @@ public class MainActivity extends AppCompatActivity{
                 Calendar calendar = Calendar.getInstance();
                 curDate = new Date(calendar.getTimeInMillis());
                 curDateString = dateFormat.format(curDate);
+
                 todayTimestamp = dateFormat.parse(curDateString).getTime();
 
                 cursor = db.rawQuery("SELECT createDate FROM Habits", null);
