@@ -62,10 +62,11 @@ public class MainActivity extends AppCompatActivity{
     public static String curDateString, createDateString, endDateString;
     public static long[] calDate;      //현재날짜 시간량 - 습관생성날짜 시간량
     public static String[] dateDiff;   //calDate의 시간량을 숫자로 변환
-    public static Date[] createDateArr, objectDateArr;
+    public static Date[] createDateArr, objectDateArr, endDate;
     public static int[] oneCount;                           //진행도 문자열에서 1이 몇개 있는지 담는 배열
     public static int standardSize_X, standardSize_Y;       //해상도별 디스플레이 가로, 세로크기
     public static float density;
+    public static long[] createDateTimestamp, endDateTimestamp;        //습관생성날짜, 끝나는날짜 시간량
     int eraseNum, boxNum1;
     int seqAmount;
     public static int[] intDateDiff;
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity{
 
     Date curDate;                      //현재날짜 Date변수
     long todayTimestamp;               //현재날짜 시간량
-    long[] createDateTimestamp, endDateTimestamp;        //습관생성날짜, 끝나는날짜 시간량
+
 
     Cursor cursor;
     ImageButton ibtnSettings, ibtnDelete;
@@ -335,7 +336,7 @@ public class MainActivity extends AppCompatActivity{
                 txtSequence[i] = new TextView(this);
                 seqAmount = 0;                     //오늘과 습관만든날짜의 차이값
 
-                if (intDateDiff[i] > 0 && intDateDiff[i] <= habitProgressArr[i].length()) {
+                if (intDateDiff[i] > 0 && endDateTimestamp[i] >= todayTimestamp) {
                     int todayNum = Integer.parseInt(String.valueOf(habitProgressArr[i].charAt(intDateDiff[i])));
                     int yesterdayNum = Integer.parseInt(String.valueOf(habitProgressArr[i].charAt(intDateDiff[i] - 1)));
 
@@ -348,15 +349,21 @@ public class MainActivity extends AppCompatActivity{
                                     - habitProgressArr[i].lastIndexOf("0", habitProgressArr[i].lastIndexOf("1", intDateDiff[i]));
                         }
                     }
+                    txtSequence[i].setText("연속 "+ seqAmount +"일째!");
                 }
 
-                else if (intDateDiff[i] == 0) {
+                else if (endDateTimestamp[i] == todayTimestamp) {
                     if (Integer.parseInt(String.valueOf(habitProgressArr[i].charAt(0))) == 1) {
                         seqAmount = 1;
                     }
+                    txtSequence[i].setText("연속 "+ seqAmount +"일째!");
                 }
 
-                txtSequence[i].setText("연속 "+ seqAmount +"일째!");
+                else if (endDateTimestamp[i] < todayTimestamp) {
+                    txtSequence[i].setText("완료된 습관");
+                }
+
+
                 txtSequence[i].setTypeface(typeface);
                 txtSequence[i].setTextSize(18);
                 txtSequence[i].setLayoutParams(txtSeq_linearParams);
@@ -553,7 +560,7 @@ public class MainActivity extends AppCompatActivity{
     //현재날짜와 습관 생성날짜 차이 계산 메서드
     public void calDateDiff() {
         Date createDateCopy[] = new Date[totalHabit];
-        Date endDate[] = new Date[totalHabit];
+        endDate = new Date[totalHabit];
         createDateTimestamp = new long[totalHabit];
         endDateTimestamp = new long[totalHabit];
         createDateArr = new Date[totalHabit];
@@ -562,7 +569,7 @@ public class MainActivity extends AppCompatActivity{
         intDateDiff = new int[totalHabit];
         if (totalHabit > 0) {
             //날짜 형식 지정
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
             SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
             //한국 시간대 설정

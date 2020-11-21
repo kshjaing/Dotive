@@ -22,6 +22,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -30,10 +32,13 @@ import java.util.Locale;
 import static com.example.dotive.DrawCircle.oneIndex;
 import static com.example.dotive.MainActivity.calDate;
 import static com.example.dotive.MainActivity.createDateArr;
+import static com.example.dotive.MainActivity.createDateTimestamp;
 import static com.example.dotive.MainActivity.curDateString;
 import static com.example.dotive.MainActivity.dateDiff;
 import static com.example.dotive.MainActivity.db;
 import static com.example.dotive.MainActivity.dbHelper;
+import static com.example.dotive.MainActivity.endDateString;
+import static com.example.dotive.MainActivity.endDateTimestamp;
 import static com.example.dotive.MainActivity.habitProgressArr;
 import static com.example.dotive.MainActivity.intDateDiff;
 import static com.example.dotive.MainActivity.isDarkmode;
@@ -58,6 +63,7 @@ public class HabitActivity extends Activity {
     public static int boxNum;
     String objectDate;                                //최종목표날짜
 
+    long todayTimestamp;
     Cursor cursor;
 
     LinearLayout ll;
@@ -174,22 +180,27 @@ public class HabitActivity extends Activity {
         //objectDate = dateFormat.format(calendar.getTime());
 
 
+        curDate = new Date();
+        calendar = Calendar.getInstance();
+        calendar.setTime(curDate);
+
+        if (endDateTimestamp[boxNum] >= todayTimestamp) {
+            for (int i = 0; i < intDateDiff[boxNum] + 1; i++) {
+                int tagNum = intDateDiff[boxNum] - i;
+
+                //-----------------------------현재날짜 구함------------------------------
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy년 MM월 dd일");
 
 
-        if (intDateDiff[boxNum] < obj) {
-            curDate = new Date();
-            calendar = Calendar.getInstance();
-            calendar.setTime(curDate);
-
-            for (int i = 0; i < (intDateDiff[boxNum] + 1); i++) {
                 curDateString = dateFormat.format(calendar.getTime());
-                calendar.add(Calendar.DATE, -1);
+                //-----------------------------------------------------------------------
 
+                calendar.add(Calendar.DATE, -1);
                 boxHabitArr = new Button[i + 1];
                 boxHabitArr[i] = new Button(this);
                 boxHabitArr[i].setLayoutParams(btn_linearParams);
                 boxHabitArr[i].setBackgroundResource(R.drawable.habitbtn_border_round);
-                boxHabitArr[i].setTag("dateBox_" + (intDateDiff[boxNum] - i));
+                boxHabitArr[i].setTag("dateBox_" + tagNum);
                 boxHabitArr[i].setText(curDateString);
                 boxHabitArr[i].setTypeface(typeface);
                 boxHabitArr[i].setTextSize(20);
@@ -274,17 +285,15 @@ public class HabitActivity extends Activity {
             calendar = Calendar.getInstance();
             calendar.setTime(createDateArr[boxNum]);
             calendar.add(Calendar.DATE, obj);
-            for (int i = 0; i < obj; i++) {
-
-
-                curDateString = dateFormat.format(calendar.getTime());
+            for (int i = 0; i < intDateDiff[boxNum] + 1; i++) {
                 calendar.add(Calendar.DATE, -1);
+                int tagNum = intDateDiff[boxNum] - i;
 
                 boxHabitArr = new Button[obj];
                 boxHabitArr[i] = new Button(this);
                 boxHabitArr[i].setLayoutParams(btn_linearParams);
                 boxHabitArr[i].setBackgroundResource(R.drawable.habitbtn_border_round);
-                boxHabitArr[i].setTag("dateBox_" + (intDateDiff[boxNum] - i));
+                boxHabitArr[i].setTag("dateBox_" + tagNum);
                 boxHabitArr[i].setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -307,6 +316,7 @@ public class HabitActivity extends Activity {
                                 v.setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
                                 ((Button) v).setText(((Button) v).getText() + "  완료!");
                                 ((Button) v).setTextColor(Color.BLACK);
+                                Toast.makeText(HabitActivity.this, v.getTag().toString(), Toast.LENGTH_SHORT).show();
                             }
                         } else {
                             if (v.getBackground().getConstantState().equals(getResources().getDrawable(R.drawable.habitbtn_border_round_pressed_dark).getConstantState())) {
@@ -322,6 +332,7 @@ public class HabitActivity extends Activity {
                                 updateProgress(boxNum, progressBuilderArr[boxNum].toString());
                                 ((Button) v).setTextColor(Color.BLACK);
                                 ((Button) v).setText(((Button) v).getText() + "  완료!");
+                                Toast.makeText(HabitActivity.this, v.getTag().toString(), Toast.LENGTH_SHORT).show();
                             }
                         }
 
@@ -331,7 +342,7 @@ public class HabitActivity extends Activity {
                         //Toast.makeText(HabitActivity.this, v.getTag().toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
-                boxHabitArr[i].setText(curDateString);
+                boxHabitArr[i].setText(endDateString);
                 boxHabitArr[i].setTypeface(typeface);
                 boxHabitArr[i].setTextSize(20);
 
@@ -357,6 +368,7 @@ public class HabitActivity extends Activity {
                 }
 
                 //1이 있는 개수만큼 각 인덱스마다 완료표시로 지정 반복
+                /*
                 for (int j = 0; j < oneCount[boxNum]; j++) {
                     if (isDarkmode == 0) {
                         ll.findViewWithTag("dateBox_" + oneIndex[j]).setBackgroundResource(R.drawable.habitbtn_border_round_pressed);
@@ -367,7 +379,7 @@ public class HabitActivity extends Activity {
                         ((Button)ll.findViewWithTag("dateBox_" + oneIndex[j])).setTextColor(Color.BLACK);
                     }
                     ((Button)ll.findViewWithTag("dateBox_" + oneIndex[j])).setText(((Button)ll.findViewWithTag("dateBox_" + oneIndex[j])).getText() + "  완료!");
-                }
+                }*/
             }
 
 
