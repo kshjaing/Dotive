@@ -95,7 +95,7 @@ public class SettingsActivity extends Activity {
                     getWindow().setStatusBarColor(Color.parseColor("#272B36"));
                     txtSettingLetters.setTextColor(Color.WHITE);
                     txtDotive.setTextColor(Color.WHITE);
-                    txtDev.setTextColor(Color.WHITE);
+                    txtDev.setTextColor(Color.parseColor("#737373"));
                     btnDarkmode.setBackgroundColor(Color.parseColor("#424c5e"));
                     btnLanguage.setBackgroundColor(Color.parseColor("#424c5e"));
                     btnRating.setBackgroundColor(Color.parseColor("#424c5e"));
@@ -177,7 +177,7 @@ public class SettingsActivity extends Activity {
             view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
             txtSettingLetters.setTextColor(Color.BLACK);
             txtDotive.setTextColor(Color.BLACK);
-            txtDev.setTextColor(Color.parseColor("#a3a3a3"));
+            txtDev.setTextColor(Color.parseColor("#737373"));
             btnDarkmode.setBackgroundColor(Color.parseColor("#FFFFFF"));
             btnLanguage.setBackgroundColor(Color.parseColor("#FFFFFF"));
             btnRating.setBackgroundColor(Color.parseColor("#FFFFFF"));
@@ -197,7 +197,7 @@ public class SettingsActivity extends Activity {
             getWindow().setStatusBarColor(Color.parseColor("#272B36"));
             txtSettingLetters.setTextColor(Color.WHITE);
             txtDotive.setTextColor(Color.WHITE);
-            txtDev.setTextColor(Color.WHITE);
+            txtDev.setTextColor(Color.parseColor("#737373"));
             btnDarkmode.setBackgroundColor(Color.parseColor("#424c5e"));
             btnLanguage.setBackgroundColor(Color.parseColor("#424c5e"));
             btnRating.setBackgroundColor(Color.parseColor("#424c5e"));

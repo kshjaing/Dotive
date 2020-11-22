@@ -121,7 +121,7 @@ public class DrawCircle extends View {
                     break;
                 case "purple" : completePaint.setColor(Color.parseColor("#c3a0dc"));
                     break;
-                case "gray" : completePaint.setColor(Color.parseColor("#607d8b"));
+                case "gray" : completePaint.setColor(Color.parseColor("#406c81"));
                     break;
             }
 

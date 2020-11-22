@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -34,6 +35,7 @@ import java.util.zip.DataFormatException;
 import static com.example.dotive.MainActivity.context_main;
 import static com.example.dotive.MainActivity.db;
 import static com.example.dotive.MainActivity.isDarkmode;
+import static com.example.dotive.MainActivity.standardSize_X;
 
 public class CreateActivity extends Activity {
 
@@ -60,6 +62,15 @@ public class CreateActivity extends Activity {
         edtHabitName = findViewById(R.id.edtHabit);
         edtObjectDays = findViewById(R.id.edtObjDays);
         View view = getWindow().getDecorView();
+
+        int edtName_Width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,standardSize_X * 0.9f,
+                getResources().getDisplayMetrics());
+        int edtName_Margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,24,
+                getResources().getDisplayMetrics());
+        ConstraintLayout.LayoutParams edt_linearParams = new ConstraintLayout.LayoutParams(
+                edtName_Width, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+        edt_linearParams.topMargin = edtName_Margin;
+        edt_linearParams.leftMargin = edtName_Margin;
 
         //화면 터치시 키보드내림
         cl.setOnClickListener(new View.OnClickListener() {
