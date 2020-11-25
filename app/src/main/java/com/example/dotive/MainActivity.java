@@ -353,7 +353,7 @@ public class MainActivity extends AppCompatActivity{
                     txtSequence[i].setText("연속 "+ seqAmount +"일째!");
                 }
 
-                else if (endDateTimestamp[i] == todayTimestamp) {
+                else if (intDateDiff[i] == 0 && endDateTimestamp[i] >= todayTimestamp) {
                     if (Integer.parseInt(String.valueOf(habitProgressArr[i].charAt(0))) == 1) {
                         seqAmount = 1;
                     }
